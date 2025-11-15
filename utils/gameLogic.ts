@@ -9,21 +9,25 @@ const generateAdditionQuestion = (difficulty: number): Question => {
 
   switch (difficulty) {
     case 1:
+      // Easy: 1-20
       num1 = getRandomInt(1, 20);
       num2 = getRandomInt(1, 20);
       break;
     case 2:
-      num1 = getRandomInt(1, 50);
-      num2 = getRandomInt(1, 50);
+      // Medium: 10-40 (smoother transition)
+      num1 = getRandomInt(10, 40);
+      num2 = getRandomInt(10, 40);
       break;
     case 3:
-      num1 = getRandomInt(1, 99);
-      num2 = getRandomInt(1, 99);
+      // Hard: 20-70 (gradual increase)
+      num1 = getRandomInt(20, 70);
+      num2 = getRandomInt(20, 70);
       break;
     case 4:
     default:
-      num1 = getRandomInt(10, 999);
-      num2 = getRandomInt(10, 999);
+      // Expert: 30-99
+      num1 = getRandomInt(30, 99);
+      num2 = getRandomInt(30, 99);
       break;
   }
 
@@ -40,21 +44,25 @@ const generateSubtractionQuestion = (difficulty: number): Question => {
 
   switch (difficulty) {
     case 1:
-      num1 = getRandomInt(1, 20);
+      // Easy: 1-20
+      num1 = getRandomInt(10, 20);
       num2 = getRandomInt(1, num1);
       break;
     case 2:
-      num1 = getRandomInt(1, 50);
-      num2 = getRandomInt(1, num1);
+      // Medium: 20-50 (smoother transition)
+      num1 = getRandomInt(20, 50);
+      num2 = getRandomInt(5, num1);
       break;
     case 3:
-      num1 = getRandomInt(1, 99);
-      num2 = getRandomInt(1, num1);
+      // Hard: 40-80 (gradual increase)
+      num1 = getRandomInt(40, 80);
+      num2 = getRandomInt(10, num1);
       break;
     case 4:
     default:
-      num1 = getRandomInt(100, 999);
-      num2 = getRandomInt(10, num1);
+      // Expert: 60-99
+      num1 = getRandomInt(60, 99);
+      num2 = getRandomInt(15, num1);
       break;
   }
 
@@ -71,22 +79,25 @@ const generateMultiplicationQuestion = (difficulty: number): Question => {
 
   switch (difficulty) {
     case 1:
-      num1 = getRandomInt(1, 12);
-      num2 = getRandomInt(1, 12);
+      // Easy: Single digit tables
+      num1 = getRandomInt(2, 9);
+      num2 = getRandomInt(2, 9);
       break;
     case 2:
-      num1 = getRandomInt(2, 20);
-      num2 = getRandomInt(2, 20);
+      // Medium: Up to 12 times table (smoother transition)
+      num1 = getRandomInt(2, 12);
+      num2 = getRandomInt(2, 12);
       break;
     case 3:
-      num1 = getRandomInt(10, 99);
+      // Hard: Teen numbers × single/double digit
+      num1 = getRandomInt(11, 19);
       num2 = getRandomInt(2, 12);
       break;
     case 4:
     default:
-      // Cap at 2-digit x 2-digit (max difficulty)
-      num1 = getRandomInt(10, 99);
-      num2 = getRandomInt(10, 99);
+      // Expert: 2-digit × 2-digit (capped, gradual)
+      num1 = getRandomInt(11, 25);
+      num2 = getRandomInt(11, 25);
       break;
   }
 
@@ -151,7 +162,9 @@ export const generateQuestion = (
     // Choose a random operation from the previous four
     const operations: OperationType[] = ['addition', 'subtraction', 'multiplication', 'percentage'];
     const randomOperation = operations[getRandomInt(0, operations.length - 1)];
-    const operationDifficulty = difficultyLevels[randomOperation] || 1;
+
+    // Reduce difficulty for mixed round - use max difficulty of 2 (easier problems)
+    const operationDifficulty = Math.min(difficultyLevels[randomOperation] || 1, 2);
 
     return generateQuestion(randomOperation, operationDifficulty);
   }
@@ -175,11 +188,21 @@ export const checkAnswer = (userAnswer: string, correctAnswer: number): boolean 
   return !isNaN(parsed) && parsed === correctAnswer;
 };
 
-export const getNextDifficulty = (currentDifficulty: number, isCorrect: boolean): number => {
+export const getNextDifficulty = (
+  currentDifficulty: number,
+  isCorrect: boolean,
+  consecutiveCorrect: number
+): number => {
   if (isCorrect) {
-    return Math.min(currentDifficulty + 1, 4); // Max difficulty is 4
+    // Increase difficulty after 3 consecutive correct answers
+    if (consecutiveCorrect >= 3) {
+      return Math.min(currentDifficulty + 1, 4); // Max difficulty is 4
+    }
+    return currentDifficulty; // Stay at same difficulty
+  } else {
+    // Decrease difficulty by one level on incorrect answer
+    return Math.max(currentDifficulty - 1, 1); // Min difficulty is 1
   }
-  return currentDifficulty;
 };
 
 export const calculateWeightedScore = (difficultyProfile: { [key: number]: number }): number => {

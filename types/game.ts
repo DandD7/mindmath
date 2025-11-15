@@ -39,6 +39,7 @@ export type GameState = {
   roundResults: RoundResult[];
   totalCorrectByDifficulty: { [key: number]: number };
   currentRoundCorrectAnswers: number; // Track correct answers for current round
+  consecutiveCorrect: number; // Track consecutive correct answers for difficulty progression
 };
 
 export const ROUNDS: RoundType[] = [

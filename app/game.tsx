@@ -38,6 +38,7 @@ export default function GameScreen() {
     roundResults: [],
     totalCorrectByDifficulty: {},
     currentRoundCorrectAnswers: 0,
+    consecutiveCorrect: 0,
   });
 
   const [userAnswer, setUserAnswer] = useState('');
@@ -68,6 +69,9 @@ export default function GameScreen() {
     if (gameState.currentRound < ROUNDS.length - 1) {
       // Show transition to next round
       setShowTransition(true);
+      // Clear input field when round ends
+      setUserAnswer('');
+
       setTimeout(() => {
         setShowTransition(false);
         const nextRound = gameState.currentRound + 1;
@@ -78,15 +82,18 @@ export default function GameScreen() {
           currentRound: nextRound,
           currentQuestion: generateQuestion(
             nextOperation,
-            nextOperation === 'mixed' ? 1 : gameState.currentDifficulty[nextOperation],
+            gameState.currentDifficulty[nextOperation],
             nextOperation === 'mixed' ? gameState.currentDifficulty : undefined
           ),
           timeRemaining: 60,
           roundStartTime: Date.now(),
           roundResults: updatedRoundResults,
           currentRoundCorrectAnswers: 0, // Reset for next round
+          consecutiveCorrect: 0, // Reset consecutive counter for new round
         });
         setIsGameActive(true);
+        // Clear input field again at start of new round
+        setUserAnswer('');
       }, 2500);
     } else {
       // Game finished - save final round result and navigate to results
@@ -160,7 +167,6 @@ export default function GameScreen() {
     if (!userAnswer.trim() || !isGameActive) return;
 
     const isCorrect = checkAnswer(userAnswer, gameState.currentQuestion.answer);
-    const currentOp = gameState.currentQuestion.operation;
     const currentDiff = gameState.currentQuestion.difficulty;
 
     if (isCorrect) {
@@ -171,8 +177,14 @@ export default function GameScreen() {
         withTiming(0, { duration: 150 })
       );
 
-      // Update difficulty and score
-      const newDifficulty = getNextDifficulty(currentDiff, true);
+      // Increment consecutive correct counter
+      const newConsecutiveCorrect = gameState.consecutiveCorrect + 1;
+
+      // Update difficulty based on consecutive correct answers (requires 3 for increase)
+      const newDifficulty = getNextDifficulty(currentDiff, true, newConsecutiveCorrect);
+
+      // Reset consecutive counter if difficulty increased
+      const resetConsecutive = newDifficulty > currentDiff ? 0 : newConsecutiveCorrect;
 
       // Update total correct by difficulty
       const updatedDifficultyProfile = { ...gameState.totalCorrectByDifficulty };
@@ -184,18 +196,20 @@ export default function GameScreen() {
         withTiming(1, { duration: 200 })
       );
 
+      // Update difficulty for the current round's operation type
+      const updatedDifficulties = { ...gameState.currentDifficulty };
+      updatedDifficulties[currentRound.operation] = newDifficulty;
+
       setGameState({
         ...gameState,
         score: gameState.score + 1,
-        currentRoundCorrectAnswers: gameState.currentRoundCorrectAnswers + 1, // Increment round counter
-        currentDifficulty: {
-          ...gameState.currentDifficulty,
-          [currentOp]: newDifficulty,
-        },
+        currentRoundCorrectAnswers: gameState.currentRoundCorrectAnswers + 1,
+        consecutiveCorrect: resetConsecutive,
+        currentDifficulty: updatedDifficulties,
         currentQuestion: generateQuestion(
           currentRound.operation,
-          currentRound.operation === 'mixed' ? newDifficulty : newDifficulty,
-          currentRound.operation === 'mixed' ? { ...gameState.currentDifficulty, [currentOp]: newDifficulty } : undefined
+          newDifficulty,
+          currentRound.operation === 'mixed' ? updatedDifficulties : undefined
         ),
         totalCorrectByDifficulty: updatedDifficultyProfile,
       });
@@ -210,18 +224,28 @@ export default function GameScreen() {
         withTiming(0, { duration: 50 })
       );
 
-      // Generate new question at same difficulty with fade animation
+      // Reset consecutive correct counter on wrong answer
+      // Decrease difficulty by one level
+      const newDifficulty = getNextDifficulty(currentDiff, false, 0);
+
+      // Generate new question with decreased difficulty and fade animation
       questionOpacity.value = withSequence(
         withTiming(0, { duration: 100 }),
         withTiming(1, { duration: 200 })
       );
 
+      // Update difficulty for the current round's operation type
+      const updatedDifficulties = { ...gameState.currentDifficulty };
+      updatedDifficulties[currentRound.operation] = newDifficulty;
+
       setGameState({
         ...gameState,
+        consecutiveCorrect: 0, // Reset on wrong answer
+        currentDifficulty: updatedDifficulties,
         currentQuestion: generateQuestion(
           currentRound.operation,
-          currentDiff,
-          currentRound.operation === 'mixed' ? gameState.currentDifficulty : undefined
+          newDifficulty,
+          currentRound.operation === 'mixed' ? updatedDifficulties : undefined
         ),
       });
     }
