@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { View, Text, TextInput, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Platform, Keyboard } from 'react-native';
 import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -37,11 +37,13 @@ export default function GameScreen() {
     },
     roundResults: [],
     totalCorrectByDifficulty: {},
+    currentRoundCorrectAnswers: 0,
   });
 
   const [userAnswer, setUserAnswer] = useState('');
   const [showTransition, setShowTransition] = useState(false);
   const [isGameActive, setIsGameActive] = useState(true);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   // Animation values
   const inputShake = useSharedValue(0);
@@ -50,36 +52,18 @@ export default function GameScreen() {
 
   const currentRound = ROUNDS[gameState.currentRound];
 
-  const saveGameResults = useCallback(async () => {
-    const totalWeightedScore = calculateWeightedScore(gameState.totalCorrectByDifficulty);
-
-    const session = {
-      id: Date.now().toString(),
-      date: Date.now(),
-      totalWeightedScore,
-      roundResults: gameState.roundResults,
-      difficultyProfile: gameState.totalCorrectByDifficulty,
-    };
-
-    await saveTestSession(session);
-    router.replace({
-      pathname: '/results',
-      params: { sessionId: session.id },
-    });
-  }, [gameState, router]);
-
   const handleRoundEnd = useCallback(() => {
     setIsGameActive(false);
 
-    // Calculate round result
+    // Save round result with actual correct answers from this round
     const roundResult: RoundResult = {
       operation: currentRound.operation,
-      correctAnswers: gameState.roundResults.filter(
-        (r) => r.operation === currentRound.operation
-      ).reduce((acc, r) => acc + r.correctAnswers, 0),
-      totalAnswers: 0,
+      correctAnswers: gameState.currentRoundCorrectAnswers,
+      totalAnswers: 0, // Not tracking total attempts
       difficultyLevels: {},
     };
+
+    const updatedRoundResults = [...gameState.roundResults, roundResult];
 
     if (gameState.currentRound < ROUNDS.length - 1) {
       // Show transition to next round
@@ -99,15 +83,35 @@ export default function GameScreen() {
           ),
           timeRemaining: 60,
           roundStartTime: Date.now(),
-          roundResults: [...gameState.roundResults, roundResult],
+          roundResults: updatedRoundResults,
+          currentRoundCorrectAnswers: 0, // Reset for next round
         });
         setIsGameActive(true);
       }, 2500);
     } else {
-      // Game finished - save and navigate to results
-      saveGameResults();
+      // Game finished - save final round result and navigate to results
+      const finalGameState = {
+        ...gameState,
+        roundResults: updatedRoundResults,
+      };
+
+      const totalWeightedScore = calculateWeightedScore(finalGameState.totalCorrectByDifficulty);
+      const session = {
+        id: Date.now().toString(),
+        date: Date.now(),
+        totalWeightedScore,
+        roundResults: updatedRoundResults,
+        difficultyProfile: finalGameState.totalCorrectByDifficulty,
+      };
+
+      saveTestSession(session).then(() => {
+        router.replace({
+          pathname: '/results',
+          params: { sessionId: session.id },
+        });
+      });
     }
-  }, [gameState, currentRound, saveGameResults]);
+  }, [gameState, currentRound, router]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -130,6 +134,27 @@ export default function GameScreen() {
       inputRef.current?.focus();
     }, 100);
   }, [gameState.currentQuestion]);
+
+  useEffect(() => {
+    // Track keyboard height
+    const keyboardWillShow = Keyboard.addListener(
+      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
+      (e) => {
+        setKeyboardHeight(e.endCoordinates.height);
+      }
+    );
+    const keyboardWillHide = Keyboard.addListener(
+      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
+      () => {
+        setKeyboardHeight(0);
+      }
+    );
+
+    return () => {
+      keyboardWillShow.remove();
+      keyboardWillHide.remove();
+    };
+  }, []);
 
   const handleSubmit = () => {
     if (!userAnswer.trim() || !isGameActive) return;
@@ -162,6 +187,7 @@ export default function GameScreen() {
       setGameState({
         ...gameState,
         score: gameState.score + 1,
+        currentRoundCorrectAnswers: gameState.currentRoundCorrectAnswers + 1, // Increment round counter
         currentDifficulty: {
           ...gameState.currentDifficulty,
           [currentOp]: newDifficulty,
@@ -231,56 +257,54 @@ export default function GameScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="dark" />
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.keyboardView}
-      >
-        <View style={styles.content}>
-          {/* Header */}
-          <View style={styles.header}>
-            <View style={styles.headerInfo}>
-              <Text style={styles.roundTitle}>Round {currentRound.id}: {currentRound.name}</Text>
-              <Text style={styles.score}>Score: {gameState.score}</Text>
-            </View>
-
-            {/* Timer Progress Bar */}
-            <View style={styles.timerContainer}>
-              <View style={[styles.timerBar, { width: `${progressPercentage}%` }]} />
-            </View>
-            <Text style={styles.timerText}>{gameState.timeRemaining}s</Text>
+      <View style={styles.content}>
+        {/* Header */}
+        <View style={styles.header}>
+          <View style={styles.headerInfo}>
+            <Text style={styles.roundTitle}>Round {currentRound.id}: {currentRound.name}</Text>
+            <Text style={styles.score}>Score: {gameState.score}</Text>
           </View>
 
-          {/* Question Area */}
-          <Animated.View style={[styles.questionCard, questionAnimatedStyle]}>
-            <Text style={styles.questionText}>{gameState.currentQuestion.question} = ?</Text>
+          {/* Timer Progress Bar */}
+          <View style={styles.timerContainer}>
+            <View style={[styles.timerBar, { width: `${progressPercentage}%` }]} />
+          </View>
+          <Text style={styles.timerText}>{gameState.timeRemaining}s</Text>
+        </View>
+
+        {/* Question Area */}
+        <Animated.View style={[styles.questionCard, questionAnimatedStyle]}>
+          <Text style={styles.questionText}>{gameState.currentQuestion.question} = ?</Text>
+        </Animated.View>
+
+        {/* Spacer to push input area down when keyboard is hidden */}
+        <View style={{ flex: 1 }} />
+
+        {/* Input Area - positioned above keyboard */}
+        <View style={[styles.inputContainer, { marginBottom: keyboardHeight > 0 ? keyboardHeight : Spacing.lg }]}>
+          <Animated.View style={[styles.inputWrapper, inputAnimatedStyle]}>
+            <TextInput
+              ref={inputRef}
+              style={styles.input}
+              value={userAnswer}
+              onChangeText={setUserAnswer}
+              keyboardType="numeric"
+              placeholder="Your answer"
+              placeholderTextColor={Colors.textLight}
+              onSubmitEditing={handleSubmit}
+              returnKeyType="done"
+              editable={isGameActive}
+            />
           </Animated.View>
 
-          {/* Input Area */}
-          <View style={styles.inputContainer}>
-            <Animated.View style={[styles.inputWrapper, inputAnimatedStyle]}>
-              <TextInput
-                ref={inputRef}
-                style={styles.input}
-                value={userAnswer}
-                onChangeText={setUserAnswer}
-                keyboardType="numeric"
-                placeholder="Your answer"
-                placeholderTextColor={Colors.textLight}
-                onSubmitEditing={handleSubmit}
-                returnKeyType="done"
-                editable={isGameActive}
-              />
-            </Animated.View>
-
-            <AnimatedButton
-              title="Submit"
-              onPress={handleSubmit}
-              disabled={!userAnswer.trim() || !isGameActive}
-              style={styles.submitButton}
-            />
-          </View>
+          <AnimatedButton
+            title="Submit"
+            onPress={handleSubmit}
+            disabled={!userAnswer.trim() || !isGameActive}
+            style={styles.submitButton}
+          />
         </View>
-      </KeyboardAvoidingView>
+      </View>
     </SafeAreaView>
   );
 }
@@ -289,9 +313,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,
-  },
-  keyboardView: {
-    flex: 1,
   },
   content: {
     flex: 1,

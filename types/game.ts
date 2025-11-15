@@ -38,6 +38,7 @@ export type GameState = {
   currentDifficulty: { [key in OperationType]: number };
   roundResults: RoundResult[];
   totalCorrectByDifficulty: { [key: number]: number };
+  currentRoundCorrectAnswers: number; // Track correct answers for current round
 };
 
 export const ROUNDS: RoundType[] = [
