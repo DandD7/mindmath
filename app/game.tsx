@@ -21,6 +21,7 @@ import { saveTestSession } from '@/utils/storage';
 export default function GameScreen() {
   const router = useRouter();
   const inputRef = useRef<TextInput>(null);
+  const handleRoundEndRef = useRef<(() => void) | null>(null);
 
   const [gameState, setGameState] = useState<GameState>({
     currentRound: 0,
@@ -44,6 +45,7 @@ export default function GameScreen() {
   const [userAnswer, setUserAnswer] = useState('');
   const [showTransition, setShowTransition] = useState(false);
   const [isGameActive, setIsGameActive] = useState(true);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   // Animation values
@@ -54,6 +56,10 @@ export default function GameScreen() {
   const currentRound = ROUNDS[gameState.currentRound];
 
   const handleRoundEnd = useCallback(() => {
+    // Prevent multiple calls during transition
+    if (isTransitioning) return;
+
+    setIsTransitioning(true);
     setIsGameActive(false);
 
     // Save round result with actual correct answers from this round
@@ -73,18 +79,22 @@ export default function GameScreen() {
       setUserAnswer('');
 
       setTimeout(() => {
-        setShowTransition(false);
         const nextRound = gameState.currentRound + 1;
         const nextOperation = ROUNDS[nextRound].operation;
 
+        // Generate question ONCE before updating state
+        const newQuestion = generateQuestion(
+          nextOperation,
+          gameState.currentDifficulty[nextOperation],
+          nextOperation === 'mixed' ? gameState.currentDifficulty : undefined
+        );
+
+        // Update all state in a single batch
+        setShowTransition(false);
         setGameState({
           ...gameState,
           currentRound: nextRound,
-          currentQuestion: generateQuestion(
-            nextOperation,
-            gameState.currentDifficulty[nextOperation],
-            nextOperation === 'mixed' ? gameState.currentDifficulty : undefined
-          ),
+          currentQuestion: newQuestion,
           timeRemaining: 60,
           roundStartTime: Date.now(),
           roundResults: updatedRoundResults,
@@ -92,6 +102,7 @@ export default function GameScreen() {
           consecutiveCorrect: 0, // Reset consecutive counter for new round
         });
         setIsGameActive(true);
+        setIsTransitioning(false);
         // Clear input field again at start of new round
         setUserAnswer('');
       }, 2500);
@@ -118,14 +129,20 @@ export default function GameScreen() {
         });
       });
     }
-  }, [gameState, currentRound, router]);
+  }, [gameState, currentRound, router, isTransitioning]);
 
+  // Update the ref whenever handleRoundEnd changes
+  useEffect(() => {
+    handleRoundEndRef.current = handleRoundEnd;
+  }, [handleRoundEnd]);
+
+  // Timer effect - stable, doesn't recreate on every render
   useEffect(() => {
     const timer = setInterval(() => {
       setGameState((prev) => {
         if (prev.timeRemaining <= 1) {
-          // Round ended
-          handleRoundEnd();
+          // Round ended - call via ref to avoid dependency issues
+          handleRoundEndRef.current?.();
           return prev;
         }
         return { ...prev, timeRemaining: prev.timeRemaining - 1 };
@@ -133,7 +150,7 @@ export default function GameScreen() {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [gameState.currentRound, handleRoundEnd]);
+  }, []); // Empty dependency array - timer is stable
 
   useEffect(() => {
     // Auto-focus input when component mounts or round changes
@@ -168,7 +185,7 @@ export default function GameScreen() {
   }, []);
 
   const handleSubmit = () => {
-    if (!userAnswer.trim() || !isGameActive) return;
+    if (!userAnswer.trim() || !isGameActive || isTransitioning) return;
 
     const isCorrect = checkAnswer(userAnswer, gameState.currentQuestion.answer);
     const currentDiff = gameState.currentQuestion.difficulty;
@@ -326,14 +343,14 @@ export default function GameScreen() {
               placeholderTextColor={Colors.textLight}
               onSubmitEditing={handleSubmit}
               returnKeyType="done"
-              editable={isGameActive}
+              editable={isGameActive && !isTransitioning}
             />
           </Animated.View>
 
           <AnimatedButton
             title="Submit"
             onPress={handleSubmit}
-            disabled={!userAnswer.trim() || !isGameActive}
+            disabled={!userAnswer.trim() || !isGameActive || isTransitioning}
             style={styles.submitButton}
           />
         </View>
