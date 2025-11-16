@@ -136,20 +136,15 @@ export default function GameScreen() {
   }, [gameState.currentRound, handleRoundEnd]);
 
   useEffect(() => {
-    // Auto-focus input when component mounts
-    setTimeout(() => {
-      inputRef.current?.focus();
-    }, 100);
-  }, []);
-
-  useEffect(() => {
-    // Auto-focus input when round changes or new question is presented
+    // Auto-focus input when component mounts or round changes
+    // Note: We don't watch currentQuestion to avoid flickering when questions change
+    // Focus after answer submission is handled in handleSubmit instead
     if (isGameActive) {
       setTimeout(() => {
         inputRef.current?.focus();
       }, 100);
     }
-  }, [gameState.currentRound, gameState.currentQuestion, isGameActive]);
+  }, [gameState.currentRound, isGameActive]);
 
   useEffect(() => {
     // Track keyboard height
