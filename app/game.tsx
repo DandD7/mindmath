@@ -136,11 +136,20 @@ export default function GameScreen() {
   }, [gameState.currentRound, handleRoundEnd]);
 
   useEffect(() => {
-    // Focus input when component mounts or round changes
+    // Auto-focus input when component mounts
     setTimeout(() => {
       inputRef.current?.focus();
     }, 100);
-  }, [gameState.currentRound]);
+  }, []);
+
+  useEffect(() => {
+    // Auto-focus input when round changes or new question is presented
+    if (isGameActive) {
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 100);
+    }
+  }, [gameState.currentRound, gameState.currentQuestion, isGameActive]);
 
   useEffect(() => {
     // Track keyboard height
@@ -251,6 +260,11 @@ export default function GameScreen() {
     }
 
     setUserAnswer('');
+
+    // Refocus input after clearing for next question
+    setTimeout(() => {
+      inputRef.current?.focus();
+    }, 350); // Wait for animation to complete
   };
 
   const inputAnimatedStyle = useAnimatedStyle(() => ({
