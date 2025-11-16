@@ -136,11 +136,11 @@ export default function GameScreen() {
   }, [gameState.currentRound, handleRoundEnd]);
 
   useEffect(() => {
-    // Focus input when question changes
+    // Focus input when component mounts or round changes
     setTimeout(() => {
       inputRef.current?.focus();
     }, 100);
-  }, [gameState.currentQuestion]);
+  }, [gameState.currentRound]);
 
   useEffect(() => {
     // Track keyboard height
