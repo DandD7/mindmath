@@ -1,0 +1,26 @@
+APP ICON SETUP INSTRUCTIONS
+============================
+
+1. Save your icon (the M with brain logo) to:
+   /workspace/assets/images/icon.png
+   
+   Requirements:
+   - Format: PNG
+   - Size: 1024x1024 pixels (minimum)
+   - Square aspect ratio
+   - Transparent background optional but recommended
+
+2. Once saved, run this command to set up all required icons:
+   
+   npm run setup-icons
+   
+   OR manually copy:
+   cp assets/images/icon.png assets/images/adaptive-icon.png
+   cp assets/images/icon.png assets/images/favicon.png
+   cp assets/images/icon.png assets/images/splash-icon.png
+
+3. The app.json is already configured to use these paths.
+
+4. For production builds, Expo will automatically generate all required sizes.
+
+ALTERNATIVE: If you have the file elsewhere, provide the path or URL.

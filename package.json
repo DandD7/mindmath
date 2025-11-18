@@ -3,7 +3,8 @@
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "setup-icons": "bash ./scripts/setup-icons.sh"
   },
   "dependencies": {
     "@expo/cli": "^54.0.10",
