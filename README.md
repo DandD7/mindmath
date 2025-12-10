@@ -1,8 +1,20 @@
-# Welcome to your Fastshot app
+# MindMath
 
-This is an [Expo](https://expo.dev) project created with [Fastshot](https://fastshot.ai), an AI-powered mobile development platform that helps you build React Native apps faster.
+MindMath is a lightweight, adaptive mental-math trainer built with React Native and Expo.
+It provides five focused one-minute rounds—addition, subtraction, multiplication, percentages, and mixed—with difficulty that adjusts based on user performance. A scoring system and historical tracking help users monitor progress over time.
 
-## Running locally:
+## Features
+
+• Five timed one-minute rounds
+• Dynamic difficulty adjustment (up and down)
+• Mixed final round
+• Progressive difficulty steps (two correct answers to level up)
+• Simplified multiplication and percentage rules
+• Automatic rounding of non-integer results
+• Performance summary and history tracking
+• Clean UI designed for fast input
+
+## Running the app locally
 
 1. Install dependencies
 
@@ -10,50 +22,32 @@ This is an [Expo](https://expo.dev) project created with [Fastshot](https://fast
    npm install
    ```
 
-2. Start the app
+2. Start the development server
 
    ```bash
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+Run the app on:
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+• iOS Simulator
+• Android Emulator
+• Development Build
+• Expo Go (limited functionality)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Project Structure
 
-## Need help?
+The project uses Expo’s file-based routing.
+All screens and components are located inside the **app** directory.
 
-Have questions or want to iterate on your app? Head back to [Fastshot](https://fastshot.ai) to continue chatting with our AI agents. They can help you:
+## Support
 
-- Add new features and screens
-- Debug issues and fix bugs
-- Refactor and improve your code
-- Integrate APIs and third-party libraries
+For assistance or inquiries related to MindMath, contact:
+**[antonioverolino@gmail.com](mailto:antonioverolino@gmail.com)**
 
-## Learn more
+## License
 
-To learn more about developing your project, check out these resources:
+This project is distributed under your chosen license. If unspecified, all rights reserved.
 
-### Fastshot Resources
-- [Fastshot Platform](https://fastshot.ai): Build and iterate on your mobile apps with AI assistance
-- [Fastshot Documentation](https://fastshot.ai/docs): Learn how to make the most of AI-powered development
-- [Fastshot Community](https://fastshot.ai/community): Connect with other developers building with Fastshot
+---
 
-### Expo Resources
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers building the future of mobile development with AI:
-
-- **[Fastshot Discord](https://fastshot.ai/discord)**: Get help, share your projects, and connect with other Fastshot users
-- **[Fastshot on GitHub](https://github.com/fastshot-ai)**: Contribute to our open source tools and integrations
-
-You can also join the broader Expo community:
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
