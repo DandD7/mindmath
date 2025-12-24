@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { View, Text, TextInput, StyleSheet, Platform, Keyboard } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -11,7 +11,7 @@ import Animated, {
   FadeIn,
 } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
-import AnimatedButton from '@/components/AnimatedButton';
+import NumericKeypad from '@/components/NumericKeypad';
 import { Colors, Spacing, FontSizes, BorderRadius, Shadows } from '@/constants/theme';
 import { ROUNDS } from '@/types/game';
 import type { GameState, RoundResult } from '@/types/game';
@@ -20,7 +20,6 @@ import { saveTestSession } from '@/utils/storage';
 
 export default function GameScreen() {
   const router = useRouter();
-  const inputRef = useRef<TextInput>(null);
   const handleRoundEndRef = useRef<(() => void) | null>(null);
 
   const [gameState, setGameState] = useState<GameState>({
@@ -46,7 +45,6 @@ export default function GameScreen() {
   const [showTransition, setShowTransition] = useState(false);
   const [isGameActive, setIsGameActive] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   // Animation values
   const inputShake = useSharedValue(0);
@@ -152,37 +150,6 @@ export default function GameScreen() {
     return () => clearInterval(timer);
   }, []); // Empty dependency array - timer is stable
 
-  useEffect(() => {
-    // Auto-focus input when component mounts or round changes
-    // Note: We don't watch currentQuestion to avoid flickering when questions change
-    // Focus after answer submission is handled in handleSubmit instead
-    if (isGameActive) {
-      setTimeout(() => {
-        inputRef.current?.focus();
-      }, 100);
-    }
-  }, [gameState.currentRound, isGameActive]);
-
-  useEffect(() => {
-    // Track keyboard height
-    const keyboardWillShow = Keyboard.addListener(
-      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
-      (e) => {
-        setKeyboardHeight(e.endCoordinates.height);
-      }
-    );
-    const keyboardWillHide = Keyboard.addListener(
-      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
-      () => {
-        setKeyboardHeight(0);
-      }
-    );
-
-    return () => {
-      keyboardWillShow.remove();
-      keyboardWillHide.remove();
-    };
-  }, []);
 
   const handleSubmit = () => {
     if (!userAnswer.trim() || !isGameActive || isTransitioning) return;
@@ -272,11 +239,23 @@ export default function GameScreen() {
     }
 
     setUserAnswer('');
+  };
 
-    // Refocus input after clearing for next question
-    setTimeout(() => {
-      inputRef.current?.focus();
-    }, 350); // Wait for animation to complete
+  const handleNumberPress = (number: string) => {
+    if (!isGameActive || isTransitioning) return;
+    // Prevent leading zeros (but allow single zero)
+    if (userAnswer === '0' || (userAnswer === '' && number === '0')) {
+      setUserAnswer('0');
+      return;
+    }
+    // Limit answer length to prevent overflow
+    if (userAnswer.length >= 10) return;
+    setUserAnswer(prev => prev + number);
+  };
+
+  const handleBackspace = () => {
+    if (!isGameActive || isTransitioning) return;
+    setUserAnswer(prev => prev.slice(0, -1));
   };
 
   const inputAnimatedStyle = useAnimatedStyle(() => ({
@@ -327,34 +306,26 @@ export default function GameScreen() {
           <Text style={styles.questionText}>{gameState.currentQuestion.question} = ?</Text>
         </Animated.View>
 
-        {/* Spacer to push input area down when keyboard is hidden */}
+        {/* Spacer to push input area down */}
         <View style={{ flex: 1 }} />
 
-        {/* Input Area - positioned above keyboard */}
-        <View style={[styles.inputContainer, { marginBottom: keyboardHeight > 0 ? keyboardHeight : Spacing.lg }]}>
-          <Animated.View style={[styles.inputWrapper, inputAnimatedStyle]}>
-            <TextInput
-              ref={inputRef}
-              style={styles.input}
-              value={userAnswer}
-              onChangeText={setUserAnswer}
-              keyboardType="numeric"
-              placeholder="Your answer"
-              placeholderTextColor={Colors.textLight}
-              onSubmitEditing={handleSubmit}
-              returnKeyType="done"
-              editable={isGameActive && !isTransitioning}
-            />
+        {/* Answer Display - positioned above keypad */}
+        <View style={styles.answerContainer}>
+          <Animated.View style={[styles.answerDisplay, inputAnimatedStyle]}>
+            <Text style={styles.answerText}>
+              {userAnswer || ' '}
+            </Text>
           </Animated.View>
-
-          <AnimatedButton
-            title="Submit"
-            onPress={handleSubmit}
-            disabled={!userAnswer.trim() || !isGameActive || isTransitioning}
-            style={styles.submitButton}
-          />
         </View>
       </View>
+
+      {/* Custom Numeric Keypad - fixed at bottom */}
+      <NumericKeypad
+        onNumberPress={handleNumberPress}
+        onBackspace={handleBackspace}
+        onSubmit={handleSubmit}
+        submitDisabled={!userAnswer.trim() || !isGameActive || isTransitioning}
+      />
     </SafeAreaView>
   );
 }
@@ -419,23 +390,24 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: Colors.text,
   },
-  inputContainer: {
-    gap: Spacing.md,
+  answerContainer: {
+    paddingBottom: Spacing.lg,
   },
-  inputWrapper: {
+  answerDisplay: {
     backgroundColor: Colors.card,
     borderRadius: BorderRadius.md,
+    paddingVertical: Spacing.lg,
+    paddingHorizontal: Spacing.xl,
+    minHeight: 80,
+    alignItems: 'center',
+    justifyContent: 'center',
     ...Shadows.small,
   },
-  input: {
-    fontSize: FontSizes.xl,
+  answerText: {
+    fontSize: FontSizes.xxxl,
+    fontWeight: '600',
     color: Colors.text,
-    paddingVertical: Spacing.md,
-    paddingHorizontal: Spacing.lg,
-    textAlign: 'center',
-  },
-  submitButton: {
-    width: '100%',
+    minHeight: FontSizes.xxxl,
   },
   transitionContainer: {
     flex: 1,
