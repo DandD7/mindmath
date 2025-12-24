@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
-import { Colors, Spacing, BorderRadius, FontSizes, Shadows } from '@/constants/theme';
+import { Colors, Spacing, BorderRadius, FontSizes, Shadows } from '../constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 
 type NumericKeypadProps = {

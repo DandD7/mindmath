@@ -4,11 +4,11 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { FadeInDown } from 'react-native-reanimated';
-import AnimatedButton from '@/components/AnimatedButton';
-import { Colors, Spacing, FontSizes, BorderRadius, Shadows } from '@/constants/theme';
-import { getTestSessionById } from '@/utils/storage';
-import type { TestSession } from '@/types/game';
-import { ROUNDS } from '@/types/game';
+import AnimatedButton from '../components/AnimatedButton';
+import { Colors, Spacing, FontSizes, BorderRadius, Shadows } from '../constants/theme';
+import { getTestSessionById } from '../utils/storage';
+import type { TestSession } from '../types/game';
+import { ROUNDS } from '../types/game';
 
 export default function ResultsScreen() {
   const router = useRouter();

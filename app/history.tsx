@@ -5,9 +5,9 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { FadeInRight, FadeOutLeft } from 'react-native-reanimated';
 import { Swipeable } from 'react-native-gesture-handler';
-import { Colors, Spacing, FontSizes, BorderRadius, Shadows } from '@/constants/theme';
-import { getTestHistory, deleteTestSession } from '@/utils/storage';
-import type { TestSession } from '@/types/game';
+import { Colors, Spacing, FontSizes, BorderRadius, Shadows } from '../constants/theme';
+import { getTestHistory, deleteTestSession } from '../utils/storage';
+import type { TestSession } from '../types/game';
 import { useFocusEffect } from '@react-navigation/native';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);

@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { TestSession } from '@/types/game';
+import { TestSession } from '../types/game';
 
 const HISTORY_KEY = '@mindmath_history';
 

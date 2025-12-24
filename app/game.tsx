@@ -11,12 +11,12 @@ import Animated, {
   FadeIn,
 } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
-import NumericKeypad from '@/components/NumericKeypad';
-import { Colors, Spacing, FontSizes, BorderRadius, Shadows } from '@/constants/theme';
-import { ROUNDS } from '@/types/game';
-import type { GameState, RoundResult } from '@/types/game';
-import { generateQuestion, checkAnswer, getNextDifficulty, calculateWeightedScore } from '@/utils/gameLogic';
-import { saveTestSession } from '@/utils/storage';
+import NumericKeypad from '../components/NumericKeypad';
+import { Colors, Spacing, FontSizes, BorderRadius, Shadows } from '../constants/theme';
+import { ROUNDS } from '../types/game';
+import type { GameState, RoundResult } from '../types/game';
+import { generateQuestion, checkAnswer, getNextDifficulty, calculateWeightedScore } from '../utils/gameLogic';
+import { saveTestSession } from '../utils/storage';
 
 export default function GameScreen() {
   const router = useRouter();

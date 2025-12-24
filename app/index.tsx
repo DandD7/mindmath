@@ -3,8 +3,8 @@ import { View, Text, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import AnimatedButton from '@/components/AnimatedButton';
-import { Colors, Spacing, FontSizes } from '@/constants/theme';
+import AnimatedButton from '../components/AnimatedButton';
+import { Colors, Spacing, FontSizes } from '../constants/theme';
 
 export default function HomeScreen() {
   const router = useRouter();
