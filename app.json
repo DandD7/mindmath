@@ -51,10 +51,7 @@
       "appVersionSource": "remote"
     },
     "extra": {
-      "router": {},
-      "eas": {
-        "projectId": "b4497f00-83fb-4e53-915f-f46174321b3d"
-      }
+      "router": {}
     },
     "owner": "dandd7"
   }
