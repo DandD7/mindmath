@@ -47,11 +47,11 @@
       "typedRoutes": true,
       "baseUrl": ""
     },
-    "cli": {
-      "appVersionSource": "remote"
-    },
     "extra": {
-      "router": {}
+      "router": {},
+      "eas": {
+        "projectId": "b4497f00-83fb-4e53-915f-f46174321b3d"
+      }
     },
     "owner": "dandd7"
   }
