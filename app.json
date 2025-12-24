@@ -11,8 +11,11 @@
     "ios": {
       "supportsTablet": true,
       "icon": "./assets/images/ios-icon.png",
-      "bundleIdentifier": "com.mindmath.app",
-      "buildNumber": "2"
+      "bundleIdentifier": "com.mindmath",
+      "buildNumber": "2",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -20,7 +23,7 @@
         "backgroundColor": "#0D1B2A"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.mindmath.app",
+      "package": "com.mindmath",
       "versionCode": 2
     },
     "web": {
@@ -46,6 +49,13 @@
     },
     "cli": {
       "appVersionSource": "remote"
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "b4497f00-83fb-4e53-915f-f46174321b3d"
+      }
+    },
+    "owner": "dandd7"
   }
 }

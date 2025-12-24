@@ -44,7 +44,7 @@ eas build --platform ios --profile production
 **What this does:**
 - Creates a production-optimized iOS build
 - Generates an `.ipa` file ready for App Store Connect
-- Uses the bundle identifier: `com.mindmath.app`
+- Uses the bundle identifier: `com.mindmath`
 - Build number: 2
 - Version: 1.1.0
 

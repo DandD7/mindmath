@@ -110,12 +110,12 @@
 ## 📱 Platform Support
 
 - **iOS:** 13.0+
-  - Bundle ID: `com.mindmath.app`
+  - Bundle ID: `com.mindmath`
   - Build Number: 2
   - Universal (iPhone & iPad)
 
 - **Android:** API 21+
-  - Package: `com.mindmath.app`
+  - Package: `com.mindmath`
   - Version Code: 2
   - Edge-to-edge enabled
 
