@@ -123,7 +123,7 @@ export default function NumericKeypad({
             value="⌫"
             onPress={onBackspace}
             variant="action"
-            icon={<Ionicons name="backspace-outline" size={28} color={Colors.text} />}
+            icon={<Ionicons name="backspace-outline" size={22} color={Colors.text} />}
           />
           <KeypadButton value="0" onPress={() => handleNumberPress('0')} />
           <KeypadButton
@@ -141,26 +141,26 @@ export default function NumericKeypad({
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.card,
-    borderTopLeftRadius: BorderRadius.xl,
-    borderTopRightRadius: BorderRadius.xl,
-    paddingTop: Spacing.lg,
-    paddingBottom: Spacing.md,
-    paddingHorizontal: Spacing.lg,
+    borderTopLeftRadius: BorderRadius.lg,
+    borderTopRightRadius: BorderRadius.lg,
+    paddingTop: Spacing.md,
+    paddingBottom: Spacing.sm,
+    paddingHorizontal: Spacing.md,
     ...Shadows.large,
   },
   keypadGrid: {
-    gap: Spacing.md,
+    gap: Spacing.sm,
   },
   row: {
     flexDirection: 'row',
-    gap: Spacing.md,
+    gap: Spacing.sm,
     justifyContent: 'space-between',
   },
   key: {
     flex: 1,
-    aspectRatio: 1.5,
+    height: 50,
     backgroundColor: Colors.background,
-    borderRadius: BorderRadius.md,
+    borderRadius: BorderRadius.sm,
     alignItems: 'center',
     justifyContent: 'center',
     ...Shadows.small,
@@ -178,13 +178,13 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   keyText: {
-    fontSize: FontSizes.xxl,
+    fontSize: FontSizes.xl,
     fontWeight: '600',
     color: Colors.text,
   },
   keyTextSubmit: {
     color: '#FFFFFF',
-    fontSize: FontSizes.lg,
+    fontSize: FontSizes.md,
   },
   keyTextDisabled: {
     color: Colors.textLight,
