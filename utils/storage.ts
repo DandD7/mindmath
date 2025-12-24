@@ -9,7 +9,9 @@ export const saveTestSession = async (session: TestSession): Promise<void> => {
     history.unshift(session); // Add to beginning
     await AsyncStorage.setItem(HISTORY_KEY, JSON.stringify(history));
   } catch (error) {
-    console.error('Error saving test session:', error);
+    if (__DEV__) {
+      console.error('Error saving test session:', error);
+    }
     throw error;
   }
 };
@@ -22,7 +24,9 @@ export const getTestHistory = async (): Promise<TestSession[]> => {
     }
     return JSON.parse(historyJson);
   } catch (error) {
-    console.error('Error getting test history:', error);
+    if (__DEV__) {
+      console.error('Error getting test history:', error);
+    }
     return [];
   }
 };
@@ -33,7 +37,9 @@ export const deleteTestSession = async (sessionId: string): Promise<void> => {
     const filteredHistory = history.filter(session => session.id !== sessionId);
     await AsyncStorage.setItem(HISTORY_KEY, JSON.stringify(filteredHistory));
   } catch (error) {
-    console.error('Error deleting test session:', error);
+    if (__DEV__) {
+      console.error('Error deleting test session:', error);
+    }
     throw error;
   }
 };
@@ -43,7 +49,9 @@ export const getTestSessionById = async (sessionId: string): Promise<TestSession
     const history = await getTestHistory();
     return history.find(session => session.id === sessionId) || null;
   } catch (error) {
-    console.error('Error getting test session by id:', error);
+    if (__DEV__) {
+      console.error('Error getting test session by id:', error);
+    }
     return null;
   }
 };
