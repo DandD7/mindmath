@@ -4,23 +4,112 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import Animated, { FadeInDown } from 'react-native-reanimated';
+import Animated, {
+  FadeInDown,
+  FadeInUp,
+  SlideInRight,
+  useSharedValue,
+  useAnimatedStyle,
+  withRepeat,
+  withTiming,
+  withSequence,
+  Easing,
+} from 'react-native-reanimated';
 import AnimatedButton from '../components/AnimatedButton';
+import GlassCard from '../components/GlassCard';
 import { Colors, Spacing, FontSizes, BorderRadius, Shadows, Fonts, LetterSpacing } from '../constants/theme';
-import { getTestSessionById } from '../utils/storage';
+import { getTestSessionById, getTestHistory } from '../utils/storage';
 import type { TestSession } from '../types/game';
 import { ROUNDS } from '../types/game';
+
+function NewBestBadge() {
+  const glowPulse = useSharedValue(0.5);
+
+  useEffect(() => {
+    glowPulse.value = withRepeat(
+      withSequence(
+        withTiming(1, { duration: 1200, easing: Easing.inOut(Easing.ease) }),
+        withTiming(0.5, { duration: 1200, easing: Easing.inOut(Easing.ease) })
+      ),
+      -1,
+      false
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const animatedGlow = useAnimatedStyle(() => ({
+    shadowOpacity: glowPulse.value,
+    opacity: 0.7 + glowPulse.value * 0.3,
+  }));
+
+  return (
+    <Animated.View style={[styles.newBestBadge, animatedGlow]}>
+      <LinearGradient
+        colors={['#00F5FF', '#8B5CF6', '#00F5A0']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.newBestGradient}
+      >
+        <Text style={styles.newBestText}>NEW BEST</Text>
+      </LinearGradient>
+    </Animated.View>
+  );
+}
+
+function StatCard({
+  label,
+  value,
+  subtitle,
+  index,
+  glowColor = Colors.primary,
+}: {
+  label: string;
+  value: string | number;
+  subtitle?: string;
+  index: number;
+  glowColor?: string;
+}) {
+  return (
+    <Animated.View
+      entering={SlideInRight.duration(500).delay(300 + index * 120).springify().damping(15)}
+    >
+      <GlassCard glowColor={glowColor} intensity="medium" style={styles.statCard}>
+        <Text style={styles.statLabel}>{label}</Text>
+        <Text style={[styles.statValue, { color: glowColor }]}>{value}</Text>
+        {subtitle && <Text style={styles.statSubtitle}>{subtitle}</Text>}
+      </GlassCard>
+    </Animated.View>
+  );
+}
 
 export default function ResultsScreen() {
   const router = useRouter();
   const params = useLocalSearchParams<{ sessionId: string }>();
   const [session, setSession] = useState<TestSession | null>(null);
+  const [isNewBest, setIsNewBest] = useState(false);
+  const [previousBest, setPreviousBest] = useState(0);
 
   useEffect(() => {
     const loadSession = async () => {
       if (params.sessionId) {
         const loadedSession = await getTestSessionById(params.sessionId);
         setSession(loadedSession);
+
+        // Check if this is a new best score
+        if (loadedSession) {
+          const history = await getTestHistory();
+          const otherSessions = history.filter((s) => s.id !== params.sessionId);
+          if (otherSessions.length > 0) {
+            const bestPrevious = Math.max(...otherSessions.map((s) => s.totalWeightedScore));
+            setPreviousBest(bestPrevious);
+            if (loadedSession.totalWeightedScore > bestPrevious) {
+              setIsNewBest(true);
+            }
+          } else {
+            // First ever session is always a "new best"
+            setIsNewBest(true);
+          }
+        }
       }
     };
     loadSession();
@@ -36,6 +125,11 @@ export default function ResultsScreen() {
     );
   }
 
+  const totalCorrect = session.roundResults.reduce((sum, r) => sum + r.correctAnswers, 0);
+  const maxDifficultyReached = Math.max(
+    ...Object.keys(session.difficultyProfile).map(Number),
+    1
+  );
   const maxDifficultyCount = Math.max(
     ...Object.values(session.difficultyProfile).map((count) => count as number),
     1
@@ -45,19 +139,71 @@ export default function ResultsScreen() {
     <View style={styles.container}>
       <StatusBar style="light" />
       <SafeAreaView style={styles.safeArea}>
-        <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
-          <Animated.View entering={FadeInDown.duration(400).delay(100)} style={styles.card}>
-            <Text style={styles.title}>Test Complete!</Text>
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+        >
+          {/* Header */}
+          <Animated.View
+            entering={FadeInDown.duration(600).delay(100)}
+            style={styles.headerSection}
+          >
+            <Text style={styles.title}>SESSION COMPLETE</Text>
+            {isNewBest && <NewBestBadge />}
+          </Animated.View>
 
-            {/* Total Score */}
-            <View style={styles.scoreContainer}>
-              <Text style={styles.scoreLabel}>Total Weighted Score</Text>
-              <Text style={styles.scoreValue}>{session.totalWeightedScore}</Text>
-            </View>
+          {/* Main Score Card */}
+          <Animated.View entering={FadeInUp.duration(700).delay(200).springify().damping(12)}>
+            <GlassCard
+              glowColor={isNewBest ? '#00F5A0' : Colors.primary}
+              intensity={isNewBest ? 'high' : 'medium'}
+              style={styles.mainScoreCard}
+            >
+              <Text style={styles.scoreLabel}>WEIGHTED SCORE</Text>
+              <Text
+                style={[
+                  styles.scoreValue,
+                  isNewBest && styles.scoreValueBest,
+                ]}
+              >
+                {session.totalWeightedScore}
+              </Text>
+              {isNewBest && previousBest > 0 && (
+                <Text style={styles.previousBest}>
+                  Previous best: {previousBest}
+                </Text>
+              )}
+            </GlassCard>
+          </Animated.View>
 
-            {/* Round Breakdown */}
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Round Breakdown</Text>
+          {/* Stats Grid */}
+          <View style={styles.statsGrid}>
+            <StatCard
+              label="TOTAL CORRECT"
+              value={totalCorrect}
+              index={0}
+              glowColor={Colors.correct}
+            />
+            <StatCard
+              label="MAX DIFFICULTY"
+              value={`Level ${maxDifficultyReached}`}
+              index={1}
+              glowColor={Colors.accent}
+            />
+            <StatCard
+              label="ROUNDS PLAYED"
+              value={session.roundResults.length}
+              subtitle={`of ${ROUNDS.length}`}
+              index={2}
+              glowColor={Colors.primary}
+            />
+          </View>
+
+          {/* Round Breakdown */}
+          <Animated.View entering={FadeInDown.duration(500).delay(700)}>
+            <GlassCard style={styles.breakdownCard}>
+              <Text style={styles.sectionTitle}>ROUND BREAKDOWN</Text>
               <View style={styles.roundsList}>
                 {ROUNDS.map((round, index) => {
                   const roundResult = session.roundResults.find(
@@ -66,40 +212,54 @@ export default function ResultsScreen() {
                   return (
                     <Animated.View
                       key={round.id}
-                      entering={FadeInDown.duration(400).delay(200 + index * 100)}
+                      entering={SlideInRight.duration(400).delay(800 + index * 80)}
                       style={styles.roundItem}
                     >
-                      <Text style={styles.roundName}>{round.name}</Text>
+                      <View style={styles.roundLeft}>
+                        <View style={styles.roundDot} />
+                        <Text style={styles.roundName}>{round.name}</Text>
+                      </View>
                       <Text style={styles.roundScore}>
-                        {roundResult?.correctAnswers || 0} correct
+                        {roundResult?.correctAnswers || 0}
                       </Text>
                     </Animated.View>
                   );
                 })}
               </View>
-            </View>
+            </GlassCard>
+          </Animated.View>
 
-            {/* Difficulty Profile */}
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Difficulty Profile</Text>
+          {/* Difficulty Profile */}
+          <Animated.View entering={FadeInDown.duration(500).delay(900)}>
+            <GlassCard style={styles.breakdownCard}>
+              <Text style={styles.sectionTitle}>DIFFICULTY PROFILE</Text>
               <View style={styles.chartContainer}>
                 {[1, 2, 3, 4].map((level, index) => {
-                  const count = session.difficultyProfile[level] || 0;
+                  const count = (session.difficultyProfile[level] as number) || 0;
                   const percentage = (count / maxDifficultyCount) * 100;
 
                   return (
                     <Animated.View
                       key={level}
-                      entering={FadeInDown.duration(400).delay(400 + index * 100)}
+                      entering={SlideInRight.duration(400).delay(1000 + index * 100)}
                       style={styles.chartRow}
                     >
                       <Text style={styles.chartLabel}>Lv.{level}</Text>
                       <View style={styles.barContainer}>
                         <LinearGradient
-                          colors={['#00F5FF', '#8B5CF6']}
+                          colors={
+                            level === 4
+                              ? ['#8B5CF6', '#00F5FF']
+                              : level === 3
+                              ? ['#00F5FF', '#00F5A0']
+                              : ['#00F5FF', '#00D4FF']
+                          }
                           start={{ x: 0, y: 0 }}
                           end={{ x: 1, y: 0 }}
-                          style={[styles.bar, { width: `${Math.max(percentage, 2)}%` }]}
+                          style={[
+                            styles.bar,
+                            { width: `${Math.max(percentage, 3)}%` },
+                          ]}
                         />
                       </View>
                       <Text style={styles.chartValue}>{count}</Text>
@@ -107,11 +267,14 @@ export default function ResultsScreen() {
                   );
                 })}
               </View>
-            </View>
+            </GlassCard>
           </Animated.View>
 
           {/* Buttons */}
-          <Animated.View entering={FadeInDown.duration(400).delay(800)} style={styles.buttonContainer}>
+          <Animated.View
+            entering={FadeInDown.duration(400).delay(1200)}
+            style={styles.buttonContainer}
+          >
             <AnimatedButton
               title="Play Again"
               onPress={() => router.replace('/game')}
@@ -143,6 +306,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     padding: Spacing.lg,
+    paddingBottom: Spacing.xxl,
   },
   loadingContainer: {
     flex: 1,
@@ -152,52 +316,112 @@ const styles = StyleSheet.create({
   loadingText: {
     fontSize: FontSizes.lg,
     color: Colors.textSecondary,
+    letterSpacing: LetterSpacing.wide,
   },
-  card: {
-    backgroundColor: Colors.glass,
-    borderRadius: BorderRadius.lg,
-    padding: Spacing.xl,
-    marginBottom: Spacing.lg,
-    borderWidth: 1,
-    borderColor: Colors.glassBorder,
+  // Header
+  headerSection: {
+    alignItems: 'center',
+    marginBottom: Spacing.xl,
+    paddingTop: Spacing.md,
   },
   title: {
-    fontSize: FontSizes.xxl,
+    fontSize: FontSizes.xl,
     fontWeight: '300',
     color: Colors.text,
     textAlign: 'center',
-    marginBottom: Spacing.xl,
-    letterSpacing: LetterSpacing.wider,
+    letterSpacing: LetterSpacing.widest,
     textTransform: 'uppercase',
   },
-  scoreContainer: {
-    alignItems: 'center',
-    paddingVertical: Spacing.xl,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
-    marginBottom: Spacing.xl,
+  // New Best Badge
+  newBestBadge: {
+    marginTop: Spacing.md,
+    borderRadius: BorderRadius.full,
+    overflow: 'hidden',
+    shadowColor: '#00F5A0',
+    shadowOffset: { width: 0, height: 0 },
+    shadowRadius: 16,
+    elevation: 8,
+  },
+  newBestGradient: {
+    paddingHorizontal: Spacing.lg,
+    paddingVertical: Spacing.sm,
+    borderRadius: BorderRadius.full,
+  },
+  newBestText: {
+    fontSize: FontSizes.xs,
+    fontWeight: '700',
+    color: Colors.background,
+    letterSpacing: LetterSpacing.widest,
+  },
+  // Main Score
+  mainScoreCard: {
+    marginBottom: Spacing.lg,
   },
   scoreLabel: {
-    fontSize: FontSizes.md,
-    color: Colors.textSecondary,
+    fontSize: FontSizes.xs,
+    fontWeight: '600',
+    color: Colors.textLight,
+    letterSpacing: LetterSpacing.widest,
+    textAlign: 'center',
     marginBottom: Spacing.sm,
   },
   scoreValue: {
-    fontSize: FontSizes.xxxl * 1.5,
-    fontWeight: '800',
+    fontSize: 72,
+    fontWeight: '200',
     color: Colors.primary,
     fontFamily: Fonts.mono,
+    textAlign: 'center',
+    letterSpacing: LetterSpacing.wide,
     ...Shadows.glow,
   },
-  section: {
-    marginBottom: Spacing.xl,
+  scoreValueBest: {
+    color: Colors.correct,
+    shadowColor: '#00F5A0',
+  },
+  previousBest: {
+    fontSize: FontSizes.sm,
+    color: Colors.textLight,
+    textAlign: 'center',
+    marginTop: Spacing.sm,
+    letterSpacing: LetterSpacing.wide,
+  },
+  // Stats Grid
+  statsGrid: {
+    gap: Spacing.md,
+    marginBottom: Spacing.lg,
+  },
+  statCard: {
+    marginBottom: 0,
+  },
+  statLabel: {
+    fontSize: FontSizes.xs,
+    fontWeight: '600',
+    color: Colors.textLight,
+    letterSpacing: LetterSpacing.widest,
+    marginBottom: Spacing.xs,
+  },
+  statValue: {
+    fontSize: FontSizes.xxl,
+    fontWeight: '300',
+    fontFamily: Fonts.mono,
+    letterSpacing: LetterSpacing.wide,
+  },
+  statSubtitle: {
+    fontSize: FontSizes.sm,
+    color: Colors.textLight,
+    letterSpacing: LetterSpacing.wide,
+    marginTop: 2,
+  },
+  // Breakdown
+  breakdownCard: {
+    marginBottom: Spacing.lg,
   },
   sectionTitle: {
-    fontSize: FontSizes.lg,
-    fontWeight: '400',
-    color: Colors.text,
-    marginBottom: Spacing.md,
-    letterSpacing: LetterSpacing.wider,
+    fontSize: FontSizes.sm,
+    fontWeight: '600',
+    color: Colors.textSecondary,
+    marginBottom: Spacing.lg,
+    letterSpacing: LetterSpacing.widest,
     textTransform: 'uppercase',
   },
   roundsList: {
@@ -209,22 +433,41 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: Spacing.md,
     paddingHorizontal: Spacing.md,
-    backgroundColor: 'rgba(0, 245, 255, 0.04)',
+    backgroundColor: 'rgba(0, 245, 255, 0.03)',
     borderRadius: BorderRadius.sm,
     borderWidth: 1,
     borderColor: 'rgba(0, 245, 255, 0.06)',
   },
+  roundLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.sm,
+  },
+  roundDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: Colors.primary,
+    shadowColor: Colors.primary,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.6,
+    shadowRadius: 4,
+    elevation: 2,
+  },
   roundName: {
     fontSize: FontSizes.md,
     color: Colors.textSecondary,
-    fontWeight: '500',
+    fontWeight: '400',
+    letterSpacing: LetterSpacing.wide,
   },
   roundScore: {
-    fontSize: FontSizes.md,
+    fontSize: FontSizes.lg,
     color: Colors.primary,
-    fontWeight: '700',
+    fontWeight: '600',
     fontFamily: Fonts.mono,
+    letterSpacing: LetterSpacing.wide,
   },
+  // Chart
   chartContainer: {
     gap: Spacing.md,
   },
@@ -238,14 +481,17 @@ const styles = StyleSheet.create({
     color: Colors.textSecondary,
     width: 36,
     fontFamily: Fonts.mono,
-    fontWeight: '600',
+    fontWeight: '500',
+    letterSpacing: LetterSpacing.wide,
   },
   barContainer: {
     flex: 1,
-    height: 28,
-    backgroundColor: 'rgba(0, 245, 255, 0.05)',
+    height: 24,
+    backgroundColor: 'rgba(0, 245, 255, 0.04)',
     borderRadius: BorderRadius.sm,
     overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: 'rgba(0, 245, 255, 0.06)',
   },
   bar: {
     height: '100%',
@@ -254,13 +500,15 @@ const styles = StyleSheet.create({
   chartValue: {
     fontSize: FontSizes.md,
     color: Colors.primary,
-    fontWeight: '700',
-    width: 36,
+    fontWeight: '600',
+    width: 32,
     textAlign: 'right',
     fontFamily: Fonts.mono,
   },
+  // Buttons
   buttonContainer: {
     gap: Spacing.md,
+    marginTop: Spacing.sm,
   },
   button: {
     width: '100%',

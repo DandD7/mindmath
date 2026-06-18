@@ -13,6 +13,8 @@ import Animated, {
 } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import NumericKeypad from '../components/NumericKeypad';
+import ProgressRing from '../components/ProgressRing';
+import ParticleBurst from '../components/ParticleBurst';
 import { Colors, Spacing, FontSizes, BorderRadius, Shadows, Fonts, LetterSpacing } from '../constants/theme';
 import { ROUNDS } from '../types/game';
 import type { GameState, RoundResult } from '../types/game';
@@ -48,6 +50,7 @@ export default function GameScreen() {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [showQuitConfirm, setShowQuitConfirm] = useState(false);
+  const [particleTrigger, setParticleTrigger] = useState(0);
 
   // Animation values
   const inputShake = useSharedValue(0);
@@ -191,6 +194,9 @@ export default function GameScreen() {
         withTiming(0, { duration: 150 })
       );
 
+      // Trigger particle burst
+      setParticleTrigger((prev) => prev + 1);
+
       const newConsecutiveCorrect = gameState.consecutiveCorrect + 1;
       const newDifficulty = getNextDifficulty(currentDiff, true, newConsecutiveCorrect);
       const resetConsecutive = newDifficulty > currentDiff ? 0 : newConsecutiveCorrect;
@@ -284,8 +290,7 @@ export default function GameScreen() {
     opacity: questionOpacity.value,
   }));
 
-  const progressPercentage = (gameState.timeRemaining / 60) * 100;
-  const timerColor = gameState.timeRemaining <= 10 ? Colors.incorrect : Colors.primary;
+  const progressPercentage = gameState.timeRemaining / 60;
 
   if (showTransition) {
     return (
@@ -335,32 +340,36 @@ export default function GameScreen() {
                 </Pressable>
               </View>
             </View>
+          </View>
 
-            {/* Timer Progress Bar */}
-            <View style={styles.timerContainer}>
-              <LinearGradient
-                colors={gameState.timeRemaining <= 10 ? ['#FF4E6A', '#FF4E6A'] : ['#00F5FF', '#8B5CF6']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-                style={[styles.timerBar, { width: `${progressPercentage}%` }]}
-              />
-            </View>
-            <View style={styles.timerRow}>
-              <Text style={[styles.timerText, { color: timerColor }]}>
-                {gameState.timeRemaining}s
-              </Text>
-              <View style={styles.scoreBadge}>
-                <Text style={styles.scoreText}>{gameState.score}</Text>
-              </View>
+          {/* Progress Ring Timer + Score */}
+          <View style={styles.timerSection}>
+            <ProgressRing
+              progress={progressPercentage}
+              size={120}
+              strokeWidth={5}
+              timeRemaining={gameState.timeRemaining}
+              totalTime={60}
+            />
+            <View style={styles.scoreBadge}>
+              <Text style={styles.scoreLabel}>SCORE</Text>
+              <Text style={styles.scoreText}>{gameState.score}</Text>
             </View>
           </View>
 
           {/* Question Area */}
-          <Animated.View style={[styles.questionCard, questionAnimatedStyle]}>
-            <Text style={styles.questionText}>
-              {gameState.currentQuestion.question} = ?
-            </Text>
-          </Animated.View>
+          <View style={styles.questionWrapper}>
+            <Animated.View style={[styles.questionCard, questionAnimatedStyle]}>
+              <Text style={styles.questionText}>
+                {gameState.currentQuestion.question} = ?
+              </Text>
+            </Animated.View>
+            {/* Particle burst on correct answer */}
+            <ParticleBurst
+              trigger={particleTrigger}
+              particleCount={14}
+            />
+          </View>
 
           {/* Spacer */}
           <View style={{ flex: 1 }} />
@@ -478,13 +487,13 @@ const styles = StyleSheet.create({
     paddingBottom: Spacing.md,
   },
   header: {
-    marginBottom: Spacing.md,
+    marginBottom: Spacing.sm,
   },
   headerTop: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: Spacing.md,
+    marginBottom: Spacing.sm,
   },
   headerLeft: {
     flex: 1,
@@ -535,42 +544,47 @@ const styles = StyleSheet.create({
     color: Colors.incorrect,
     fontWeight: '700',
   },
-  timerContainer: {
-    height: 3,
-    backgroundColor: 'rgba(0, 245, 255, 0.06)',
-    borderRadius: BorderRadius.full,
-    overflow: 'hidden',
-    marginBottom: Spacing.sm,
-  },
-  timerBar: {
-    height: '100%',
-    borderRadius: BorderRadius.full,
-  },
-  timerRow: {
+  // Timer section with ring
+  timerSection: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-  },
-  timerText: {
-    fontSize: FontSizes.sm,
-    fontFamily: Fonts.mono,
-    fontWeight: '500',
-    letterSpacing: LetterSpacing.wide,
+    justifyContent: 'center',
+    gap: Spacing.xl,
+    paddingVertical: Spacing.md,
   },
   scoreBadge: {
-    backgroundColor: 'rgba(0, 245, 255, 0.06)',
-    borderRadius: BorderRadius.full,
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.xs,
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 245, 255, 0.04)',
+    borderRadius: BorderRadius.lg,
+    paddingHorizontal: Spacing.lg,
+    paddingVertical: Spacing.md,
     borderWidth: 1,
     borderColor: 'rgba(0, 245, 255, 0.12)',
+    shadowColor: Colors.primary,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  scoreLabel: {
+    fontSize: FontSizes.xs,
+    fontWeight: '600',
+    color: Colors.textLight,
+    letterSpacing: LetterSpacing.widest,
+    marginBottom: Spacing.xs,
   },
   scoreText: {
-    fontSize: FontSizes.md,
+    fontSize: FontSizes.xxl,
     fontWeight: '600',
     color: Colors.primary,
     fontFamily: Fonts.mono,
     letterSpacing: LetterSpacing.wide,
+  },
+  // Question
+  questionWrapper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: Spacing.md,
   },
   questionCard: {
     backgroundColor: Colors.glass,
@@ -579,8 +593,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.lg,
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: 140,
-    marginBottom: Spacing.lg,
+    minHeight: 120,
+    width: '100%',
     borderWidth: 1,
     borderColor: Colors.glassBorder,
     ...Shadows.medium,
