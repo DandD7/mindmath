@@ -100,9 +100,6 @@ function HeroCard({ onPress }: { onPress: () => void }) {
             <Text style={styles.heroIcon}>⚡</Text>
             <Text style={styles.heroTitle}>FULL MINDMATH</Text>
             <Text style={styles.heroTitleSecondary}>CHALLENGE</Text>
-            <Text style={styles.heroSubDescription}>
-              Mixed operations • Faster scaling • Final Sprint mode
-            </Text>
           </View>
 
           {/* Start Button */}
@@ -183,7 +180,6 @@ function TrainingCard({
 
         {/* Text */}
         <Text style={[styles.trainingName, { color: mode.color }]}>{mode.name}</Text>
-        <Text style={styles.trainingDescription}>{mode.description}</Text>
 
         {/* Bottom accent */}
         {hasGradient ? (
@@ -379,13 +375,6 @@ const styles = StyleSheet.create({
     marginTop: Spacing.md,
     textAlign: 'center',
   },
-  heroSubDescription: {
-    fontSize: FontSizes.xs,
-    color: Colors.textLight,
-    letterSpacing: LetterSpacing.wide,
-    marginTop: Spacing.xs,
-    textAlign: 'center',
-  },
   heroButtonWrapper: {
     borderRadius: BorderRadius.md,
     shadowColor: '#FFC837',
@@ -494,12 +483,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     letterSpacing: LetterSpacing.wide,
     marginBottom: 3,
-    textAlign: 'center',
-  },
-  trainingDescription: {
-    fontSize: 10,
-    color: Colors.textLight,
-    letterSpacing: LetterSpacing.wide,
     textAlign: 'center',
   },
   trainingAccent: {
