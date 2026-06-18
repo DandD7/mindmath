@@ -5,7 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { FadeInRight, FadeOutLeft } from 'react-native-reanimated';
 import { Swipeable } from 'react-native-gesture-handler';
-import { Colors, Spacing, FontSizes, BorderRadius, Fonts } from '../constants/theme';
+import { Colors, Spacing, FontSizes, BorderRadius, Fonts, LetterSpacing } from '../constants/theme';
 import { getTestHistory, deleteTestSession } from '../utils/storage';
 import type { TestSession } from '../types/game';
 import { useFocusEffect } from '@react-navigation/native';
@@ -163,14 +163,17 @@ const styles = StyleSheet.create({
     padding: Spacing.sm,
   },
   backButtonText: {
-    fontSize: FontSizes.md,
+    fontSize: FontSizes.sm,
     color: Colors.primary,
-    fontWeight: '600',
+    fontWeight: '500',
+    letterSpacing: LetterSpacing.wide,
   },
   title: {
-    fontSize: FontSizes.xl,
-    fontWeight: 'bold',
+    fontSize: FontSizes.lg,
+    fontWeight: '300',
     color: Colors.text,
+    letterSpacing: LetterSpacing.wider,
+    textTransform: 'uppercase',
   },
   placeholder: {
     width: 60,

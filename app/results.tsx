@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import AnimatedButton from '../components/AnimatedButton';
-import { Colors, Spacing, FontSizes, BorderRadius, Shadows, Fonts } from '../constants/theme';
+import { Colors, Spacing, FontSizes, BorderRadius, Shadows, Fonts, LetterSpacing } from '../constants/theme';
 import { getTestSessionById } from '../utils/storage';
 import type { TestSession } from '../types/game';
 import { ROUNDS } from '../types/game';
@@ -162,11 +162,13 @@ const styles = StyleSheet.create({
     borderColor: Colors.glassBorder,
   },
   title: {
-    fontSize: FontSizes.xxxl,
-    fontWeight: '800',
+    fontSize: FontSizes.xxl,
+    fontWeight: '300',
     color: Colors.text,
     textAlign: 'center',
     marginBottom: Spacing.xl,
+    letterSpacing: LetterSpacing.wider,
+    textTransform: 'uppercase',
   },
   scoreContainer: {
     alignItems: 'center',
@@ -191,10 +193,12 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.xl,
   },
   sectionTitle: {
-    fontSize: FontSizes.xl,
-    fontWeight: '600',
+    fontSize: FontSizes.lg,
+    fontWeight: '400',
     color: Colors.text,
     marginBottom: Spacing.md,
+    letterSpacing: LetterSpacing.wider,
+    textTransform: 'uppercase',
   },
   roundsList: {
     gap: Spacing.sm,

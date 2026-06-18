@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Modal } from 'react-native';
 import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -13,7 +13,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import NumericKeypad from '../components/NumericKeypad';
-import { Colors, Spacing, FontSizes, BorderRadius, Shadows, Fonts } from '../constants/theme';
+import { Colors, Spacing, FontSizes, BorderRadius, Shadows, Fonts, LetterSpacing } from '../constants/theme';
 import { ROUNDS } from '../types/game';
 import type { GameState, RoundResult } from '../types/game';
 import { generateQuestion, checkAnswer, getNextDifficulty, calculateWeightedScore } from '../utils/gameLogic';
@@ -46,6 +46,8 @@ export default function GameScreen() {
   const [showTransition, setShowTransition] = useState(false);
   const [isGameActive, setIsGameActive] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [showQuitConfirm, setShowQuitConfirm] = useState(false);
 
   // Animation values
   const inputShake = useSharedValue(0);
@@ -128,6 +130,7 @@ export default function GameScreen() {
 
   useEffect(() => {
     const timer = setInterval(() => {
+      if (isPaused) return;
       setGameState((prev) => {
         if (prev.timeRemaining <= 1) {
           handleRoundEndRef.current?.();
@@ -138,8 +141,42 @@ export default function GameScreen() {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [isPaused]);
 
+  const handlePause = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    setIsPaused(true);
+    setIsGameActive(false);
+  };
+
+  const handleResume = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    setIsPaused(false);
+    setIsGameActive(true);
+  };
+
+  const handleQuitPress = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    setShowQuitConfirm(true);
+    if (!isPaused) {
+      setIsPaused(true);
+      setIsGameActive(false);
+    }
+  };
+
+  const handleQuitConfirm = () => {
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+    setShowQuitConfirm(false);
+    router.replace('/');
+  };
+
+  const handleQuitCancel = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    setShowQuitConfirm(false);
+    if (!isPaused) {
+      setIsGameActive(true);
+    }
+  };
 
   const handleSubmit = () => {
     if (!userAnswer.trim() || !isGameActive || isTransitioning) return;
@@ -255,10 +292,10 @@ export default function GameScreen() {
       <View style={styles.transitionContainer}>
         <StatusBar style="light" />
         <Animated.View entering={FadeIn.duration(300)} style={styles.transitionContent}>
-          <Text style={styles.transitionEmoji}>🎉</Text>
-          <Text style={styles.transitionTitle}>Great work!</Text>
+          <Text style={styles.transitionEmoji}>&#10003;</Text>
+          <Text style={styles.transitionTitle}>Round Complete</Text>
           <Text style={styles.transitionSubtitle}>
-            Next up: {ROUNDS[gameState.currentRound + 1]?.name}
+            Next: {ROUNDS[gameState.currentRound + 1]?.name}
           </Text>
         </Animated.View>
       </View>
@@ -270,14 +307,32 @@ export default function GameScreen() {
       <StatusBar style="light" />
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.content}>
-          {/* Header */}
+          {/* Header with controls */}
           <View style={styles.header}>
-            <View style={styles.headerInfo}>
-              <Text style={styles.roundTitle}>
-                R{currentRound.id}: {currentRound.name}
-              </Text>
-              <View style={styles.scoreBadge}>
-                <Text style={styles.scoreText}>{gameState.score}</Text>
+            <View style={styles.headerTop}>
+              <View style={styles.headerLeft}>
+                <Text style={styles.roundLabel}>ROUND {currentRound.id}</Text>
+                <Text style={styles.roundTitle}>{currentRound.name}</Text>
+              </View>
+              <View style={styles.headerControls}>
+                <Pressable
+                  onPress={handlePause}
+                  style={styles.controlButton}
+                  hitSlop={8}
+                >
+                  <View style={styles.controlButtonInner}>
+                    <Text style={styles.controlIcon}>&#9646;&#9646;</Text>
+                  </View>
+                </Pressable>
+                <Pressable
+                  onPress={handleQuitPress}
+                  style={styles.controlButton}
+                  hitSlop={8}
+                >
+                  <View style={[styles.controlButtonInner, styles.quitButtonInner]}>
+                    <Text style={styles.quitIcon}>&#10005;</Text>
+                  </View>
+                </Pressable>
               </View>
             </View>
 
@@ -290,9 +345,14 @@ export default function GameScreen() {
                 style={[styles.timerBar, { width: `${progressPercentage}%` }]}
               />
             </View>
-            <Text style={[styles.timerText, { color: timerColor }]}>
-              {gameState.timeRemaining}s
-            </Text>
+            <View style={styles.timerRow}>
+              <Text style={[styles.timerText, { color: timerColor }]}>
+                {gameState.timeRemaining}s
+              </Text>
+              <View style={styles.scoreBadge}>
+                <Text style={styles.scoreText}>{gameState.score}</Text>
+              </View>
+            </View>
           </View>
 
           {/* Question Area */}
@@ -323,6 +383,82 @@ export default function GameScreen() {
           submitDisabled={!userAnswer.trim() || !isGameActive || isTransitioning}
         />
       </SafeAreaView>
+
+      {/* Pause Overlay */}
+      <Modal
+        visible={isPaused && !showQuitConfirm}
+        transparent
+        animationType="fade"
+        statusBarTranslucent
+      >
+        <View style={styles.overlayContainer}>
+          <View style={styles.overlayBackdrop} />
+          <View style={styles.overlayContent}>
+            <View style={styles.pauseIconContainer}>
+              <Text style={styles.pauseIconText}>&#9646;&#9646;</Text>
+            </View>
+            <Text style={styles.overlayTitle}>PAUSED</Text>
+            <Text style={styles.overlaySubtitle}>
+              Round {currentRound.id} &middot; {gameState.timeRemaining}s remaining
+            </Text>
+
+            <Pressable
+              onPress={handleResume}
+              style={styles.resumeButton}
+            >
+              <LinearGradient
+                colors={['#00F5FF', '#8B5CF6']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.resumeGradient}
+              >
+                <Text style={styles.resumeText}>RESUME</Text>
+              </LinearGradient>
+            </Pressable>
+
+            <Pressable
+              onPress={handleQuitPress}
+              style={styles.overlayQuitButton}
+            >
+              <Text style={styles.overlayQuitText}>QUIT SESSION</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Quit Confirmation Overlay */}
+      <Modal
+        visible={showQuitConfirm}
+        transparent
+        animationType="fade"
+        statusBarTranslucent
+      >
+        <View style={styles.overlayContainer}>
+          <View style={styles.overlayBackdrop} />
+          <View style={styles.overlayContent}>
+            <Text style={styles.quitConfirmTitle}>EXIT SESSION?</Text>
+            <Text style={styles.quitConfirmSubtitle}>
+              Your progress will not be saved.
+            </Text>
+
+            <View style={styles.quitConfirmButtons}>
+              <Pressable
+                onPress={handleQuitConfirm}
+                style={styles.quitConfirmButton}
+              >
+                <Text style={styles.quitConfirmButtonText}>EXIT</Text>
+              </Pressable>
+
+              <Pressable
+                onPress={handleQuitCancel}
+                style={styles.cancelButton}
+              >
+                <Text style={styles.cancelButtonText}>CANCEL</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -344,34 +480,64 @@ const styles = StyleSheet.create({
   header: {
     marginBottom: Spacing.md,
   },
-  headerInfo: {
+  headerTop: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     marginBottom: Spacing.md,
+  },
+  headerLeft: {
+    flex: 1,
+  },
+  roundLabel: {
+    fontSize: FontSizes.xs,
+    fontWeight: '600',
+    color: Colors.textLight,
+    letterSpacing: LetterSpacing.wider,
+    marginBottom: 2,
   },
   roundTitle: {
     fontSize: FontSizes.lg,
-    fontWeight: '600',
+    fontWeight: '500',
     color: Colors.textSecondary,
+    letterSpacing: LetterSpacing.wide,
   },
-  scoreBadge: {
-    backgroundColor: Colors.glass,
-    borderRadius: BorderRadius.full,
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.xs,
+  headerControls: {
+    flexDirection: 'row',
+    gap: Spacing.sm,
+  },
+  controlButton: {
+    width: 40,
+    height: 40,
+    borderRadius: BorderRadius.sm,
+    overflow: 'hidden',
+  },
+  controlButtonInner: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 245, 255, 0.06)',
     borderWidth: 1,
-    borderColor: Colors.glassBorder,
+    borderColor: 'rgba(0, 245, 255, 0.15)',
+    borderRadius: BorderRadius.sm,
   },
-  scoreText: {
-    fontSize: FontSizes.lg,
-    fontWeight: '700',
+  controlIcon: {
+    fontSize: 14,
     color: Colors.primary,
-    fontFamily: Fonts.mono,
+    letterSpacing: -2,
+  },
+  quitButtonInner: {
+    backgroundColor: 'rgba(255, 78, 106, 0.06)',
+    borderColor: 'rgba(255, 78, 106, 0.2)',
+  },
+  quitIcon: {
+    fontSize: 14,
+    color: Colors.incorrect,
+    fontWeight: '700',
   },
   timerContainer: {
-    height: 4,
-    backgroundColor: 'rgba(0, 245, 255, 0.08)',
+    height: 3,
+    backgroundColor: 'rgba(0, 245, 255, 0.06)',
     borderRadius: BorderRadius.full,
     overflow: 'hidden',
     marginBottom: Spacing.sm,
@@ -380,11 +546,31 @@ const styles = StyleSheet.create({
     height: '100%',
     borderRadius: BorderRadius.full,
   },
+  timerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   timerText: {
     fontSize: FontSizes.sm,
     fontFamily: Fonts.mono,
+    fontWeight: '500',
+    letterSpacing: LetterSpacing.wide,
+  },
+  scoreBadge: {
+    backgroundColor: 'rgba(0, 245, 255, 0.06)',
+    borderRadius: BorderRadius.full,
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.xs,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 245, 255, 0.12)',
+  },
+  scoreText: {
+    fontSize: FontSizes.md,
     fontWeight: '600',
-    textAlign: 'center',
+    color: Colors.primary,
+    fontFamily: Fonts.mono,
+    letterSpacing: LetterSpacing.wide,
   },
   questionCard: {
     backgroundColor: Colors.glass,
@@ -401,10 +587,11 @@ const styles = StyleSheet.create({
   },
   questionText: {
     fontSize: FontSizes.xxxl,
-    fontWeight: '700',
+    fontWeight: '300',
     color: Colors.text,
     textAlign: 'center',
     fontFamily: Fonts.mono,
+    letterSpacing: LetterSpacing.wide,
   },
   answerContainer: {
     paddingBottom: Spacing.md,
@@ -422,11 +609,12 @@ const styles = StyleSheet.create({
   },
   answerText: {
     fontSize: 40,
-    fontWeight: '700',
+    fontWeight: '300',
     color: Colors.primary,
-    letterSpacing: 4,
+    letterSpacing: LetterSpacing.widest,
     fontFamily: Fonts.mono,
   },
+  // Transition
   transitionContainer: {
     flex: 1,
     backgroundColor: Colors.background,
@@ -438,18 +626,155 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.lg,
   },
   transitionEmoji: {
-    fontSize: 64,
+    fontSize: 48,
+    color: Colors.correct,
     marginBottom: Spacing.md,
   },
   transitionTitle: {
-    fontSize: FontSizes.xxxl,
-    fontWeight: 'bold',
+    fontSize: FontSizes.xxl,
+    fontWeight: '300',
     color: Colors.text,
     marginBottom: Spacing.md,
+    letterSpacing: LetterSpacing.wider,
   },
   transitionSubtitle: {
-    fontSize: FontSizes.xl,
+    fontSize: FontSizes.lg,
     color: Colors.textSecondary,
     textAlign: 'center',
+    letterSpacing: LetterSpacing.wide,
+  },
+  // Overlay styles
+  overlayContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  overlayBackdrop: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(10, 14, 23, 0.92)',
+  },
+  overlayContent: {
+    alignItems: 'center',
+    paddingHorizontal: Spacing.xl,
+    width: '100%',
+    maxWidth: 320,
+  },
+  pauseIconContainer: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: 'rgba(0, 245, 255, 0.08)',
+    borderWidth: 1,
+    borderColor: 'rgba(0, 245, 255, 0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: Spacing.lg,
+    shadowColor: '#00F5FF',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.3,
+    shadowRadius: 16,
+    elevation: 4,
+  },
+  pauseIconText: {
+    fontSize: 22,
+    color: Colors.primary,
+    letterSpacing: -2,
+  },
+  overlayTitle: {
+    fontSize: FontSizes.xxl,
+    fontWeight: '300',
+    color: Colors.text,
+    marginBottom: Spacing.sm,
+    letterSpacing: LetterSpacing.widest,
+  },
+  overlaySubtitle: {
+    fontSize: FontSizes.md,
+    color: Colors.textLight,
+    marginBottom: Spacing.xl,
+    letterSpacing: LetterSpacing.wide,
+  },
+  resumeButton: {
+    width: '100%',
+    borderRadius: BorderRadius.md,
+    overflow: 'hidden',
+    marginBottom: Spacing.md,
+    shadowColor: '#00F5FF',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.4,
+    shadowRadius: 12,
+    elevation: 6,
+  },
+  resumeGradient: {
+    paddingVertical: Spacing.md + 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: BorderRadius.md,
+  },
+  resumeText: {
+    fontSize: FontSizes.md,
+    fontWeight: '600',
+    color: Colors.background,
+    letterSpacing: LetterSpacing.wider,
+  },
+  overlayQuitButton: {
+    paddingVertical: Spacing.md,
+    paddingHorizontal: Spacing.xl,
+  },
+  overlayQuitText: {
+    fontSize: FontSizes.sm,
+    fontWeight: '500',
+    color: Colors.incorrect,
+    letterSpacing: LetterSpacing.wider,
+  },
+  // Quit confirmation
+  quitConfirmTitle: {
+    fontSize: FontSizes.xl,
+    fontWeight: '300',
+    color: Colors.text,
+    marginBottom: Spacing.sm,
+    letterSpacing: LetterSpacing.wider,
+  },
+  quitConfirmSubtitle: {
+    fontSize: FontSizes.md,
+    color: Colors.textLight,
+    marginBottom: Spacing.xl,
+    letterSpacing: LetterSpacing.wide,
+    textAlign: 'center',
+  },
+  quitConfirmButtons: {
+    width: '100%',
+    gap: Spacing.md,
+  },
+  quitConfirmButton: {
+    width: '100%',
+    paddingVertical: Spacing.md + 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: BorderRadius.md,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 78, 106, 0.4)',
+    backgroundColor: 'rgba(255, 78, 106, 0.08)',
+  },
+  quitConfirmButtonText: {
+    fontSize: FontSizes.md,
+    fontWeight: '600',
+    color: Colors.incorrect,
+    letterSpacing: LetterSpacing.wider,
+  },
+  cancelButton: {
+    width: '100%',
+    paddingVertical: Spacing.md + 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: BorderRadius.md,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 245, 255, 0.15)',
+    backgroundColor: 'rgba(0, 245, 255, 0.04)',
+  },
+  cancelButtonText: {
+    fontSize: FontSizes.md,
+    fontWeight: '600',
+    color: Colors.primary,
+    letterSpacing: LetterSpacing.wider,
   },
 });

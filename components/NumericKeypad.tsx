@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Pressable } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Colors, Spacing, BorderRadius, FontSizes, Fonts } from '../constants/theme';
+import { Colors, Spacing, BorderRadius, FontSizes, Fonts, LetterSpacing } from '../constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 
 type NumericKeypadProps = {
@@ -199,18 +199,20 @@ const styles = StyleSheet.create({
   },
   keyText: {
     fontSize: FontSizes.xl,
-    fontWeight: '600',
+    fontWeight: '400',
     color: Colors.text,
     fontFamily: Fonts.mono,
+    letterSpacing: LetterSpacing.wide,
   },
   keyTextAction: {
     color: Colors.primary,
   },
   keyTextSubmit: {
     color: Colors.background,
-    fontSize: FontSizes.md,
-    fontWeight: '700',
-    letterSpacing: 0.5,
+    fontSize: FontSizes.sm,
+    fontWeight: '600',
+    letterSpacing: LetterSpacing.wider,
+    textTransform: 'uppercase',
   },
   keyTextDisabled: {
     color: Colors.textLight,

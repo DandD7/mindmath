@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import AnimatedButton from '../components/AnimatedButton';
-import { Colors, Spacing, FontSizes } from '../constants/theme';
+import { Colors, Spacing, FontSizes, LetterSpacing } from '../constants/theme';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -81,15 +81,17 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: FontSizes.xxxl,
-    fontWeight: '800',
+    fontWeight: '300',
     color: Colors.text,
     marginBottom: Spacing.sm,
-    letterSpacing: 1,
+    letterSpacing: LetterSpacing.widest,
+    textTransform: 'uppercase',
   },
   subtitle: {
-    fontSize: FontSizes.lg,
-    color: Colors.textSecondary,
+    fontSize: FontSizes.md,
+    color: Colors.textLight,
     textAlign: 'center',
+    letterSpacing: LetterSpacing.wider,
   },
   buttonContainer: {
     gap: Spacing.md,

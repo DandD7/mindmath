@@ -66,6 +66,15 @@ export const FontSizes = {
 export const Fonts = {
   mono: 'monospace' as const,
   system: 'System' as const,
+  display: 'System' as const, // Clean sans-serif for headings
+};
+
+export const LetterSpacing = {
+  tight: -0.5,
+  normal: 0,
+  wide: 1.2,
+  wider: 2.5,
+  widest: 4,
 };
 
 export const Shadows = {

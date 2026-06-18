@@ -3,7 +3,7 @@ import { Pressable, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Colors, Spacing, BorderRadius, FontSizes, Shadows } from '../constants/theme';
+import { Colors, Spacing, BorderRadius, FontSizes, Shadows, LetterSpacing } from '../constants/theme';
 
 type AnimatedButtonProps = {
   title: string;
@@ -128,9 +128,10 @@ const styles = StyleSheet.create({
     ...Shadows.glow,
   },
   buttonText: {
-    fontSize: FontSizes.lg,
-    fontWeight: '700',
-    letterSpacing: 0.5,
+    fontSize: FontSizes.md,
+    fontWeight: '500',
+    letterSpacing: LetterSpacing.wider,
+    textTransform: 'uppercase',
   },
   disabled: {
     opacity: 0.4,

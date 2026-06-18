@@ -4,7 +4,7 @@ import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { FadeInDown } from 'react-native-reanimated';
-import { Colors, Spacing, FontSizes, BorderRadius, Fonts } from '../constants/theme';
+import { Colors, Spacing, FontSizes, BorderRadius, Fonts, LetterSpacing } from '../constants/theme';
 
 export default function AboutScreen() {
   const router = useRouter();
@@ -101,14 +101,17 @@ const styles = StyleSheet.create({
     padding: Spacing.sm,
   },
   backButtonText: {
-    fontSize: FontSizes.md,
+    fontSize: FontSizes.sm,
     color: Colors.primary,
-    fontWeight: '600',
+    fontWeight: '500',
+    letterSpacing: LetterSpacing.wide,
   },
   title: {
-    fontSize: FontSizes.xl,
-    fontWeight: 'bold',
+    fontSize: FontSizes.lg,
+    fontWeight: '300',
     color: Colors.text,
+    letterSpacing: LetterSpacing.wider,
+    textTransform: 'uppercase',
   },
   placeholder: {
     width: 60,
@@ -128,11 +131,12 @@ const styles = StyleSheet.create({
   },
   appTitle: {
     fontSize: FontSizes.xxxl,
-    fontWeight: '800',
+    fontWeight: '300',
     color: Colors.text,
     textAlign: 'center',
     marginBottom: Spacing.xs,
-    letterSpacing: 1,
+    letterSpacing: LetterSpacing.widest,
+    textTransform: 'uppercase',
   },
   version: {
     fontSize: FontSizes.md,
@@ -145,10 +149,11 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.xl,
   },
   sectionTitle: {
-    fontSize: FontSizes.xl,
-    fontWeight: '600',
+    fontSize: FontSizes.lg,
+    fontWeight: '500',
     color: Colors.primary,
     marginBottom: Spacing.sm,
+    letterSpacing: LetterSpacing.wide,
   },
   sectionText: {
     fontSize: FontSizes.md,
