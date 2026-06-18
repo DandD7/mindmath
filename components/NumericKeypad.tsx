@@ -12,8 +12,8 @@ type NumericKeypadProps = {
   onSubmit: () => void;
   onDecimalPress?: () => void;
   submitDisabled?: boolean;
-  showDecimal?: boolean;
   highlightDecimal?: boolean;
+  hideDecimal?: boolean;
 };
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
@@ -25,6 +25,7 @@ function KeypadButton({
   disabled = false,
   dimmed = false,
   highlighted = false,
+  hidden = false,
   icon,
 }: {
   value: string;
@@ -33,6 +34,7 @@ function KeypadButton({
   disabled?: boolean;
   dimmed?: boolean;
   highlighted?: boolean;
+  hidden?: boolean;
   icon?: React.ReactNode;
 }) {
   const scale = useSharedValue(1);
@@ -42,7 +44,7 @@ function KeypadButton({
   }));
 
   const handlePressIn = () => {
-    if (!disabled) {
+    if (!disabled && !dimmed && !hidden) {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
       scale.value = withSpring(0.9, { damping: 15, stiffness: 300 });
     }
@@ -51,6 +53,11 @@ function KeypadButton({
   const handlePressOut = () => {
     scale.value = withSpring(1, { damping: 15, stiffness: 300 });
   };
+
+  // If hidden, render an empty space that preserves layout
+  if (hidden) {
+    return <View style={styles.key} />;
+  }
 
   if (variant === 'submit') {
     return (
@@ -80,21 +87,23 @@ function KeypadButton({
       case 'action':
         return [styles.key, styles.keyAction];
       case 'decimal':
-        return [
-          styles.key,
-          highlighted ? styles.keyDecimalHighlighted : dimmed ? styles.keyDecimalDimmed : undefined,
-        ];
+        if (highlighted) {
+          return [styles.key, styles.keyDecimalHighlighted];
+        }
+        return [styles.key, styles.keyDecimalDimmed];
       default:
         return [styles.key];
     }
   };
+
+  const isInteractive = variant === 'decimal' ? !dimmed : !disabled;
 
   return (
     <AnimatedPressable
       onPress={onPress}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
-      disabled={disabled || dimmed}
+      disabled={!isInteractive}
       style={[animatedStyle, ...getButtonStyle(), dimmed && styles.keyDimmedOpacity]}
     >
       {icon || (
@@ -103,7 +112,7 @@ function KeypadButton({
             styles.keyText,
             variant === 'action' && styles.keyTextAction,
             variant === 'decimal' && highlighted && styles.keyTextDecimalHighlighted,
-            dimmed && styles.keyTextDimmed,
+            variant === 'decimal' && !highlighted && styles.keyTextDimmed,
           ]}
         >
           {value}
@@ -119,8 +128,8 @@ export default function NumericKeypad({
   onSubmit,
   onDecimalPress,
   submitDisabled = false,
-  showDecimal = false,
   highlightDecimal = false,
+  hideDecimal = false,
 }: NumericKeypadProps) {
   const handleNumberPress = (num: string) => {
     onNumberPress(num);
@@ -150,46 +159,34 @@ export default function NumericKeypad({
           <KeypadButton value="9" onPress={() => handleNumberPress('9')} />
         </View>
 
-        {/* Row 4: Decimal/Backspace, 0, Submit */}
+        {/* Row 4: Decimal, 0, Backspace */}
         <View style={styles.row}>
-          {showDecimal ? (
-            <KeypadButton
-              value="."
-              onPress={() => onDecimalPress?.()}
-              variant="decimal"
-              highlighted={highlightDecimal}
-              dimmed={!highlightDecimal}
-            />
-          ) : (
-            <KeypadButton
-              value="⌫"
-              onPress={onBackspace}
-              variant="action"
-              icon={<Ionicons name="backspace-outline" size={22} color={Colors.primary} />}
-            />
-          )}
+          <KeypadButton
+            value="."
+            onPress={() => onDecimalPress?.()}
+            variant="decimal"
+            highlighted={highlightDecimal}
+            dimmed={!highlightDecimal}
+            hidden={hideDecimal}
+          />
           <KeypadButton value="0" onPress={() => handleNumberPress('0')} />
           <KeypadButton
-            value="Next"
+            value="⌫"
+            onPress={onBackspace}
+            variant="action"
+            icon={<Ionicons name="backspace-outline" size={22} color={Colors.primary} />}
+          />
+        </View>
+
+        {/* Row 5: Submit (full width) */}
+        <View style={styles.row}>
+          <KeypadButton
+            value="Submit"
             onPress={onSubmit}
             variant="submit"
             disabled={submitDisabled}
           />
         </View>
-
-        {/* Row 5: Only shown when decimal is visible - backspace moves here */}
-        {showDecimal && (
-          <View style={styles.row}>
-            <KeypadButton
-              value="⌫"
-              onPress={onBackspace}
-              variant="action"
-              icon={<Ionicons name="backspace-outline" size={22} color={Colors.primary} />}
-            />
-            <View style={styles.emptyKey} />
-            <View style={styles.emptyKey} />
-          </View>
-        )}
       </View>
     </View>
   );
@@ -239,7 +236,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0, 245, 255, 0.04)',
   },
   keyDimmedOpacity: {
-    opacity: 0.4,
+    opacity: 0.35,
   },
   keyWrapper: {
     flex: 1,
@@ -280,9 +277,5 @@ const styles = StyleSheet.create({
   },
   keyTextDisabled: {
     color: Colors.textLight,
-  },
-  emptyKey: {
-    flex: 1,
-    height: 52,
   },
 });

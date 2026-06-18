@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Colors, Spacing, FontSizes, BorderRadius, Fonts, LetterSpacing } from '../constants/theme';
+import { Colors, Spacing, FontSizes, Fonts, LetterSpacing } from '../constants/theme';
 import type { DifficultyTimelineEntry } from '../types/game';
 
 type DifficultyTimelineProps = {
@@ -59,8 +59,6 @@ export default function DifficultyTimeline({ timeline }: DifficultyTimelineProps
           const prevPoint = points[index - 1];
           const dx = point.x - prevPoint.x;
           const dy = point.y - prevPoint.y;
-          const length = Math.sqrt(dx * dx + dy * dy);
-          const angle = Math.atan2(dy, dx) * (180 / Math.PI);
 
           return (
             <View
@@ -69,9 +67,8 @@ export default function DifficultyTimeline({ timeline }: DifficultyTimelineProps
                 styles.lineSegment,
                 {
                   left: `${prevPoint.x}%`,
-                  top: prevPoint.y,
+                  top: Math.min(prevPoint.y, point.y),
                   width: `${dx}%`,
-                  transform: [{ rotate: '0deg' }],
                   height: Math.abs(dy) + 2,
                 },
               ]}

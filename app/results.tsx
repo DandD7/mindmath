@@ -20,8 +20,9 @@ import GlassCard from '../components/GlassCard';
 import DifficultyTimeline from '../components/DifficultyTimeline';
 import { Colors, Spacing, FontSizes, BorderRadius, Shadows, Fonts, LetterSpacing } from '../constants/theme';
 import { getTestSessionById, getTestHistory } from '../utils/storage';
+import { getOperationDisplayName } from '../utils/gameLogic';
 import type { TestSession } from '../types/game';
-import { ROUNDS } from '../types/game';
+import { GAME_MODES } from '../types/game';
 
 function NewBestBadge() {
   const glowPulse = useSharedValue(0.5);
@@ -99,15 +100,18 @@ export default function ResultsScreen() {
         // Check if this is a new best score
         if (loadedSession) {
           const history = await getTestHistory();
-          const otherSessions = history.filter((s) => s.id !== params.sessionId);
-          if (otherSessions.length > 0) {
-            const bestPrevious = Math.max(...otherSessions.map((s) => s.totalWeightedScore));
+          // Compare only against sessions of the same mode
+          const sameModeHistory = history.filter(
+            (s) => s.id !== params.sessionId && s.gameMode === loadedSession.gameMode
+          );
+          if (sameModeHistory.length > 0) {
+            const bestPrevious = Math.max(...sameModeHistory.map((s) => s.totalWeightedScore));
             setPreviousBest(bestPrevious);
             if (loadedSession.totalWeightedScore > bestPrevious) {
               setIsNewBest(true);
             }
           } else {
-            // First ever session is always a "new best"
+            // First ever session for this mode is always a "new best"
             setIsNewBest(true);
           }
         }
@@ -127,7 +131,7 @@ export default function ResultsScreen() {
   }
 
   const totalCorrect = session.roundResults.reduce((sum, r) => sum + r.correctAnswers, 0);
-  const totalQuestions = session.totalQuestions || totalCorrect; // fallback for old sessions
+  const totalQuestions = session.totalQuestions || totalCorrect;
   const maxDifficultyReached = Math.max(
     ...Object.keys(session.difficultyProfile).map(Number),
     1
@@ -136,6 +140,15 @@ export default function ResultsScreen() {
     ...Object.values(session.difficultyProfile).map((count) => count as number),
     1
   );
+
+  // Get the mode-specific display name
+  const modeName = session.gameMode
+    ? getOperationDisplayName(session.gameMode)
+    : 'Math';
+  const modeColor = GAME_MODES.find(m => m.operation === session.gameMode)?.color || Colors.primary;
+
+  // Calculate accuracy percentage
+  const accuracyPercent = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
 
   return (
     <View style={styles.container}>
@@ -152,13 +165,16 @@ export default function ResultsScreen() {
             style={styles.headerSection}
           >
             <Text style={styles.title}>SESSION COMPLETE</Text>
+            <Text style={[styles.modeTitle, { color: modeColor }]}>
+              {modeName.toUpperCase()} MODE
+            </Text>
             {isNewBest && <NewBestBadge />}
           </Animated.View>
 
           {/* Main Score Card */}
           <Animated.View entering={FadeInUp.duration(700).delay(200).springify().damping(12)}>
             <GlassCard
-              glowColor={isNewBest ? '#00F5A0' : Colors.primary}
+              glowColor={isNewBest ? '#00F5A0' : modeColor}
               intensity={isNewBest ? 'high' : 'medium'}
               style={styles.mainScoreCard}
             >
@@ -167,6 +183,7 @@ export default function ResultsScreen() {
                 style={[
                   styles.scoreValue,
                   isNewBest && styles.scoreValueBest,
+                  !isNewBest && { color: modeColor },
                 ]}
               >
                 {session.totalWeightedScore}
@@ -182,8 +199,9 @@ export default function ResultsScreen() {
           {/* Stats Grid */}
           <View style={styles.statsGrid}>
             <StatCard
-              label="ACCURACY"
-              value={`${totalCorrect} CORRECT OUT OF ${totalQuestions}`}
+              label={`${modeName.toUpperCase()} ACCURACY`}
+              value={`${accuracyPercent}%`}
+              subtitle={`${totalCorrect} of ${totalQuestions} correct`}
               index={0}
               glowColor={Colors.correct}
             />
@@ -194,11 +212,11 @@ export default function ResultsScreen() {
               glowColor={Colors.accent}
             />
             <StatCard
-              label="ROUNDS PLAYED"
-              value={session.roundResults.length}
-              subtitle={`of ${ROUNDS.length}`}
+              label="QUESTIONS SOLVED"
+              value={totalCorrect}
+              subtitle={`in 60 seconds`}
               index={2}
-              glowColor={Colors.primary}
+              glowColor={modeColor}
             />
           </View>
 
@@ -215,35 +233,6 @@ export default function ResultsScreen() {
               </GlassCard>
             </Animated.View>
           )}
-
-          {/* Round Breakdown */}
-          <Animated.View entering={FadeInDown.duration(500).delay(700)}>
-            <GlassCard style={styles.breakdownCard}>
-              <Text style={styles.sectionTitle}>ROUND BREAKDOWN</Text>
-              <View style={styles.roundsList}>
-                {ROUNDS.map((round, index) => {
-                  const roundResult = session.roundResults.find(
-                    (r) => r.operation === round.operation
-                  );
-                  return (
-                    <Animated.View
-                      key={round.id}
-                      entering={SlideInRight.duration(400).delay(800 + index * 80)}
-                      style={styles.roundItem}
-                    >
-                      <View style={styles.roundLeft}>
-                        <View style={styles.roundDot} />
-                        <Text style={styles.roundName}>{round.name}</Text>
-                      </View>
-                      <Text style={styles.roundScore}>
-                        {roundResult?.correctAnswers || 0}
-                      </Text>
-                    </Animated.View>
-                  );
-                })}
-              </View>
-            </GlassCard>
-          </Animated.View>
 
           {/* Difficulty Profile */}
           <Animated.View entering={FadeInDown.duration(500).delay(900)}>
@@ -293,7 +282,10 @@ export default function ResultsScreen() {
           >
             <AnimatedButton
               title="Play Again"
-              onPress={() => router.replace('/game')}
+              onPress={() => router.replace({
+                pathname: '/game',
+                params: { mode: session.gameMode || 'addition' },
+              })}
               style={styles.button}
             />
             <AnimatedButton
@@ -347,6 +339,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     letterSpacing: LetterSpacing.widest,
     textTransform: 'uppercase',
+  },
+  modeTitle: {
+    fontSize: FontSizes.sm,
+    fontWeight: '700',
+    letterSpacing: LetterSpacing.wider,
+    marginTop: Spacing.sm,
   },
   // New Best Badge
   newBestBadge: {
@@ -448,49 +446,6 @@ const styles = StyleSheet.create({
   },
   timelineLegendSpacer: {
     height: Spacing.lg,
-  },
-  roundsList: {
-    gap: Spacing.sm,
-  },
-  roundItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: Spacing.md,
-    paddingHorizontal: Spacing.md,
-    backgroundColor: 'rgba(0, 245, 255, 0.03)',
-    borderRadius: BorderRadius.sm,
-    borderWidth: 1,
-    borderColor: 'rgba(0, 245, 255, 0.06)',
-  },
-  roundLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: Spacing.sm,
-  },
-  roundDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: Colors.primary,
-    shadowColor: Colors.primary,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.6,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  roundName: {
-    fontSize: FontSizes.md,
-    color: Colors.textSecondary,
-    fontWeight: '400',
-    letterSpacing: LetterSpacing.wide,
-  },
-  roundScore: {
-    fontSize: FontSizes.lg,
-    color: Colors.primary,
-    fontWeight: '600',
-    fontFamily: Fonts.mono,
-    letterSpacing: LetterSpacing.wide,
   },
   // Chart
   chartContainer: {

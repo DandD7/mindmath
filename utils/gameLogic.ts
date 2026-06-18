@@ -9,23 +9,19 @@ const generateAdditionQuestion = (difficulty: number): Question => {
 
   switch (difficulty) {
     case 1:
-      // Easy: 1-20
       num1 = getRandomInt(1, 20);
       num2 = getRandomInt(1, 20);
       break;
     case 2:
-      // Medium: 10-40 (smoother transition)
       num1 = getRandomInt(10, 40);
       num2 = getRandomInt(10, 40);
       break;
     case 3:
-      // Hard: 20-70 (gradual increase)
       num1 = getRandomInt(20, 70);
       num2 = getRandomInt(20, 70);
       break;
     case 4:
     default:
-      // Expert: 30-99
       num1 = getRandomInt(30, 99);
       num2 = getRandomInt(30, 99);
       break;
@@ -44,23 +40,19 @@ const generateSubtractionQuestion = (difficulty: number): Question => {
 
   switch (difficulty) {
     case 1:
-      // Easy: 1-20
       num1 = getRandomInt(10, 20);
       num2 = getRandomInt(1, num1);
       break;
     case 2:
-      // Medium: 20-50 (smoother transition)
       num1 = getRandomInt(20, 50);
       num2 = getRandomInt(5, num1);
       break;
     case 3:
-      // Hard: 40-80 (gradual increase)
       num1 = getRandomInt(40, 80);
       num2 = getRandomInt(10, num1);
       break;
     case 4:
     default:
-      // Expert: 60-99
       num1 = getRandomInt(60, 99);
       num2 = getRandomInt(15, num1);
       break;
@@ -79,23 +71,19 @@ const generateMultiplicationQuestion = (difficulty: number): Question => {
 
   switch (difficulty) {
     case 1:
-      // Easy: Single digit tables
       num1 = getRandomInt(2, 9);
       num2 = getRandomInt(2, 9);
       break;
     case 2:
-      // Medium: Up to 12 times table (smoother transition)
       num1 = getRandomInt(2, 12);
       num2 = getRandomInt(2, 12);
       break;
     case 3:
-      // Hard: Teen numbers × single/double digit
       num1 = getRandomInt(11, 19);
       num2 = getRandomInt(2, 12);
       break;
     case 4:
     default:
-      // Expert: 2-digit × 2-digit (capped, gradual)
       num1 = getRandomInt(11, 25);
       num2 = getRandomInt(11, 25);
       break;
@@ -107,6 +95,14 @@ const generateMultiplicationQuestion = (difficulty: number): Question => {
     difficulty,
     operation: 'multiplication',
   };
+};
+
+/**
+ * Round Half Up: if the fractional part is >= 0.5, round up, otherwise round down.
+ * e.g., 12.5 => 13, 12.4 => 12, -12.5 => -12
+ */
+const roundHalfUp = (value: number): number => {
+  return Math.floor(value + 0.5);
 };
 
 const generatePercentageQuestion = (difficulty: number): Question => {
@@ -125,9 +121,8 @@ const generatePercentageQuestion = (difficulty: number): Question => {
 
   switch (difficulty) {
     case 1:
-      // Simple percentages ending in 0 or 5, even numbers for clean results
+      // Simple percentages with even numbers for clean results
       percentage = getValidPercentage(10, 50);
-      // Use even numbers to often produce whole answers
       number = getRandomInt(5, 49) * 2;
       break;
     case 2:
@@ -142,16 +137,15 @@ const generatePercentageQuestion = (difficulty: number): Question => {
       break;
     case 4:
     default:
-      // Higher difficulty: non-round percentages that may produce decimals
+      // Higher difficulty: non-round percentages
       percentage = getValidPercentage(5, 95);
       number = getRandomInt(10, 200);
       break;
   }
 
-  // Compute raw answer
+  // Compute raw answer and apply Round Half Up - NEVER have decimals for percentages
   const rawAnswer = (percentage / 100) * number;
-  // Round to 1 decimal place for clarity
-  const answer = Math.round(rawAnswer * 10) / 10;
+  const answer = roundHalfUp(rawAnswer);
 
   return {
     question: `${percentage}% of ${number}`,
@@ -171,8 +165,8 @@ export const generateQuestion = (
     const operations: OperationType[] = ['addition', 'subtraction', 'multiplication', 'percentage'];
     const randomOperation = operations[getRandomInt(0, operations.length - 1)];
 
-    // Reduce difficulty for mixed round - use max difficulty of 2 (easier problems)
-    const operationDifficulty = Math.min(difficultyLevels[randomOperation] || 1, 2);
+    // Use the difficulty passed for mixed mode
+    const operationDifficulty = Math.min(difficultyLevels[randomOperation] || 1, 4);
 
     return generateQuestion(randomOperation, operationDifficulty);
   }
@@ -194,7 +188,7 @@ export const generateQuestion = (
 export const checkAnswer = (userAnswer: string, correctAnswer: number): boolean => {
   const parsed = parseFloat(userAnswer);
   if (isNaN(parsed)) return false;
-  // Treat mathematically equivalent numbers as identical (e.g., 12.5 === 12.50)
+  // Treat mathematically equivalent numbers as identical
   return Math.abs(parsed - correctAnswer) < 0.001;
 };
 
@@ -215,9 +209,20 @@ export const getAnswerHint = (answer: number): string => {
 };
 
 /**
+ * Determines if the current operation produces only integer results.
+ * Percentages now always produce integers due to Round Half Up rule.
+ */
+export const operationProducesIntegers = (operation: OperationType): boolean => {
+  // All operations except potentially mixed (which could have any) produce integers
+  // Addition, subtraction, multiplication always produce integers
+  // Percentage now uses Round Half Up, so always integers
+  return operation !== 'mixed';
+};
+
+/**
  * Determines if the current operation may require decimal input.
  */
-export const operationRequiresDecimal = (operation: import('../types/game').OperationType, answer: number): boolean => {
+export const operationRequiresDecimal = (operation: OperationType, answer: number): boolean => {
   return !Number.isInteger(answer);
 };
 
@@ -248,4 +253,18 @@ export const calculateWeightedScore = (difficultyProfile: { [key: number]: numbe
   });
 
   return totalScore;
+};
+
+/**
+ * Get display name for an operation type
+ */
+export const getOperationDisplayName = (operation: OperationType): string => {
+  switch (operation) {
+    case 'addition': return 'Addition';
+    case 'subtraction': return 'Subtraction';
+    case 'multiplication': return 'Multiplication';
+    case 'percentage': return 'Percentages';
+    case 'mixed': return 'Mixed';
+    default: return 'Math';
+  }
 };

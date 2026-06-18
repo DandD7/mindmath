@@ -7,7 +7,9 @@ import Animated, { FadeInRight, FadeOutLeft } from 'react-native-reanimated';
 import { Swipeable } from 'react-native-gesture-handler';
 import { Colors, Spacing, FontSizes, BorderRadius, Fonts, LetterSpacing } from '../constants/theme';
 import { getTestHistory, deleteTestSession } from '../utils/storage';
+import { getOperationDisplayName } from '../utils/gameLogic';
 import type { TestSession } from '../types/game';
+import { GAME_MODES } from '../types/game';
 import { useFocusEffect } from '@react-navigation/native';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
@@ -74,6 +76,9 @@ export default function HistoryScreen() {
       minute: '2-digit',
     });
 
+    const modeName = item.gameMode ? getOperationDisplayName(item.gameMode) : 'Mixed';
+    const modeColor = GAME_MODES.find(m => m.operation === item.gameMode)?.color || Colors.primary;
+
     return (
       <Swipeable
         renderRightActions={() => renderRightActions(item.id)}
@@ -94,6 +99,7 @@ export default function HistoryScreen() {
             <View style={styles.historyItemLeft}>
               <Text style={styles.historyDate}>{formattedDate}</Text>
               <Text style={styles.historyTime}>{formattedTime}</Text>
+              <Text style={[styles.historyMode, { color: modeColor }]}>{modeName}</Text>
             </View>
             <View style={styles.historyItemRight}>
               <Text style={styles.historyScoreLabel}>Score</Text>
@@ -206,6 +212,12 @@ const styles = StyleSheet.create({
   historyTime: {
     fontSize: FontSizes.md,
     color: Colors.textLight,
+  },
+  historyMode: {
+    fontSize: FontSizes.xs,
+    fontWeight: '600',
+    letterSpacing: LetterSpacing.wider,
+    marginTop: Spacing.xs,
   },
   historyItemRight: {
     alignItems: 'flex-end',
