@@ -21,12 +21,21 @@ export type RoundResult = {
   difficultyLevels: { [key: number]: number }; // difficulty level -> count of correct answers
 };
 
+export type DifficultyTimelineEntry = {
+  questionIndex: number;
+  difficulty: number;
+  correct: boolean;
+  operation: OperationType;
+};
+
 export type TestSession = {
   id: string;
   date: number; // timestamp
   totalWeightedScore: number;
   roundResults: RoundResult[];
   difficultyProfile: { [key: number]: number }; // difficulty level -> count of correct answers across all rounds
+  difficultyTimeline?: DifficultyTimelineEntry[]; // tracks difficulty progression per question
+  totalQuestions?: number; // total questions attempted
 };
 
 export type GameState = {
@@ -40,6 +49,8 @@ export type GameState = {
   totalCorrectByDifficulty: { [key: number]: number };
   currentRoundCorrectAnswers: number; // Track correct answers for current round
   consecutiveCorrect: number; // Track consecutive correct answers for difficulty progression
+  difficultyTimeline: DifficultyTimelineEntry[]; // tracks difficulty changes during session
+  totalQuestionsAttempted: number; // total questions attempted
 };
 
 export const ROUNDS: RoundType[] = [

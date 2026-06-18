@@ -17,8 +17,8 @@ import ProgressRing from '../components/ProgressRing';
 import ParticleBurst from '../components/ParticleBurst';
 import { Colors, Spacing, FontSizes, BorderRadius, Shadows, Fonts, LetterSpacing } from '../constants/theme';
 import { ROUNDS } from '../types/game';
-import type { GameState, RoundResult } from '../types/game';
-import { generateQuestion, checkAnswer, getNextDifficulty, calculateWeightedScore } from '../utils/gameLogic';
+import type { GameState, RoundResult, DifficultyTimelineEntry } from '../types/game';
+import { generateQuestion, checkAnswer, getNextDifficulty, calculateWeightedScore, getAnswerHint, operationRequiresDecimal } from '../utils/gameLogic';
 import { saveTestSession } from '../utils/storage';
 
 export default function GameScreen() {
@@ -42,6 +42,8 @@ export default function GameScreen() {
     totalCorrectByDifficulty: {},
     currentRoundCorrectAnswers: 0,
     consecutiveCorrect: 0,
+    difficultyTimeline: [],
+    totalQuestionsAttempted: 0,
   });
 
   const [userAnswer, setUserAnswer] = useState('');
@@ -58,6 +60,13 @@ export default function GameScreen() {
   const questionOpacity = useSharedValue(1);
 
   const currentRound = ROUNDS[gameState.currentRound];
+
+  // Determine if current answer requires decimal
+  const answerRequiresDecimal = operationRequiresDecimal(
+    gameState.currentQuestion.operation,
+    gameState.currentQuestion.answer
+  );
+  const answerHint = getAnswerHint(gameState.currentQuestion.answer);
 
   const handleRoundEnd = useCallback(() => {
     if (isTransitioning) return;
@@ -116,6 +125,8 @@ export default function GameScreen() {
         totalWeightedScore,
         roundResults: updatedRoundResults,
         difficultyProfile: finalGameState.totalCorrectByDifficulty,
+        difficultyTimeline: gameState.difficultyTimeline,
+        totalQuestions: gameState.totalQuestionsAttempted,
       };
 
       saveTestSession(session).then(() => {
@@ -186,6 +197,15 @@ export default function GameScreen() {
 
     const isCorrect = checkAnswer(userAnswer, gameState.currentQuestion.answer);
     const currentDiff = gameState.currentQuestion.difficulty;
+    const questionIndex = gameState.totalQuestionsAttempted;
+
+    // Record timeline entry
+    const timelineEntry: DifficultyTimelineEntry = {
+      questionIndex,
+      difficulty: currentDiff,
+      correct: isCorrect,
+      operation: gameState.currentQuestion.operation,
+    };
 
     if (isCorrect) {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
@@ -198,8 +218,14 @@ export default function GameScreen() {
       setParticleTrigger((prev) => prev + 1);
 
       const newConsecutiveCorrect = gameState.consecutiveCorrect + 1;
-      const newDifficulty = getNextDifficulty(currentDiff, true, newConsecutiveCorrect);
-      const resetConsecutive = newDifficulty > currentDiff ? 0 : newConsecutiveCorrect;
+
+      // DDA: Increase difficulty after streak of 3 correct answers
+      let newDifficulty = currentDiff;
+      let resetConsecutive = newConsecutiveCorrect;
+      if (newConsecutiveCorrect >= 3) {
+        newDifficulty = Math.min(currentDiff + 1, 4);
+        resetConsecutive = 0; // Reset streak counter after leveling up
+      }
 
       const updatedDifficultyProfile = { ...gameState.totalCorrectByDifficulty };
       updatedDifficultyProfile[currentDiff] = (updatedDifficultyProfile[currentDiff] || 0) + 1;
@@ -224,6 +250,8 @@ export default function GameScreen() {
           currentRound.operation === 'mixed' ? updatedDifficulties : undefined
         ),
         totalCorrectByDifficulty: updatedDifficultyProfile,
+        difficultyTimeline: [...gameState.difficultyTimeline, timelineEntry],
+        totalQuestionsAttempted: questionIndex + 1,
       });
     } else {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
@@ -235,7 +263,8 @@ export default function GameScreen() {
         withTiming(0, { duration: 50 })
       );
 
-      const newDifficulty = getNextDifficulty(currentDiff, false, 0);
+      // DDA: Immediately decrease difficulty by 1 on incorrect answer
+      const newDifficulty = Math.max(currentDiff - 1, 1);
 
       questionOpacity.value = withSequence(
         withTiming(0, { duration: 100 }),
@@ -254,6 +283,8 @@ export default function GameScreen() {
           newDifficulty,
           currentRound.operation === 'mixed' ? updatedDifficulties : undefined
         ),
+        difficultyTimeline: [...gameState.difficultyTimeline, timelineEntry],
+        totalQuestionsAttempted: questionIndex + 1,
       });
     }
 
@@ -262,12 +293,27 @@ export default function GameScreen() {
 
   const handleNumberPress = (number: string) => {
     if (!isGameActive || isTransitioning) return;
-    if (userAnswer === '0' || (userAnswer === '' && number === '0')) {
+    if (userAnswer === '0' && number !== '.') {
+      setUserAnswer(number === '0' ? '0' : number);
+      return;
+    }
+    if (userAnswer === '' && number === '0') {
       setUserAnswer('0');
       return;
     }
     if (userAnswer.length >= 10) return;
     setUserAnswer(prev => prev + number);
+  };
+
+  const handleDecimalPress = () => {
+    if (!isGameActive || isTransitioning) return;
+    // Don't add decimal if one already exists
+    if (userAnswer.includes('.')) return;
+    if (userAnswer === '') {
+      setUserAnswer('0.');
+    } else {
+      setUserAnswer(prev => prev + '.');
+    }
   };
 
   const handleBackspace = () => {
@@ -374,6 +420,11 @@ export default function GameScreen() {
           {/* Spacer */}
           <View style={{ flex: 1 }} />
 
+          {/* Answer Hint */}
+          <View style={styles.hintContainer}>
+            <Text style={styles.hintText}>{answerHint}</Text>
+          </View>
+
           {/* Answer Display */}
           <View style={styles.answerContainer}>
             <Animated.View style={[styles.answerDisplay, inputAnimatedStyle, inputFlashStyle]}>
@@ -389,7 +440,10 @@ export default function GameScreen() {
           onNumberPress={handleNumberPress}
           onBackspace={handleBackspace}
           onSubmit={handleSubmit}
+          onDecimalPress={handleDecimalPress}
           submitDisabled={!userAnswer.trim() || !isGameActive || isTransitioning}
+          showDecimal={answerRequiresDecimal}
+          highlightDecimal={answerRequiresDecimal}
         />
       </SafeAreaView>
 
@@ -606,6 +660,18 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: Fonts.mono,
     letterSpacing: LetterSpacing.wide,
+  },
+  // Hint
+  hintContainer: {
+    alignItems: 'center',
+    marginBottom: Spacing.sm,
+  },
+  hintText: {
+    fontSize: FontSizes.xs,
+    fontWeight: '600',
+    color: Colors.textLight,
+    letterSpacing: LetterSpacing.wider,
+    textTransform: 'uppercase',
   },
   answerContainer: {
     paddingBottom: Spacing.md,

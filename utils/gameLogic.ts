@@ -125,9 +125,10 @@ const generatePercentageQuestion = (difficulty: number): Question => {
 
   switch (difficulty) {
     case 1:
-      // Simple percentages ending in 0 or 5
+      // Simple percentages ending in 0 or 5, even numbers for clean results
       percentage = getValidPercentage(10, 50);
-      number = getRandomInt(10, 99);
+      // Use even numbers to often produce whole answers
+      number = getRandomInt(5, 49) * 2;
       break;
     case 2:
       // Any percentage ending in 0 or 5, with 2-digit numbers
@@ -135,15 +136,22 @@ const generatePercentageQuestion = (difficulty: number): Question => {
       number = getRandomInt(10, 99);
       break;
     case 3:
-    default:
       // Any percentage ending in 0 or 5, with up to 3-digit numbers
       percentage = getValidPercentage(5, 100);
       number = getRandomInt(100, 999);
       break;
+    case 4:
+    default:
+      // Higher difficulty: non-round percentages that may produce decimals
+      percentage = getValidPercentage(5, 95);
+      number = getRandomInt(10, 200);
+      break;
   }
 
-  // Round to nearest whole number
-  const answer = Math.round((percentage / 100) * number);
+  // Compute raw answer
+  const rawAnswer = (percentage / 100) * number;
+  // Round to 1 decimal place for clarity
+  const answer = Math.round(rawAnswer * 10) / 10;
 
   return {
     question: `${percentage}% of ${number}`,
@@ -184,8 +192,33 @@ export const generateQuestion = (
 };
 
 export const checkAnswer = (userAnswer: string, correctAnswer: number): boolean => {
-  const parsed = parseInt(userAnswer, 10);
-  return !isNaN(parsed) && parsed === correctAnswer;
+  const parsed = parseFloat(userAnswer);
+  if (isNaN(parsed)) return false;
+  // Treat mathematically equivalent numbers as identical (e.g., 12.5 === 12.50)
+  return Math.abs(parsed - correctAnswer) < 0.001;
+};
+
+/**
+ * Determines if the current question's answer requires a decimal.
+ * Returns a hint string for the user.
+ */
+export const getAnswerHint = (answer: number): string => {
+  if (Number.isInteger(answer)) {
+    return 'ENTER INTEGER';
+  }
+  // Check how many decimal places
+  const decimals = answer.toString().split('.')[1]?.length || 0;
+  if (decimals === 1) {
+    return 'ROUND TO 1 DECIMAL';
+  }
+  return `ROUND TO ${decimals} DECIMALS`;
+};
+
+/**
+ * Determines if the current operation may require decimal input.
+ */
+export const operationRequiresDecimal = (operation: import('../types/game').OperationType, answer: number): boolean => {
+  return !Number.isInteger(answer);
 };
 
 export const getNextDifficulty = (

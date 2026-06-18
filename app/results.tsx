@@ -17,6 +17,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import AnimatedButton from '../components/AnimatedButton';
 import GlassCard from '../components/GlassCard';
+import DifficultyTimeline from '../components/DifficultyTimeline';
 import { Colors, Spacing, FontSizes, BorderRadius, Shadows, Fonts, LetterSpacing } from '../constants/theme';
 import { getTestSessionById, getTestHistory } from '../utils/storage';
 import type { TestSession } from '../types/game';
@@ -126,6 +127,7 @@ export default function ResultsScreen() {
   }
 
   const totalCorrect = session.roundResults.reduce((sum, r) => sum + r.correctAnswers, 0);
+  const totalQuestions = session.totalQuestions || totalCorrect; // fallback for old sessions
   const maxDifficultyReached = Math.max(
     ...Object.keys(session.difficultyProfile).map(Number),
     1
@@ -180,8 +182,8 @@ export default function ResultsScreen() {
           {/* Stats Grid */}
           <View style={styles.statsGrid}>
             <StatCard
-              label="TOTAL CORRECT"
-              value={totalCorrect}
+              label="ACCURACY"
+              value={`${totalCorrect} CORRECT OUT OF ${totalQuestions}`}
               index={0}
               glowColor={Colors.correct}
             />
@@ -199,6 +201,20 @@ export default function ResultsScreen() {
               glowColor={Colors.primary}
             />
           </View>
+
+          {/* Difficulty Timeline Chart */}
+          {session.difficultyTimeline && session.difficultyTimeline.length > 0 && (
+            <Animated.View entering={FadeInDown.duration(500).delay(650)}>
+              <GlassCard style={styles.breakdownCard}>
+                <Text style={styles.sectionTitle}>DIFFICULTY TIMELINE</Text>
+                <Text style={styles.sectionSubtitle}>
+                  How your difficulty progressed during the session
+                </Text>
+                <DifficultyTimeline timeline={session.difficultyTimeline} />
+                <View style={styles.timelineLegendSpacer} />
+              </GlassCard>
+            </Animated.View>
+          )}
 
           {/* Round Breakdown */}
           <Animated.View entering={FadeInDown.duration(500).delay(700)}>
@@ -401,7 +417,7 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.xs,
   },
   statValue: {
-    fontSize: FontSizes.xxl,
+    fontSize: FontSizes.xl,
     fontWeight: '300',
     fontFamily: Fonts.mono,
     letterSpacing: LetterSpacing.wide,
@@ -420,9 +436,18 @@ const styles = StyleSheet.create({
     fontSize: FontSizes.sm,
     fontWeight: '600',
     color: Colors.textSecondary,
-    marginBottom: Spacing.lg,
+    marginBottom: Spacing.sm,
     letterSpacing: LetterSpacing.widest,
     textTransform: 'uppercase',
+  },
+  sectionSubtitle: {
+    fontSize: FontSizes.xs,
+    color: Colors.textLight,
+    letterSpacing: LetterSpacing.wide,
+    marginBottom: Spacing.md,
+  },
+  timelineLegendSpacer: {
+    height: Spacing.lg,
   },
   roundsList: {
     gap: Spacing.sm,

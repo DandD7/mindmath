@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": 1781819670169,
+  "generatedAt": 1781820552202,
   "entries": {
     "ProgressRing@components/ProgressRing.tsx:54": {
       "element": {
@@ -1693,2619 +1693,6 @@
         }
       ]
     },
-    "NewBestBadge@app/results.tsx:46": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 46
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.newBestBadge",
-          "file": "app/results.tsx",
-          "defLine": 336,
-          "properties": {
-            "overflow": {
-              "line": 339,
-              "col": 14,
-              "endCol": 22,
-              "raw": "'hidden'"
-            },
-            "shadowColor": {
-              "line": 340,
-              "col": 17,
-              "endCol": 26,
-              "raw": "'#00F5A0'"
-            },
-            "shadowRadius": {
-              "line": 342,
-              "col": 18,
-              "endCol": 20,
-              "raw": "16"
-            },
-            "elevation": {
-              "line": 343,
-              "col": 15,
-              "endCol": 16,
-              "raw": "8"
-            }
-          }
-        },
-        {
-          "origin": "dynamic",
-          "resolvable": false
-        }
-      ]
-    },
-    "NewBestBadge@app/results.tsx:47": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 47
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.newBestGradient",
-          "file": "app/results.tsx",
-          "defLine": 345,
-          "properties": {}
-        }
-      ]
-    },
-    "NewBestBadge@app/results.tsx:53": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 53
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.newBestText",
-          "file": "app/results.tsx",
-          "defLine": 350,
-          "properties": {
-            "fontWeight": {
-              "line": 352,
-              "col": 16,
-              "endCol": 21,
-              "raw": "'700'"
-            }
-          }
-        }
-      ]
-    },
-    "StatCard@app/results.tsx:76": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 76
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.statCard",
-          "file": "app/results.tsx",
-          "defLine": 393,
-          "properties": {
-            "marginBottom": {
-              "line": 394,
-              "col": 18,
-              "endCol": 19,
-              "raw": "0"
-            }
-          }
-        }
-      ]
-    },
-    "StatCard@app/results.tsx:77": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 77
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.statLabel",
-          "file": "app/results.tsx",
-          "defLine": 396,
-          "properties": {
-            "fontWeight": {
-              "line": 398,
-              "col": 16,
-              "endCol": 21,
-              "raw": "'600'"
-            }
-          }
-        }
-      ]
-    },
-    "StatCard@app/results.tsx:78": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 78
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.statValue",
-          "file": "app/results.tsx",
-          "defLine": 403,
-          "properties": {
-            "fontWeight": {
-              "line": 405,
-              "col": 16,
-              "endCol": 21,
-              "raw": "'300'"
-            }
-          }
-        }
-      ]
-    },
-    "StatCard@app/results.tsx:79": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 79
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.statSubtitle",
-          "file": "app/results.tsx",
-          "defLine": 409,
-          "properties": {
-            "marginTop": {
-              "line": 413,
-              "col": 15,
-              "endCol": 16,
-              "raw": "2"
-            }
-          }
-        }
-      ]
-    },
-    "ResultsScreen@app/results.tsx:120": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 120
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.container",
-          "file": "app/results.tsx",
-          "defLine": 297,
-          "properties": {
-            "flex": {
-              "line": 298,
-              "col": 10,
-              "endCol": 11,
-              "raw": "1"
-            }
-          }
-        }
-      ]
-    },
-    "ResultsScreen@app/results.tsx:121": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 121
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.loadingContainer",
-          "file": "app/results.tsx",
-          "defLine": 311,
-          "properties": {
-            "flex": {
-              "line": 312,
-              "col": 10,
-              "endCol": 11,
-              "raw": "1"
-            },
-            "justifyContent": {
-              "line": 313,
-              "col": 20,
-              "endCol": 28,
-              "raw": "'center'"
-            },
-            "alignItems": {
-              "line": 314,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            }
-          }
-        }
-      ]
-    },
-    "ResultsScreen@app/results.tsx:122": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 122
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.loadingText",
-          "file": "app/results.tsx",
-          "defLine": 316,
-          "properties": {}
-        }
-      ]
-    },
-    "ResultsScreen@app/results.tsx:139": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 139
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.container",
-          "file": "app/results.tsx",
-          "defLine": 297,
-          "properties": {
-            "flex": {
-              "line": 298,
-              "col": 10,
-              "endCol": 11,
-              "raw": "1"
-            }
-          }
-        }
-      ]
-    },
-    "ResultsScreen@app/results.tsx:141": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 141
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.safeArea",
-          "file": "app/results.tsx",
-          "defLine": 301,
-          "properties": {
-            "flex": {
-              "line": 302,
-              "col": 10,
-              "endCol": 11,
-              "raw": "1"
-            }
-          }
-        }
-      ]
-    },
-    "ResultsScreen@app/results.tsx:142": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 142
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.scrollView",
-          "file": "app/results.tsx",
-          "defLine": 304,
-          "properties": {
-            "flex": {
-              "line": 305,
-              "col": 10,
-              "endCol": 11,
-              "raw": "1"
-            }
-          }
-        }
-      ]
-    },
-    "ResultsScreen@app/results.tsx:148": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 148
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.headerSection",
-          "file": "app/results.tsx",
-          "defLine": 322,
-          "properties": {
-            "alignItems": {
-              "line": 323,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            }
-          }
-        }
-      ]
-    },
-    "ResultsScreen@app/results.tsx:152": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 152
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.title",
-          "file": "app/results.tsx",
-          "defLine": 327,
-          "properties": {
-            "fontWeight": {
-              "line": 329,
-              "col": 16,
-              "endCol": 21,
-              "raw": "'300'"
-            },
-            "textAlign": {
-              "line": 331,
-              "col": 15,
-              "endCol": 23,
-              "raw": "'center'"
-            },
-            "textTransform": {
-              "line": 333,
-              "col": 19,
-              "endCol": 30,
-              "raw": "'uppercase'"
-            }
-          }
-        }
-      ]
-    },
-    "ResultsScreen@app/results.tsx:158": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 158
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.mainScoreCard",
-          "file": "app/results.tsx",
-          "defLine": 357,
-          "properties": {}
-        }
-      ]
-    },
-    "ResultsScreen@app/results.tsx:163": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 163
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.scoreLabel",
-          "file": "app/results.tsx",
-          "defLine": 360,
-          "properties": {
-            "fontWeight": {
-              "line": 362,
-              "col": 16,
-              "endCol": 21,
-              "raw": "'600'"
-            },
-            "textAlign": {
-              "line": 365,
-              "col": 15,
-              "endCol": 23,
-              "raw": "'center'"
-            }
-          }
-        }
-      ]
-    },
-    "ResultsScreen@app/results.tsx:164": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 164
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.scoreValue",
-          "file": "app/results.tsx",
-          "defLine": 368,
-          "properties": {
-            "fontSize": {
-              "line": 369,
-              "col": 14,
-              "endCol": 16,
-              "raw": "72"
-            },
-            "fontWeight": {
-              "line": 370,
-              "col": 16,
-              "endCol": 21,
-              "raw": "'200'"
-            },
-            "textAlign": {
-              "line": 373,
-              "col": 15,
-              "endCol": 23,
-              "raw": "'center'"
-            }
-          }
-        },
-        {
-          "origin": "dynamic",
-          "resolvable": false
-        }
-      ]
-    },
-    "ResultsScreen@app/results.tsx:173": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 173
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.previousBest",
-          "file": "app/results.tsx",
-          "defLine": 381,
-          "properties": {
-            "textAlign": {
-              "line": 384,
-              "col": 15,
-              "endCol": 23,
-              "raw": "'center'"
-            }
-          }
-        }
-      ]
-    },
-    "ResultsScreen@app/results.tsx:181": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 181
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.statsGrid",
-          "file": "app/results.tsx",
-          "defLine": 389,
-          "properties": {}
-        }
-      ]
-    },
-    "ResultsScreen@app/results.tsx:205": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 205
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.breakdownCard",
-          "file": "app/results.tsx",
-          "defLine": 416,
-          "properties": {}
-        }
-      ]
-    },
-    "ResultsScreen@app/results.tsx:206": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 206
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.sectionTitle",
-          "file": "app/results.tsx",
-          "defLine": 419,
-          "properties": {
-            "fontWeight": {
-              "line": 421,
-              "col": 16,
-              "endCol": 21,
-              "raw": "'600'"
-            },
-            "textTransform": {
-              "line": 425,
-              "col": 19,
-              "endCol": 30,
-              "raw": "'uppercase'"
-            }
-          }
-        }
-      ]
-    },
-    "ResultsScreen@app/results.tsx:207": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 207
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.roundsList",
-          "file": "app/results.tsx",
-          "defLine": 427,
-          "properties": {}
-        }
-      ]
-    },
-    "ResultsScreen@app/results.tsx:213": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 213
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.roundItem",
-          "file": "app/results.tsx",
-          "defLine": 430,
-          "properties": {
-            "flexDirection": {
-              "line": 431,
-              "col": 19,
-              "endCol": 24,
-              "raw": "'row'"
-            },
-            "justifyContent": {
-              "line": 432,
-              "col": 20,
-              "endCol": 35,
-              "raw": "'space-between'"
-            },
-            "alignItems": {
-              "line": 433,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            },
-            "backgroundColor": {
-              "line": 436,
-              "col": 21,
-              "endCol": 46,
-              "raw": "'rgba(0, 245, 255, 0.03)'"
-            },
-            "borderWidth": {
-              "line": 438,
-              "col": 17,
-              "endCol": 18,
-              "raw": "1"
-            },
-            "borderColor": {
-              "line": 439,
-              "col": 17,
-              "endCol": 42,
-              "raw": "'rgba(0, 245, 255, 0.06)'"
-            }
-          }
-        }
-      ]
-    },
-    "ResultsScreen@app/results.tsx:218": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 218
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.roundLeft",
-          "file": "app/results.tsx",
-          "defLine": 441,
-          "properties": {
-            "flexDirection": {
-              "line": 442,
-              "col": 19,
-              "endCol": 24,
-              "raw": "'row'"
-            },
-            "alignItems": {
-              "line": 443,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            }
-          }
-        }
-      ]
-    },
-    "ResultsScreen@app/results.tsx:219": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 219
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.roundDot",
-          "file": "app/results.tsx",
-          "defLine": 446,
-          "properties": {
-            "width": {
-              "line": 447,
-              "col": 11,
-              "endCol": 12,
-              "raw": "6"
-            },
-            "height": {
-              "line": 448,
-              "col": 12,
-              "endCol": 13,
-              "raw": "6"
-            },
-            "borderRadius": {
-              "line": 449,
-              "col": 18,
-              "endCol": 19,
-              "raw": "3"
-            },
-            "shadowOpacity": {
-              "line": 453,
-              "col": 19,
-              "endCol": 22,
-              "raw": "0.6"
-            },
-            "shadowRadius": {
-              "line": 454,
-              "col": 18,
-              "endCol": 19,
-              "raw": "4"
-            },
-            "elevation": {
-              "line": 455,
-              "col": 15,
-              "endCol": 16,
-              "raw": "2"
-            }
-          }
-        }
-      ]
-    },
-    "ResultsScreen@app/results.tsx:220": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 220
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.roundName",
-          "file": "app/results.tsx",
-          "defLine": 457,
-          "properties": {
-            "fontWeight": {
-              "line": 460,
-              "col": 16,
-              "endCol": 21,
-              "raw": "'400'"
-            }
-          }
-        }
-      ]
-    },
-    "ResultsScreen@app/results.tsx:222": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 222
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.roundScore",
-          "file": "app/results.tsx",
-          "defLine": 463,
-          "properties": {
-            "fontWeight": {
-              "line": 466,
-              "col": 16,
-              "endCol": 21,
-              "raw": "'600'"
-            }
-          }
-        }
-      ]
-    },
-    "ResultsScreen@app/results.tsx:234": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 234
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.breakdownCard",
-          "file": "app/results.tsx",
-          "defLine": 416,
-          "properties": {}
-        }
-      ]
-    },
-    "ResultsScreen@app/results.tsx:235": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 235
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.sectionTitle",
-          "file": "app/results.tsx",
-          "defLine": 419,
-          "properties": {
-            "fontWeight": {
-              "line": 421,
-              "col": 16,
-              "endCol": 21,
-              "raw": "'600'"
-            },
-            "textTransform": {
-              "line": 425,
-              "col": 19,
-              "endCol": 30,
-              "raw": "'uppercase'"
-            }
-          }
-        }
-      ]
-    },
-    "ResultsScreen@app/results.tsx:236": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 236
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.chartContainer",
-          "file": "app/results.tsx",
-          "defLine": 471,
-          "properties": {}
-        }
-      ]
-    },
-    "ResultsScreen@app/results.tsx:242": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 242
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.chartRow",
-          "file": "app/results.tsx",
-          "defLine": 474,
-          "properties": {
-            "flexDirection": {
-              "line": 475,
-              "col": 19,
-              "endCol": 24,
-              "raw": "'row'"
-            },
-            "alignItems": {
-              "line": 476,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            }
-          }
-        }
-      ]
-    },
-    "ResultsScreen@app/results.tsx:247": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 247
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.chartLabel",
-          "file": "app/results.tsx",
-          "defLine": 479,
-          "properties": {
-            "width": {
-              "line": 482,
-              "col": 11,
-              "endCol": 13,
-              "raw": "36"
-            },
-            "fontWeight": {
-              "line": 484,
-              "col": 16,
-              "endCol": 21,
-              "raw": "'500'"
-            }
-          }
-        }
-      ]
-    },
-    "ResultsScreen@app/results.tsx:248": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 248
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.barContainer",
-          "file": "app/results.tsx",
-          "defLine": 487,
-          "properties": {
-            "flex": {
-              "line": 488,
-              "col": 10,
-              "endCol": 11,
-              "raw": "1"
-            },
-            "height": {
-              "line": 489,
-              "col": 12,
-              "endCol": 14,
-              "raw": "24"
-            },
-            "backgroundColor": {
-              "line": 490,
-              "col": 21,
-              "endCol": 46,
-              "raw": "'rgba(0, 245, 255, 0.04)'"
-            },
-            "overflow": {
-              "line": 492,
-              "col": 14,
-              "endCol": 22,
-              "raw": "'hidden'"
-            },
-            "borderWidth": {
-              "line": 493,
-              "col": 17,
-              "endCol": 18,
-              "raw": "1"
-            },
-            "borderColor": {
-              "line": 494,
-              "col": 17,
-              "endCol": 42,
-              "raw": "'rgba(0, 245, 255, 0.06)'"
-            }
-          }
-        }
-      ]
-    },
-    "ResultsScreen@app/results.tsx:249": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 249
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.bar",
-          "file": "app/results.tsx",
-          "defLine": 496,
-          "properties": {
-            "height": {
-              "line": 497,
-              "col": 12,
-              "endCol": 18,
-              "raw": "'100%'"
-            }
-          }
-        }
-      ]
-    },
-    "ResultsScreen@app/results.tsx:265": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 265
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.chartValue",
-          "file": "app/results.tsx",
-          "defLine": 500,
-          "properties": {
-            "fontWeight": {
-              "line": 503,
-              "col": 16,
-              "endCol": 21,
-              "raw": "'600'"
-            },
-            "width": {
-              "line": 504,
-              "col": 11,
-              "endCol": 13,
-              "raw": "32"
-            },
-            "textAlign": {
-              "line": 505,
-              "col": 15,
-              "endCol": 22,
-              "raw": "'right'"
-            }
-          }
-        }
-      ]
-    },
-    "ResultsScreen@app/results.tsx:274": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 274
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.buttonContainer",
-          "file": "app/results.tsx",
-          "defLine": 509,
-          "properties": {}
-        }
-      ]
-    },
-    "ResultsScreen@app/results.tsx:278": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 278
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.button",
-          "file": "app/results.tsx",
-          "defLine": 513,
-          "properties": {
-            "width": {
-              "line": 514,
-              "col": 11,
-              "endCol": 17,
-              "raw": "'100%'"
-            }
-          }
-        }
-      ]
-    },
-    "ResultsScreen@app/results.tsx:283": {
-      "element": {
-        "file": "app/results.tsx",
-        "line": 283
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.button",
-          "file": "app/results.tsx",
-          "defLine": 513,
-          "properties": {
-            "width": {
-              "line": 514,
-              "col": 11,
-              "endCol": 17,
-              "raw": "'100%'"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:297": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 297
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.transitionContainer",
-          "file": "app/game.tsx",
-          "defLine": 632,
-          "properties": {
-            "flex": {
-              "line": 633,
-              "col": 10,
-              "endCol": 11,
-              "raw": "1"
-            },
-            "justifyContent": {
-              "line": 635,
-              "col": 20,
-              "endCol": 28,
-              "raw": "'center'"
-            },
-            "alignItems": {
-              "line": 636,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:299": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 299
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.transitionContent",
-          "file": "app/game.tsx",
-          "defLine": 638,
-          "properties": {
-            "alignItems": {
-              "line": 639,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:300": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 300
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.transitionEmoji",
-          "file": "app/game.tsx",
-          "defLine": 642,
-          "properties": {
-            "fontSize": {
-              "line": 643,
-              "col": 14,
-              "endCol": 16,
-              "raw": "48"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:301": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 301
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.transitionTitle",
-          "file": "app/game.tsx",
-          "defLine": 647,
-          "properties": {
-            "fontWeight": {
-              "line": 649,
-              "col": 16,
-              "endCol": 21,
-              "raw": "'300'"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:302": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 302
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.transitionSubtitle",
-          "file": "app/game.tsx",
-          "defLine": 654,
-          "properties": {
-            "textAlign": {
-              "line": 657,
-              "col": 15,
-              "endCol": 23,
-              "raw": "'center'"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:311": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 311
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.container",
-          "file": "app/game.tsx",
-          "defLine": 476,
-          "properties": {
-            "flex": {
-              "line": 477,
-              "col": 10,
-              "endCol": 11,
-              "raw": "1"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:313": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 313
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.safeArea",
-          "file": "app/game.tsx",
-          "defLine": 480,
-          "properties": {
-            "flex": {
-              "line": 481,
-              "col": 10,
-              "endCol": 11,
-              "raw": "1"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:314": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 314
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.content",
-          "file": "app/game.tsx",
-          "defLine": 483,
-          "properties": {
-            "flex": {
-              "line": 484,
-              "col": 10,
-              "endCol": 11,
-              "raw": "1"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:316": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 316
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.header",
-          "file": "app/game.tsx",
-          "defLine": 489,
-          "properties": {}
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:317": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 317
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.headerTop",
-          "file": "app/game.tsx",
-          "defLine": 492,
-          "properties": {
-            "flexDirection": {
-              "line": 493,
-              "col": 19,
-              "endCol": 24,
-              "raw": "'row'"
-            },
-            "justifyContent": {
-              "line": 494,
-              "col": 20,
-              "endCol": 35,
-              "raw": "'space-between'"
-            },
-            "alignItems": {
-              "line": 495,
-              "col": 16,
-              "endCol": 28,
-              "raw": "'flex-start'"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:318": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 318
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.headerLeft",
-          "file": "app/game.tsx",
-          "defLine": 498,
-          "properties": {
-            "flex": {
-              "line": 499,
-              "col": 10,
-              "endCol": 11,
-              "raw": "1"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:319": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 319
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.roundLabel",
-          "file": "app/game.tsx",
-          "defLine": 501,
-          "properties": {
-            "fontWeight": {
-              "line": 503,
-              "col": 16,
-              "endCol": 21,
-              "raw": "'600'"
-            },
-            "marginBottom": {
-              "line": 506,
-              "col": 18,
-              "endCol": 19,
-              "raw": "2"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:320": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 320
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.roundTitle",
-          "file": "app/game.tsx",
-          "defLine": 508,
-          "properties": {
-            "fontWeight": {
-              "line": 510,
-              "col": 16,
-              "endCol": 21,
-              "raw": "'500'"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:322": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 322
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.headerControls",
-          "file": "app/game.tsx",
-          "defLine": 514,
-          "properties": {
-            "flexDirection": {
-              "line": 515,
-              "col": 19,
-              "endCol": 24,
-              "raw": "'row'"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:323": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 323
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.controlButton",
-          "file": "app/game.tsx",
-          "defLine": 518,
-          "properties": {
-            "width": {
-              "line": 519,
-              "col": 11,
-              "endCol": 13,
-              "raw": "40"
-            },
-            "height": {
-              "line": 520,
-              "col": 12,
-              "endCol": 14,
-              "raw": "40"
-            },
-            "overflow": {
-              "line": 522,
-              "col": 14,
-              "endCol": 22,
-              "raw": "'hidden'"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:328": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 328
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.controlButtonInner",
-          "file": "app/game.tsx",
-          "defLine": 524,
-          "properties": {
-            "flex": {
-              "line": 525,
-              "col": 10,
-              "endCol": 11,
-              "raw": "1"
-            },
-            "alignItems": {
-              "line": 526,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            },
-            "justifyContent": {
-              "line": 527,
-              "col": 20,
-              "endCol": 28,
-              "raw": "'center'"
-            },
-            "backgroundColor": {
-              "line": 528,
-              "col": 21,
-              "endCol": 46,
-              "raw": "'rgba(0, 245, 255, 0.06)'"
-            },
-            "borderWidth": {
-              "line": 529,
-              "col": 17,
-              "endCol": 18,
-              "raw": "1"
-            },
-            "borderColor": {
-              "line": 530,
-              "col": 17,
-              "endCol": 42,
-              "raw": "'rgba(0, 245, 255, 0.15)'"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:329": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 329
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.controlIcon",
-          "file": "app/game.tsx",
-          "defLine": 533,
-          "properties": {
-            "fontSize": {
-              "line": 534,
-              "col": 14,
-              "endCol": 16,
-              "raw": "14"
-            },
-            "letterSpacing": {
-              "line": 536,
-              "col": 19,
-              "endCol": 21,
-              "raw": "-2"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:332": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 332
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.controlButton",
-          "file": "app/game.tsx",
-          "defLine": 518,
-          "properties": {
-            "width": {
-              "line": 519,
-              "col": 11,
-              "endCol": 13,
-              "raw": "40"
-            },
-            "height": {
-              "line": 520,
-              "col": 12,
-              "endCol": 14,
-              "raw": "40"
-            },
-            "overflow": {
-              "line": 522,
-              "col": 14,
-              "endCol": 22,
-              "raw": "'hidden'"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:337": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 337
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.controlButtonInner",
-          "file": "app/game.tsx",
-          "defLine": 524,
-          "properties": {
-            "flex": {
-              "line": 525,
-              "col": 10,
-              "endCol": 11,
-              "raw": "1"
-            },
-            "alignItems": {
-              "line": 526,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            },
-            "justifyContent": {
-              "line": 527,
-              "col": 20,
-              "endCol": 28,
-              "raw": "'center'"
-            },
-            "backgroundColor": {
-              "line": 528,
-              "col": 21,
-              "endCol": 46,
-              "raw": "'rgba(0, 245, 255, 0.06)'"
-            },
-            "borderWidth": {
-              "line": 529,
-              "col": 17,
-              "endCol": 18,
-              "raw": "1"
-            },
-            "borderColor": {
-              "line": 530,
-              "col": 17,
-              "endCol": 42,
-              "raw": "'rgba(0, 245, 255, 0.15)'"
-            }
-          }
-        },
-        {
-          "origin": "stylesheet",
-          "ref": "styles.quitButtonInner",
-          "file": "app/game.tsx",
-          "defLine": 538,
-          "properties": {
-            "backgroundColor": {
-              "line": 539,
-              "col": 21,
-              "endCol": 47,
-              "raw": "'rgba(255, 78, 106, 0.06)'"
-            },
-            "borderColor": {
-              "line": 540,
-              "col": 17,
-              "endCol": 42,
-              "raw": "'rgba(255, 78, 106, 0.2)'"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:338": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 338
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.quitIcon",
-          "file": "app/game.tsx",
-          "defLine": 542,
-          "properties": {
-            "fontSize": {
-              "line": 543,
-              "col": 14,
-              "endCol": 16,
-              "raw": "14"
-            },
-            "fontWeight": {
-              "line": 545,
-              "col": 16,
-              "endCol": 21,
-              "raw": "'700'"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:346": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 346
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.timerSection",
-          "file": "app/game.tsx",
-          "defLine": 548,
-          "properties": {
-            "flexDirection": {
-              "line": 549,
-              "col": 19,
-              "endCol": 24,
-              "raw": "'row'"
-            },
-            "alignItems": {
-              "line": 550,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            },
-            "justifyContent": {
-              "line": 551,
-              "col": 20,
-              "endCol": 28,
-              "raw": "'center'"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:354": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 354
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.scoreBadge",
-          "file": "app/game.tsx",
-          "defLine": 555,
-          "properties": {
-            "alignItems": {
-              "line": 556,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            },
-            "backgroundColor": {
-              "line": 557,
-              "col": 21,
-              "endCol": 46,
-              "raw": "'rgba(0, 245, 255, 0.04)'"
-            },
-            "borderWidth": {
-              "line": 561,
-              "col": 17,
-              "endCol": 18,
-              "raw": "1"
-            },
-            "borderColor": {
-              "line": 562,
-              "col": 17,
-              "endCol": 42,
-              "raw": "'rgba(0, 245, 255, 0.12)'"
-            },
-            "shadowOpacity": {
-              "line": 565,
-              "col": 19,
-              "endCol": 23,
-              "raw": "0.15"
-            },
-            "shadowRadius": {
-              "line": 566,
-              "col": 18,
-              "endCol": 19,
-              "raw": "8"
-            },
-            "elevation": {
-              "line": 567,
-              "col": 15,
-              "endCol": 16,
-              "raw": "3"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:355": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 355
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.scoreLabel",
-          "file": "app/game.tsx",
-          "defLine": 569,
-          "properties": {
-            "fontWeight": {
-              "line": 571,
-              "col": 16,
-              "endCol": 21,
-              "raw": "'600'"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:356": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 356
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.scoreText",
-          "file": "app/game.tsx",
-          "defLine": 576,
-          "properties": {
-            "fontWeight": {
-              "line": 578,
-              "col": 16,
-              "endCol": 21,
-              "raw": "'600'"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:361": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 361
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.questionWrapper",
-          "file": "app/game.tsx",
-          "defLine": 584,
-          "properties": {
-            "alignItems": {
-              "line": 585,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            },
-            "justifyContent": {
-              "line": 586,
-              "col": 20,
-              "endCol": 28,
-              "raw": "'center'"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:362": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 362
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.questionCard",
-          "file": "app/game.tsx",
-          "defLine": 589,
-          "properties": {
-            "alignItems": {
-              "line": 594,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            },
-            "justifyContent": {
-              "line": 595,
-              "col": 20,
-              "endCol": 28,
-              "raw": "'center'"
-            },
-            "minHeight": {
-              "line": 596,
-              "col": 15,
-              "endCol": 18,
-              "raw": "120"
-            },
-            "width": {
-              "line": 597,
-              "col": 11,
-              "endCol": 17,
-              "raw": "'100%'"
-            },
-            "borderWidth": {
-              "line": 598,
-              "col": 17,
-              "endCol": 18,
-              "raw": "1"
-            }
-          }
-        },
-        {
-          "origin": "dynamic",
-          "resolvable": false
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:363": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 363
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.questionText",
-          "file": "app/game.tsx",
-          "defLine": 602,
-          "properties": {
-            "fontWeight": {
-              "line": 604,
-              "col": 16,
-              "endCol": 21,
-              "raw": "'300'"
-            },
-            "textAlign": {
-              "line": 606,
-              "col": 15,
-              "endCol": 23,
-              "raw": "'center'"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:375": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 375
-      },
-      "styles": [
-        {
-          "origin": "inline",
-          "file": "app/game.tsx",
-          "properties": {
-            "flex": {
-              "line": 375,
-              "col": 31,
-              "endCol": 32,
-              "raw": "1"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:378": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 378
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.answerContainer",
-          "file": "app/game.tsx",
-          "defLine": 610,
-          "properties": {}
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:379": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 379
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.answerDisplay",
-          "file": "app/game.tsx",
-          "defLine": 613,
-          "properties": {
-            "minHeight": {
-              "line": 618,
-              "col": 15,
-              "endCol": 17,
-              "raw": "70"
-            },
-            "alignItems": {
-              "line": 619,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            },
-            "justifyContent": {
-              "line": 620,
-              "col": 20,
-              "endCol": 28,
-              "raw": "'center'"
-            },
-            "borderWidth": {
-              "line": 621,
-              "col": 17,
-              "endCol": 18,
-              "raw": "1"
-            }
-          }
-        },
-        {
-          "origin": "dynamic",
-          "resolvable": false
-        },
-        {
-          "origin": "dynamic",
-          "resolvable": false
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:380": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 380
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.answerText",
-          "file": "app/game.tsx",
-          "defLine": 624,
-          "properties": {
-            "fontSize": {
-              "line": 625,
-              "col": 14,
-              "endCol": 16,
-              "raw": "40"
-            },
-            "fontWeight": {
-              "line": 626,
-              "col": 16,
-              "endCol": 21,
-              "raw": "'300'"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:403": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 403
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.overlayContainer",
-          "file": "app/game.tsx",
-          "defLine": 661,
-          "properties": {
-            "flex": {
-              "line": 662,
-              "col": 10,
-              "endCol": 11,
-              "raw": "1"
-            },
-            "justifyContent": {
-              "line": 663,
-              "col": 20,
-              "endCol": 28,
-              "raw": "'center'"
-            },
-            "alignItems": {
-              "line": 664,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:404": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 404
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.overlayBackdrop",
-          "file": "app/game.tsx",
-          "defLine": 666,
-          "properties": {
-            "backgroundColor": {
-              "line": 668,
-              "col": 21,
-              "endCol": 45,
-              "raw": "'rgba(10, 14, 23, 0.92)'"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:405": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 405
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.overlayContent",
-          "file": "app/game.tsx",
-          "defLine": 670,
-          "properties": {
-            "alignItems": {
-              "line": 671,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            },
-            "width": {
-              "line": 673,
-              "col": 11,
-              "endCol": 17,
-              "raw": "'100%'"
-            },
-            "maxWidth": {
-              "line": 674,
-              "col": 14,
-              "endCol": 17,
-              "raw": "320"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:406": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 406
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.pauseIconContainer",
-          "file": "app/game.tsx",
-          "defLine": 676,
-          "properties": {
-            "width": {
-              "line": 677,
-              "col": 11,
-              "endCol": 13,
-              "raw": "64"
-            },
-            "height": {
-              "line": 678,
-              "col": 12,
-              "endCol": 14,
-              "raw": "64"
-            },
-            "borderRadius": {
-              "line": 679,
-              "col": 18,
-              "endCol": 20,
-              "raw": "32"
-            },
-            "backgroundColor": {
-              "line": 680,
-              "col": 21,
-              "endCol": 46,
-              "raw": "'rgba(0, 245, 255, 0.08)'"
-            },
-            "borderWidth": {
-              "line": 681,
-              "col": 17,
-              "endCol": 18,
-              "raw": "1"
-            },
-            "borderColor": {
-              "line": 682,
-              "col": 17,
-              "endCol": 41,
-              "raw": "'rgba(0, 245, 255, 0.2)'"
-            },
-            "alignItems": {
-              "line": 683,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            },
-            "justifyContent": {
-              "line": 684,
-              "col": 20,
-              "endCol": 28,
-              "raw": "'center'"
-            },
-            "shadowColor": {
-              "line": 686,
-              "col": 17,
-              "endCol": 26,
-              "raw": "'#00F5FF'"
-            },
-            "shadowOpacity": {
-              "line": 688,
-              "col": 19,
-              "endCol": 22,
-              "raw": "0.3"
-            },
-            "shadowRadius": {
-              "line": 689,
-              "col": 18,
-              "endCol": 20,
-              "raw": "16"
-            },
-            "elevation": {
-              "line": 690,
-              "col": 15,
-              "endCol": 16,
-              "raw": "4"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:407": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 407
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.pauseIconText",
-          "file": "app/game.tsx",
-          "defLine": 692,
-          "properties": {
-            "fontSize": {
-              "line": 693,
-              "col": 14,
-              "endCol": 16,
-              "raw": "22"
-            },
-            "letterSpacing": {
-              "line": 695,
-              "col": 19,
-              "endCol": 21,
-              "raw": "-2"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:409": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 409
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.overlayTitle",
-          "file": "app/game.tsx",
-          "defLine": 697,
-          "properties": {
-            "fontWeight": {
-              "line": 699,
-              "col": 16,
-              "endCol": 21,
-              "raw": "'300'"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:410": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 410
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.overlaySubtitle",
-          "file": "app/game.tsx",
-          "defLine": 704,
-          "properties": {}
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:414": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 414
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.resumeButton",
-          "file": "app/game.tsx",
-          "defLine": 710,
-          "properties": {
-            "width": {
-              "line": 711,
-              "col": 11,
-              "endCol": 17,
-              "raw": "'100%'"
-            },
-            "overflow": {
-              "line": 713,
-              "col": 14,
-              "endCol": 22,
-              "raw": "'hidden'"
-            },
-            "shadowColor": {
-              "line": 715,
-              "col": 17,
-              "endCol": 26,
-              "raw": "'#00F5FF'"
-            },
-            "shadowOpacity": {
-              "line": 717,
-              "col": 19,
-              "endCol": 22,
-              "raw": "0.4"
-            },
-            "shadowRadius": {
-              "line": 718,
-              "col": 18,
-              "endCol": 20,
-              "raw": "12"
-            },
-            "elevation": {
-              "line": 719,
-              "col": 15,
-              "endCol": 16,
-              "raw": "6"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:418": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 418
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.resumeGradient",
-          "file": "app/game.tsx",
-          "defLine": 721,
-          "properties": {
-            "alignItems": {
-              "line": 723,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            },
-            "justifyContent": {
-              "line": 724,
-              "col": 20,
-              "endCol": 28,
-              "raw": "'center'"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:424": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 424
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.resumeText",
-          "file": "app/game.tsx",
-          "defLine": 727,
-          "properties": {
-            "fontWeight": {
-              "line": 729,
-              "col": 16,
-              "endCol": 21,
-              "raw": "'600'"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:428": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 428
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.overlayQuitButton",
-          "file": "app/game.tsx",
-          "defLine": 733,
-          "properties": {}
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:432": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 432
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.overlayQuitText",
-          "file": "app/game.tsx",
-          "defLine": 737,
-          "properties": {
-            "fontWeight": {
-              "line": 739,
-              "col": 16,
-              "endCol": 21,
-              "raw": "'500'"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:445": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 445
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.overlayContainer",
-          "file": "app/game.tsx",
-          "defLine": 661,
-          "properties": {
-            "flex": {
-              "line": 662,
-              "col": 10,
-              "endCol": 11,
-              "raw": "1"
-            },
-            "justifyContent": {
-              "line": 663,
-              "col": 20,
-              "endCol": 28,
-              "raw": "'center'"
-            },
-            "alignItems": {
-              "line": 664,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:446": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 446
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.overlayBackdrop",
-          "file": "app/game.tsx",
-          "defLine": 666,
-          "properties": {
-            "backgroundColor": {
-              "line": 668,
-              "col": 21,
-              "endCol": 45,
-              "raw": "'rgba(10, 14, 23, 0.92)'"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:447": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 447
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.overlayContent",
-          "file": "app/game.tsx",
-          "defLine": 670,
-          "properties": {
-            "alignItems": {
-              "line": 671,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            },
-            "width": {
-              "line": 673,
-              "col": 11,
-              "endCol": 17,
-              "raw": "'100%'"
-            },
-            "maxWidth": {
-              "line": 674,
-              "col": 14,
-              "endCol": 17,
-              "raw": "320"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:448": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 448
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.quitConfirmTitle",
-          "file": "app/game.tsx",
-          "defLine": 744,
-          "properties": {
-            "fontWeight": {
-              "line": 746,
-              "col": 16,
-              "endCol": 21,
-              "raw": "'300'"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:449": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 449
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.quitConfirmSubtitle",
-          "file": "app/game.tsx",
-          "defLine": 751,
-          "properties": {
-            "textAlign": {
-              "line": 756,
-              "col": 15,
-              "endCol": 23,
-              "raw": "'center'"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:453": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 453
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.quitConfirmButtons",
-          "file": "app/game.tsx",
-          "defLine": 758,
-          "properties": {
-            "width": {
-              "line": 759,
-              "col": 11,
-              "endCol": 17,
-              "raw": "'100%'"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:454": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 454
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.quitConfirmButton",
-          "file": "app/game.tsx",
-          "defLine": 762,
-          "properties": {
-            "width": {
-              "line": 763,
-              "col": 11,
-              "endCol": 17,
-              "raw": "'100%'"
-            },
-            "alignItems": {
-              "line": 765,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            },
-            "justifyContent": {
-              "line": 766,
-              "col": 20,
-              "endCol": 28,
-              "raw": "'center'"
-            },
-            "borderWidth": {
-              "line": 768,
-              "col": 17,
-              "endCol": 18,
-              "raw": "1"
-            },
-            "borderColor": {
-              "line": 769,
-              "col": 17,
-              "endCol": 42,
-              "raw": "'rgba(255, 78, 106, 0.4)'"
-            },
-            "backgroundColor": {
-              "line": 770,
-              "col": 21,
-              "endCol": 47,
-              "raw": "'rgba(255, 78, 106, 0.08)'"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:458": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 458
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.quitConfirmButtonText",
-          "file": "app/game.tsx",
-          "defLine": 772,
-          "properties": {
-            "fontWeight": {
-              "line": 774,
-              "col": 16,
-              "endCol": 21,
-              "raw": "'600'"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:461": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 461
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.cancelButton",
-          "file": "app/game.tsx",
-          "defLine": 778,
-          "properties": {
-            "width": {
-              "line": 779,
-              "col": 11,
-              "endCol": 17,
-              "raw": "'100%'"
-            },
-            "alignItems": {
-              "line": 781,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            },
-            "justifyContent": {
-              "line": 782,
-              "col": 20,
-              "endCol": 28,
-              "raw": "'center'"
-            },
-            "borderWidth": {
-              "line": 784,
-              "col": 17,
-              "endCol": 18,
-              "raw": "1"
-            },
-            "borderColor": {
-              "line": 785,
-              "col": 17,
-              "endCol": 42,
-              "raw": "'rgba(0, 245, 255, 0.15)'"
-            },
-            "backgroundColor": {
-              "line": 786,
-              "col": 21,
-              "endCol": 46,
-              "raw": "'rgba(0, 245, 255, 0.04)'"
-            }
-          }
-        }
-      ]
-    },
-    "GameScreen@app/game.tsx:465": {
-      "element": {
-        "file": "app/game.tsx",
-        "line": 465
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.cancelButtonText",
-          "file": "app/game.tsx",
-          "defLine": 788,
-          "properties": {
-            "fontWeight": {
-              "line": 790,
-              "col": 16,
-              "endCol": 21,
-              "raw": "'600'"
-            }
-          }
-        }
-      ]
-    },
     "renderContent@components/AnimatedButton.tsx:51": {
       "element": {
         "file": "components/AnimatedButton.tsx",
@@ -4601,10 +1988,3312 @@
         }
       ]
     },
-    "KeypadButton@components/NumericKeypad.tsx:50": {
+    "NewBestBadge@app/results.tsx:47": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 47
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.newBestBadge",
+          "file": "app/results.tsx",
+          "defLine": 352,
+          "properties": {
+            "overflow": {
+              "line": 355,
+              "col": 14,
+              "endCol": 22,
+              "raw": "'hidden'"
+            },
+            "shadowColor": {
+              "line": 356,
+              "col": 17,
+              "endCol": 26,
+              "raw": "'#00F5A0'"
+            },
+            "shadowRadius": {
+              "line": 358,
+              "col": 18,
+              "endCol": 20,
+              "raw": "16"
+            },
+            "elevation": {
+              "line": 359,
+              "col": 15,
+              "endCol": 16,
+              "raw": "8"
+            }
+          }
+        },
+        {
+          "origin": "dynamic",
+          "resolvable": false
+        }
+      ]
+    },
+    "NewBestBadge@app/results.tsx:48": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 48
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.newBestGradient",
+          "file": "app/results.tsx",
+          "defLine": 361,
+          "properties": {}
+        }
+      ]
+    },
+    "NewBestBadge@app/results.tsx:54": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 54
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.newBestText",
+          "file": "app/results.tsx",
+          "defLine": 366,
+          "properties": {
+            "fontWeight": {
+              "line": 368,
+              "col": 16,
+              "endCol": 21,
+              "raw": "'700'"
+            }
+          }
+        }
+      ]
+    },
+    "StatCard@app/results.tsx:77": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 77
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.statCard",
+          "file": "app/results.tsx",
+          "defLine": 409,
+          "properties": {
+            "marginBottom": {
+              "line": 410,
+              "col": 18,
+              "endCol": 19,
+              "raw": "0"
+            }
+          }
+        }
+      ]
+    },
+    "StatCard@app/results.tsx:78": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 78
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.statLabel",
+          "file": "app/results.tsx",
+          "defLine": 412,
+          "properties": {
+            "fontWeight": {
+              "line": 414,
+              "col": 16,
+              "endCol": 21,
+              "raw": "'600'"
+            }
+          }
+        }
+      ]
+    },
+    "StatCard@app/results.tsx:79": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 79
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.statValue",
+          "file": "app/results.tsx",
+          "defLine": 419,
+          "properties": {
+            "fontWeight": {
+              "line": 421,
+              "col": 16,
+              "endCol": 21,
+              "raw": "'300'"
+            }
+          }
+        }
+      ]
+    },
+    "StatCard@app/results.tsx:80": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 80
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.statSubtitle",
+          "file": "app/results.tsx",
+          "defLine": 425,
+          "properties": {
+            "marginTop": {
+              "line": 429,
+              "col": 15,
+              "endCol": 16,
+              "raw": "2"
+            }
+          }
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:121": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 121
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.container",
+          "file": "app/results.tsx",
+          "defLine": 313,
+          "properties": {
+            "flex": {
+              "line": 314,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            }
+          }
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:122": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 122
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.loadingContainer",
+          "file": "app/results.tsx",
+          "defLine": 327,
+          "properties": {
+            "flex": {
+              "line": 328,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            },
+            "justifyContent": {
+              "line": 329,
+              "col": 20,
+              "endCol": 28,
+              "raw": "'center'"
+            },
+            "alignItems": {
+              "line": 330,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:123": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 123
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.loadingText",
+          "file": "app/results.tsx",
+          "defLine": 332,
+          "properties": {}
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:141": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 141
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.container",
+          "file": "app/results.tsx",
+          "defLine": 313,
+          "properties": {
+            "flex": {
+              "line": 314,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            }
+          }
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:143": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 143
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.safeArea",
+          "file": "app/results.tsx",
+          "defLine": 317,
+          "properties": {
+            "flex": {
+              "line": 318,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            }
+          }
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:144": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 144
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.scrollView",
+          "file": "app/results.tsx",
+          "defLine": 320,
+          "properties": {
+            "flex": {
+              "line": 321,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            }
+          }
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:150": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 150
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.headerSection",
+          "file": "app/results.tsx",
+          "defLine": 338,
+          "properties": {
+            "alignItems": {
+              "line": 339,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:154": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 154
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.title",
+          "file": "app/results.tsx",
+          "defLine": 343,
+          "properties": {
+            "fontWeight": {
+              "line": 345,
+              "col": 16,
+              "endCol": 21,
+              "raw": "'300'"
+            },
+            "textAlign": {
+              "line": 347,
+              "col": 15,
+              "endCol": 23,
+              "raw": "'center'"
+            },
+            "textTransform": {
+              "line": 349,
+              "col": 19,
+              "endCol": 30,
+              "raw": "'uppercase'"
+            }
+          }
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:160": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 160
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.mainScoreCard",
+          "file": "app/results.tsx",
+          "defLine": 373,
+          "properties": {}
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:165": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 165
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.scoreLabel",
+          "file": "app/results.tsx",
+          "defLine": 376,
+          "properties": {
+            "fontWeight": {
+              "line": 378,
+              "col": 16,
+              "endCol": 21,
+              "raw": "'600'"
+            },
+            "textAlign": {
+              "line": 381,
+              "col": 15,
+              "endCol": 23,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:166": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 166
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.scoreValue",
+          "file": "app/results.tsx",
+          "defLine": 384,
+          "properties": {
+            "fontSize": {
+              "line": 385,
+              "col": 14,
+              "endCol": 16,
+              "raw": "72"
+            },
+            "fontWeight": {
+              "line": 386,
+              "col": 16,
+              "endCol": 21,
+              "raw": "'200'"
+            },
+            "textAlign": {
+              "line": 389,
+              "col": 15,
+              "endCol": 23,
+              "raw": "'center'"
+            }
+          }
+        },
+        {
+          "origin": "dynamic",
+          "resolvable": false
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:175": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 175
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.previousBest",
+          "file": "app/results.tsx",
+          "defLine": 397,
+          "properties": {
+            "textAlign": {
+              "line": 400,
+              "col": 15,
+              "endCol": 23,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:183": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 183
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.statsGrid",
+          "file": "app/results.tsx",
+          "defLine": 405,
+          "properties": {}
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:208": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 208
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.breakdownCard",
+          "file": "app/results.tsx",
+          "defLine": 432,
+          "properties": {}
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:209": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 209
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.sectionTitle",
+          "file": "app/results.tsx",
+          "defLine": 435,
+          "properties": {
+            "fontWeight": {
+              "line": 437,
+              "col": 16,
+              "endCol": 21,
+              "raw": "'600'"
+            },
+            "textTransform": {
+              "line": 441,
+              "col": 19,
+              "endCol": 30,
+              "raw": "'uppercase'"
+            }
+          }
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:210": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 210
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.sectionSubtitle",
+          "file": "app/results.tsx",
+          "defLine": 443,
+          "properties": {}
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:214": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 214
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.timelineLegendSpacer",
+          "file": "app/results.tsx",
+          "defLine": 449,
+          "properties": {}
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:221": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 221
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.breakdownCard",
+          "file": "app/results.tsx",
+          "defLine": 432,
+          "properties": {}
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:222": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 222
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.sectionTitle",
+          "file": "app/results.tsx",
+          "defLine": 435,
+          "properties": {
+            "fontWeight": {
+              "line": 437,
+              "col": 16,
+              "endCol": 21,
+              "raw": "'600'"
+            },
+            "textTransform": {
+              "line": 441,
+              "col": 19,
+              "endCol": 30,
+              "raw": "'uppercase'"
+            }
+          }
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:223": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 223
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.roundsList",
+          "file": "app/results.tsx",
+          "defLine": 452,
+          "properties": {}
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:229": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 229
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.roundItem",
+          "file": "app/results.tsx",
+          "defLine": 455,
+          "properties": {
+            "flexDirection": {
+              "line": 456,
+              "col": 19,
+              "endCol": 24,
+              "raw": "'row'"
+            },
+            "justifyContent": {
+              "line": 457,
+              "col": 20,
+              "endCol": 35,
+              "raw": "'space-between'"
+            },
+            "alignItems": {
+              "line": 458,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "backgroundColor": {
+              "line": 461,
+              "col": 21,
+              "endCol": 46,
+              "raw": "'rgba(0, 245, 255, 0.03)'"
+            },
+            "borderWidth": {
+              "line": 463,
+              "col": 17,
+              "endCol": 18,
+              "raw": "1"
+            },
+            "borderColor": {
+              "line": 464,
+              "col": 17,
+              "endCol": 42,
+              "raw": "'rgba(0, 245, 255, 0.06)'"
+            }
+          }
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:234": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 234
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.roundLeft",
+          "file": "app/results.tsx",
+          "defLine": 466,
+          "properties": {
+            "flexDirection": {
+              "line": 467,
+              "col": 19,
+              "endCol": 24,
+              "raw": "'row'"
+            },
+            "alignItems": {
+              "line": 468,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:235": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 235
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.roundDot",
+          "file": "app/results.tsx",
+          "defLine": 471,
+          "properties": {
+            "width": {
+              "line": 472,
+              "col": 11,
+              "endCol": 12,
+              "raw": "6"
+            },
+            "height": {
+              "line": 473,
+              "col": 12,
+              "endCol": 13,
+              "raw": "6"
+            },
+            "borderRadius": {
+              "line": 474,
+              "col": 18,
+              "endCol": 19,
+              "raw": "3"
+            },
+            "shadowOpacity": {
+              "line": 478,
+              "col": 19,
+              "endCol": 22,
+              "raw": "0.6"
+            },
+            "shadowRadius": {
+              "line": 479,
+              "col": 18,
+              "endCol": 19,
+              "raw": "4"
+            },
+            "elevation": {
+              "line": 480,
+              "col": 15,
+              "endCol": 16,
+              "raw": "2"
+            }
+          }
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:236": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 236
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.roundName",
+          "file": "app/results.tsx",
+          "defLine": 482,
+          "properties": {
+            "fontWeight": {
+              "line": 485,
+              "col": 16,
+              "endCol": 21,
+              "raw": "'400'"
+            }
+          }
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:238": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 238
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.roundScore",
+          "file": "app/results.tsx",
+          "defLine": 488,
+          "properties": {
+            "fontWeight": {
+              "line": 491,
+              "col": 16,
+              "endCol": 21,
+              "raw": "'600'"
+            }
+          }
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:250": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 250
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.breakdownCard",
+          "file": "app/results.tsx",
+          "defLine": 432,
+          "properties": {}
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:251": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 251
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.sectionTitle",
+          "file": "app/results.tsx",
+          "defLine": 435,
+          "properties": {
+            "fontWeight": {
+              "line": 437,
+              "col": 16,
+              "endCol": 21,
+              "raw": "'600'"
+            },
+            "textTransform": {
+              "line": 441,
+              "col": 19,
+              "endCol": 30,
+              "raw": "'uppercase'"
+            }
+          }
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:252": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 252
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.chartContainer",
+          "file": "app/results.tsx",
+          "defLine": 496,
+          "properties": {}
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:258": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 258
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.chartRow",
+          "file": "app/results.tsx",
+          "defLine": 499,
+          "properties": {
+            "flexDirection": {
+              "line": 500,
+              "col": 19,
+              "endCol": 24,
+              "raw": "'row'"
+            },
+            "alignItems": {
+              "line": 501,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:263": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 263
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.chartLabel",
+          "file": "app/results.tsx",
+          "defLine": 504,
+          "properties": {
+            "width": {
+              "line": 507,
+              "col": 11,
+              "endCol": 13,
+              "raw": "36"
+            },
+            "fontWeight": {
+              "line": 509,
+              "col": 16,
+              "endCol": 21,
+              "raw": "'500'"
+            }
+          }
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:264": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 264
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.barContainer",
+          "file": "app/results.tsx",
+          "defLine": 512,
+          "properties": {
+            "flex": {
+              "line": 513,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            },
+            "height": {
+              "line": 514,
+              "col": 12,
+              "endCol": 14,
+              "raw": "24"
+            },
+            "backgroundColor": {
+              "line": 515,
+              "col": 21,
+              "endCol": 46,
+              "raw": "'rgba(0, 245, 255, 0.04)'"
+            },
+            "overflow": {
+              "line": 517,
+              "col": 14,
+              "endCol": 22,
+              "raw": "'hidden'"
+            },
+            "borderWidth": {
+              "line": 518,
+              "col": 17,
+              "endCol": 18,
+              "raw": "1"
+            },
+            "borderColor": {
+              "line": 519,
+              "col": 17,
+              "endCol": 42,
+              "raw": "'rgba(0, 245, 255, 0.06)'"
+            }
+          }
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:265": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 265
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.bar",
+          "file": "app/results.tsx",
+          "defLine": 521,
+          "properties": {
+            "height": {
+              "line": 522,
+              "col": 12,
+              "endCol": 18,
+              "raw": "'100%'"
+            }
+          }
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:281": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 281
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.chartValue",
+          "file": "app/results.tsx",
+          "defLine": 525,
+          "properties": {
+            "fontWeight": {
+              "line": 528,
+              "col": 16,
+              "endCol": 21,
+              "raw": "'600'"
+            },
+            "width": {
+              "line": 529,
+              "col": 11,
+              "endCol": 13,
+              "raw": "32"
+            },
+            "textAlign": {
+              "line": 530,
+              "col": 15,
+              "endCol": 22,
+              "raw": "'right'"
+            }
+          }
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:290": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 290
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.buttonContainer",
+          "file": "app/results.tsx",
+          "defLine": 534,
+          "properties": {}
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:294": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 294
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.button",
+          "file": "app/results.tsx",
+          "defLine": 538,
+          "properties": {
+            "width": {
+              "line": 539,
+              "col": 11,
+              "endCol": 17,
+              "raw": "'100%'"
+            }
+          }
+        }
+      ]
+    },
+    "ResultsScreen@app/results.tsx:299": {
+      "element": {
+        "file": "app/results.tsx",
+        "line": 299
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.button",
+          "file": "app/results.tsx",
+          "defLine": 538,
+          "properties": {
+            "width": {
+              "line": 539,
+              "col": 11,
+              "endCol": 17,
+              "raw": "'100%'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:343": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 343
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.transitionContainer",
+          "file": "app/game.tsx",
+          "defLine": 698,
+          "properties": {
+            "flex": {
+              "line": 699,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            },
+            "justifyContent": {
+              "line": 701,
+              "col": 20,
+              "endCol": 28,
+              "raw": "'center'"
+            },
+            "alignItems": {
+              "line": 702,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:345": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 345
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.transitionContent",
+          "file": "app/game.tsx",
+          "defLine": 704,
+          "properties": {
+            "alignItems": {
+              "line": 705,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:346": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 346
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.transitionEmoji",
+          "file": "app/game.tsx",
+          "defLine": 708,
+          "properties": {
+            "fontSize": {
+              "line": 709,
+              "col": 14,
+              "endCol": 16,
+              "raw": "48"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:347": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 347
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.transitionTitle",
+          "file": "app/game.tsx",
+          "defLine": 713,
+          "properties": {
+            "fontWeight": {
+              "line": 715,
+              "col": 16,
+              "endCol": 21,
+              "raw": "'300'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:348": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 348
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.transitionSubtitle",
+          "file": "app/game.tsx",
+          "defLine": 720,
+          "properties": {
+            "textAlign": {
+              "line": 723,
+              "col": 15,
+              "endCol": 23,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:357": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 357
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.container",
+          "file": "app/game.tsx",
+          "defLine": 530,
+          "properties": {
+            "flex": {
+              "line": 531,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:359": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 359
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.safeArea",
+          "file": "app/game.tsx",
+          "defLine": 534,
+          "properties": {
+            "flex": {
+              "line": 535,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:360": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 360
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.content",
+          "file": "app/game.tsx",
+          "defLine": 537,
+          "properties": {
+            "flex": {
+              "line": 538,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:362": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 362
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.header",
+          "file": "app/game.tsx",
+          "defLine": 543,
+          "properties": {}
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:363": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 363
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.headerTop",
+          "file": "app/game.tsx",
+          "defLine": 546,
+          "properties": {
+            "flexDirection": {
+              "line": 547,
+              "col": 19,
+              "endCol": 24,
+              "raw": "'row'"
+            },
+            "justifyContent": {
+              "line": 548,
+              "col": 20,
+              "endCol": 35,
+              "raw": "'space-between'"
+            },
+            "alignItems": {
+              "line": 549,
+              "col": 16,
+              "endCol": 28,
+              "raw": "'flex-start'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:364": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 364
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.headerLeft",
+          "file": "app/game.tsx",
+          "defLine": 552,
+          "properties": {
+            "flex": {
+              "line": 553,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:365": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 365
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.roundLabel",
+          "file": "app/game.tsx",
+          "defLine": 555,
+          "properties": {
+            "fontWeight": {
+              "line": 557,
+              "col": 16,
+              "endCol": 21,
+              "raw": "'600'"
+            },
+            "marginBottom": {
+              "line": 560,
+              "col": 18,
+              "endCol": 19,
+              "raw": "2"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:366": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 366
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.roundTitle",
+          "file": "app/game.tsx",
+          "defLine": 562,
+          "properties": {
+            "fontWeight": {
+              "line": 564,
+              "col": 16,
+              "endCol": 21,
+              "raw": "'500'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:368": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 368
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.headerControls",
+          "file": "app/game.tsx",
+          "defLine": 568,
+          "properties": {
+            "flexDirection": {
+              "line": 569,
+              "col": 19,
+              "endCol": 24,
+              "raw": "'row'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:369": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 369
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.controlButton",
+          "file": "app/game.tsx",
+          "defLine": 572,
+          "properties": {
+            "width": {
+              "line": 573,
+              "col": 11,
+              "endCol": 13,
+              "raw": "40"
+            },
+            "height": {
+              "line": 574,
+              "col": 12,
+              "endCol": 14,
+              "raw": "40"
+            },
+            "overflow": {
+              "line": 576,
+              "col": 14,
+              "endCol": 22,
+              "raw": "'hidden'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:374": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 374
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.controlButtonInner",
+          "file": "app/game.tsx",
+          "defLine": 578,
+          "properties": {
+            "flex": {
+              "line": 579,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            },
+            "alignItems": {
+              "line": 580,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "justifyContent": {
+              "line": 581,
+              "col": 20,
+              "endCol": 28,
+              "raw": "'center'"
+            },
+            "backgroundColor": {
+              "line": 582,
+              "col": 21,
+              "endCol": 46,
+              "raw": "'rgba(0, 245, 255, 0.06)'"
+            },
+            "borderWidth": {
+              "line": 583,
+              "col": 17,
+              "endCol": 18,
+              "raw": "1"
+            },
+            "borderColor": {
+              "line": 584,
+              "col": 17,
+              "endCol": 42,
+              "raw": "'rgba(0, 245, 255, 0.15)'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:375": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 375
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.controlIcon",
+          "file": "app/game.tsx",
+          "defLine": 587,
+          "properties": {
+            "fontSize": {
+              "line": 588,
+              "col": 14,
+              "endCol": 16,
+              "raw": "14"
+            },
+            "letterSpacing": {
+              "line": 590,
+              "col": 19,
+              "endCol": 21,
+              "raw": "-2"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:378": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 378
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.controlButton",
+          "file": "app/game.tsx",
+          "defLine": 572,
+          "properties": {
+            "width": {
+              "line": 573,
+              "col": 11,
+              "endCol": 13,
+              "raw": "40"
+            },
+            "height": {
+              "line": 574,
+              "col": 12,
+              "endCol": 14,
+              "raw": "40"
+            },
+            "overflow": {
+              "line": 576,
+              "col": 14,
+              "endCol": 22,
+              "raw": "'hidden'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:383": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 383
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.controlButtonInner",
+          "file": "app/game.tsx",
+          "defLine": 578,
+          "properties": {
+            "flex": {
+              "line": 579,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            },
+            "alignItems": {
+              "line": 580,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "justifyContent": {
+              "line": 581,
+              "col": 20,
+              "endCol": 28,
+              "raw": "'center'"
+            },
+            "backgroundColor": {
+              "line": 582,
+              "col": 21,
+              "endCol": 46,
+              "raw": "'rgba(0, 245, 255, 0.06)'"
+            },
+            "borderWidth": {
+              "line": 583,
+              "col": 17,
+              "endCol": 18,
+              "raw": "1"
+            },
+            "borderColor": {
+              "line": 584,
+              "col": 17,
+              "endCol": 42,
+              "raw": "'rgba(0, 245, 255, 0.15)'"
+            }
+          }
+        },
+        {
+          "origin": "stylesheet",
+          "ref": "styles.quitButtonInner",
+          "file": "app/game.tsx",
+          "defLine": 592,
+          "properties": {
+            "backgroundColor": {
+              "line": 593,
+              "col": 21,
+              "endCol": 47,
+              "raw": "'rgba(255, 78, 106, 0.06)'"
+            },
+            "borderColor": {
+              "line": 594,
+              "col": 17,
+              "endCol": 42,
+              "raw": "'rgba(255, 78, 106, 0.2)'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:384": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 384
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.quitIcon",
+          "file": "app/game.tsx",
+          "defLine": 596,
+          "properties": {
+            "fontSize": {
+              "line": 597,
+              "col": 14,
+              "endCol": 16,
+              "raw": "14"
+            },
+            "fontWeight": {
+              "line": 599,
+              "col": 16,
+              "endCol": 21,
+              "raw": "'700'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:392": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 392
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.timerSection",
+          "file": "app/game.tsx",
+          "defLine": 602,
+          "properties": {
+            "flexDirection": {
+              "line": 603,
+              "col": 19,
+              "endCol": 24,
+              "raw": "'row'"
+            },
+            "alignItems": {
+              "line": 604,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "justifyContent": {
+              "line": 605,
+              "col": 20,
+              "endCol": 28,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:400": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 400
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.scoreBadge",
+          "file": "app/game.tsx",
+          "defLine": 609,
+          "properties": {
+            "alignItems": {
+              "line": 610,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "backgroundColor": {
+              "line": 611,
+              "col": 21,
+              "endCol": 46,
+              "raw": "'rgba(0, 245, 255, 0.04)'"
+            },
+            "borderWidth": {
+              "line": 615,
+              "col": 17,
+              "endCol": 18,
+              "raw": "1"
+            },
+            "borderColor": {
+              "line": 616,
+              "col": 17,
+              "endCol": 42,
+              "raw": "'rgba(0, 245, 255, 0.12)'"
+            },
+            "shadowOpacity": {
+              "line": 619,
+              "col": 19,
+              "endCol": 23,
+              "raw": "0.15"
+            },
+            "shadowRadius": {
+              "line": 620,
+              "col": 18,
+              "endCol": 19,
+              "raw": "8"
+            },
+            "elevation": {
+              "line": 621,
+              "col": 15,
+              "endCol": 16,
+              "raw": "3"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:401": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 401
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.scoreLabel",
+          "file": "app/game.tsx",
+          "defLine": 623,
+          "properties": {
+            "fontWeight": {
+              "line": 625,
+              "col": 16,
+              "endCol": 21,
+              "raw": "'600'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:402": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 402
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.scoreText",
+          "file": "app/game.tsx",
+          "defLine": 630,
+          "properties": {
+            "fontWeight": {
+              "line": 632,
+              "col": 16,
+              "endCol": 21,
+              "raw": "'600'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:407": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 407
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.questionWrapper",
+          "file": "app/game.tsx",
+          "defLine": 638,
+          "properties": {
+            "alignItems": {
+              "line": 639,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "justifyContent": {
+              "line": 640,
+              "col": 20,
+              "endCol": 28,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:408": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 408
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.questionCard",
+          "file": "app/game.tsx",
+          "defLine": 643,
+          "properties": {
+            "alignItems": {
+              "line": 648,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "justifyContent": {
+              "line": 649,
+              "col": 20,
+              "endCol": 28,
+              "raw": "'center'"
+            },
+            "minHeight": {
+              "line": 650,
+              "col": 15,
+              "endCol": 18,
+              "raw": "120"
+            },
+            "width": {
+              "line": 651,
+              "col": 11,
+              "endCol": 17,
+              "raw": "'100%'"
+            },
+            "borderWidth": {
+              "line": 652,
+              "col": 17,
+              "endCol": 18,
+              "raw": "1"
+            }
+          }
+        },
+        {
+          "origin": "dynamic",
+          "resolvable": false
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:409": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 409
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.questionText",
+          "file": "app/game.tsx",
+          "defLine": 656,
+          "properties": {
+            "fontWeight": {
+              "line": 658,
+              "col": 16,
+              "endCol": 21,
+              "raw": "'300'"
+            },
+            "textAlign": {
+              "line": 660,
+              "col": 15,
+              "endCol": 23,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:421": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 421
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/game.tsx",
+          "properties": {
+            "flex": {
+              "line": 421,
+              "col": 31,
+              "endCol": 32,
+              "raw": "1"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:424": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 424
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.hintContainer",
+          "file": "app/game.tsx",
+          "defLine": 665,
+          "properties": {
+            "alignItems": {
+              "line": 666,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:425": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 425
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.hintText",
+          "file": "app/game.tsx",
+          "defLine": 669,
+          "properties": {
+            "fontWeight": {
+              "line": 671,
+              "col": 16,
+              "endCol": 21,
+              "raw": "'600'"
+            },
+            "textTransform": {
+              "line": 674,
+              "col": 19,
+              "endCol": 30,
+              "raw": "'uppercase'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:429": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 429
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.answerContainer",
+          "file": "app/game.tsx",
+          "defLine": 676,
+          "properties": {}
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:430": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 430
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.answerDisplay",
+          "file": "app/game.tsx",
+          "defLine": 679,
+          "properties": {
+            "minHeight": {
+              "line": 684,
+              "col": 15,
+              "endCol": 17,
+              "raw": "70"
+            },
+            "alignItems": {
+              "line": 685,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "justifyContent": {
+              "line": 686,
+              "col": 20,
+              "endCol": 28,
+              "raw": "'center'"
+            },
+            "borderWidth": {
+              "line": 687,
+              "col": 17,
+              "endCol": 18,
+              "raw": "1"
+            }
+          }
+        },
+        {
+          "origin": "dynamic",
+          "resolvable": false
+        },
+        {
+          "origin": "dynamic",
+          "resolvable": false
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:431": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 431
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.answerText",
+          "file": "app/game.tsx",
+          "defLine": 690,
+          "properties": {
+            "fontSize": {
+              "line": 691,
+              "col": 14,
+              "endCol": 16,
+              "raw": "40"
+            },
+            "fontWeight": {
+              "line": 692,
+              "col": 16,
+              "endCol": 21,
+              "raw": "'300'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:457": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 457
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.overlayContainer",
+          "file": "app/game.tsx",
+          "defLine": 727,
+          "properties": {
+            "flex": {
+              "line": 728,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            },
+            "justifyContent": {
+              "line": 729,
+              "col": 20,
+              "endCol": 28,
+              "raw": "'center'"
+            },
+            "alignItems": {
+              "line": 730,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:458": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 458
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.overlayBackdrop",
+          "file": "app/game.tsx",
+          "defLine": 732,
+          "properties": {
+            "backgroundColor": {
+              "line": 734,
+              "col": 21,
+              "endCol": 45,
+              "raw": "'rgba(10, 14, 23, 0.92)'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:459": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 459
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.overlayContent",
+          "file": "app/game.tsx",
+          "defLine": 736,
+          "properties": {
+            "alignItems": {
+              "line": 737,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "width": {
+              "line": 739,
+              "col": 11,
+              "endCol": 17,
+              "raw": "'100%'"
+            },
+            "maxWidth": {
+              "line": 740,
+              "col": 14,
+              "endCol": 17,
+              "raw": "320"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:460": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 460
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.pauseIconContainer",
+          "file": "app/game.tsx",
+          "defLine": 742,
+          "properties": {
+            "width": {
+              "line": 743,
+              "col": 11,
+              "endCol": 13,
+              "raw": "64"
+            },
+            "height": {
+              "line": 744,
+              "col": 12,
+              "endCol": 14,
+              "raw": "64"
+            },
+            "borderRadius": {
+              "line": 745,
+              "col": 18,
+              "endCol": 20,
+              "raw": "32"
+            },
+            "backgroundColor": {
+              "line": 746,
+              "col": 21,
+              "endCol": 46,
+              "raw": "'rgba(0, 245, 255, 0.08)'"
+            },
+            "borderWidth": {
+              "line": 747,
+              "col": 17,
+              "endCol": 18,
+              "raw": "1"
+            },
+            "borderColor": {
+              "line": 748,
+              "col": 17,
+              "endCol": 41,
+              "raw": "'rgba(0, 245, 255, 0.2)'"
+            },
+            "alignItems": {
+              "line": 749,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "justifyContent": {
+              "line": 750,
+              "col": 20,
+              "endCol": 28,
+              "raw": "'center'"
+            },
+            "shadowColor": {
+              "line": 752,
+              "col": 17,
+              "endCol": 26,
+              "raw": "'#00F5FF'"
+            },
+            "shadowOpacity": {
+              "line": 754,
+              "col": 19,
+              "endCol": 22,
+              "raw": "0.3"
+            },
+            "shadowRadius": {
+              "line": 755,
+              "col": 18,
+              "endCol": 20,
+              "raw": "16"
+            },
+            "elevation": {
+              "line": 756,
+              "col": 15,
+              "endCol": 16,
+              "raw": "4"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:461": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 461
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.pauseIconText",
+          "file": "app/game.tsx",
+          "defLine": 758,
+          "properties": {
+            "fontSize": {
+              "line": 759,
+              "col": 14,
+              "endCol": 16,
+              "raw": "22"
+            },
+            "letterSpacing": {
+              "line": 761,
+              "col": 19,
+              "endCol": 21,
+              "raw": "-2"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:463": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 463
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.overlayTitle",
+          "file": "app/game.tsx",
+          "defLine": 763,
+          "properties": {
+            "fontWeight": {
+              "line": 765,
+              "col": 16,
+              "endCol": 21,
+              "raw": "'300'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:464": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 464
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.overlaySubtitle",
+          "file": "app/game.tsx",
+          "defLine": 770,
+          "properties": {}
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:468": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 468
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.resumeButton",
+          "file": "app/game.tsx",
+          "defLine": 776,
+          "properties": {
+            "width": {
+              "line": 777,
+              "col": 11,
+              "endCol": 17,
+              "raw": "'100%'"
+            },
+            "overflow": {
+              "line": 779,
+              "col": 14,
+              "endCol": 22,
+              "raw": "'hidden'"
+            },
+            "shadowColor": {
+              "line": 781,
+              "col": 17,
+              "endCol": 26,
+              "raw": "'#00F5FF'"
+            },
+            "shadowOpacity": {
+              "line": 783,
+              "col": 19,
+              "endCol": 22,
+              "raw": "0.4"
+            },
+            "shadowRadius": {
+              "line": 784,
+              "col": 18,
+              "endCol": 20,
+              "raw": "12"
+            },
+            "elevation": {
+              "line": 785,
+              "col": 15,
+              "endCol": 16,
+              "raw": "6"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:472": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 472
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.resumeGradient",
+          "file": "app/game.tsx",
+          "defLine": 787,
+          "properties": {
+            "alignItems": {
+              "line": 789,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "justifyContent": {
+              "line": 790,
+              "col": 20,
+              "endCol": 28,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:478": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 478
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.resumeText",
+          "file": "app/game.tsx",
+          "defLine": 793,
+          "properties": {
+            "fontWeight": {
+              "line": 795,
+              "col": 16,
+              "endCol": 21,
+              "raw": "'600'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:482": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 482
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.overlayQuitButton",
+          "file": "app/game.tsx",
+          "defLine": 799,
+          "properties": {}
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:486": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 486
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.overlayQuitText",
+          "file": "app/game.tsx",
+          "defLine": 803,
+          "properties": {
+            "fontWeight": {
+              "line": 805,
+              "col": 16,
+              "endCol": 21,
+              "raw": "'500'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:499": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 499
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.overlayContainer",
+          "file": "app/game.tsx",
+          "defLine": 727,
+          "properties": {
+            "flex": {
+              "line": 728,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            },
+            "justifyContent": {
+              "line": 729,
+              "col": 20,
+              "endCol": 28,
+              "raw": "'center'"
+            },
+            "alignItems": {
+              "line": 730,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:500": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 500
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.overlayBackdrop",
+          "file": "app/game.tsx",
+          "defLine": 732,
+          "properties": {
+            "backgroundColor": {
+              "line": 734,
+              "col": 21,
+              "endCol": 45,
+              "raw": "'rgba(10, 14, 23, 0.92)'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:501": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 501
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.overlayContent",
+          "file": "app/game.tsx",
+          "defLine": 736,
+          "properties": {
+            "alignItems": {
+              "line": 737,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "width": {
+              "line": 739,
+              "col": 11,
+              "endCol": 17,
+              "raw": "'100%'"
+            },
+            "maxWidth": {
+              "line": 740,
+              "col": 14,
+              "endCol": 17,
+              "raw": "320"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:502": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 502
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.quitConfirmTitle",
+          "file": "app/game.tsx",
+          "defLine": 810,
+          "properties": {
+            "fontWeight": {
+              "line": 812,
+              "col": 16,
+              "endCol": 21,
+              "raw": "'300'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:503": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 503
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.quitConfirmSubtitle",
+          "file": "app/game.tsx",
+          "defLine": 817,
+          "properties": {
+            "textAlign": {
+              "line": 822,
+              "col": 15,
+              "endCol": 23,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:507": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 507
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.quitConfirmButtons",
+          "file": "app/game.tsx",
+          "defLine": 824,
+          "properties": {
+            "width": {
+              "line": 825,
+              "col": 11,
+              "endCol": 17,
+              "raw": "'100%'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:508": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 508
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.quitConfirmButton",
+          "file": "app/game.tsx",
+          "defLine": 828,
+          "properties": {
+            "width": {
+              "line": 829,
+              "col": 11,
+              "endCol": 17,
+              "raw": "'100%'"
+            },
+            "alignItems": {
+              "line": 831,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "justifyContent": {
+              "line": 832,
+              "col": 20,
+              "endCol": 28,
+              "raw": "'center'"
+            },
+            "borderWidth": {
+              "line": 834,
+              "col": 17,
+              "endCol": 18,
+              "raw": "1"
+            },
+            "borderColor": {
+              "line": 835,
+              "col": 17,
+              "endCol": 42,
+              "raw": "'rgba(255, 78, 106, 0.4)'"
+            },
+            "backgroundColor": {
+              "line": 836,
+              "col": 21,
+              "endCol": 47,
+              "raw": "'rgba(255, 78, 106, 0.08)'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:512": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 512
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.quitConfirmButtonText",
+          "file": "app/game.tsx",
+          "defLine": 838,
+          "properties": {
+            "fontWeight": {
+              "line": 840,
+              "col": 16,
+              "endCol": 21,
+              "raw": "'600'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:515": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 515
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.cancelButton",
+          "file": "app/game.tsx",
+          "defLine": 844,
+          "properties": {
+            "width": {
+              "line": 845,
+              "col": 11,
+              "endCol": 17,
+              "raw": "'100%'"
+            },
+            "alignItems": {
+              "line": 847,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "justifyContent": {
+              "line": 848,
+              "col": 20,
+              "endCol": 28,
+              "raw": "'center'"
+            },
+            "borderWidth": {
+              "line": 850,
+              "col": 17,
+              "endCol": 18,
+              "raw": "1"
+            },
+            "borderColor": {
+              "line": 851,
+              "col": 17,
+              "endCol": 42,
+              "raw": "'rgba(0, 245, 255, 0.15)'"
+            },
+            "backgroundColor": {
+              "line": 852,
+              "col": 21,
+              "endCol": 46,
+              "raw": "'rgba(0, 245, 255, 0.04)'"
+            }
+          }
+        }
+      ]
+    },
+    "GameScreen@app/game.tsx:519": {
+      "element": {
+        "file": "app/game.tsx",
+        "line": 519
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.cancelButtonText",
+          "file": "app/game.tsx",
+          "defLine": 854,
+          "properties": {
+            "fontWeight": {
+              "line": 856,
+              "col": 16,
+              "endCol": 21,
+              "raw": "'600'"
+            }
+          }
+        }
+      ]
+    },
+    "DifficultyTimeline@components/DifficultyTimeline.tsx:14": {
+      "element": {
+        "file": "components/DifficultyTimeline.tsx",
+        "line": 14
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.emptyContainer",
+          "file": "components/DifficultyTimeline.tsx",
+          "defLine": 150,
+          "properties": {
+            "alignItems": {
+              "line": 151,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "DifficultyTimeline@components/DifficultyTimeline.tsx:15": {
+      "element": {
+        "file": "components/DifficultyTimeline.tsx",
+        "line": 15
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.emptyText",
+          "file": "components/DifficultyTimeline.tsx",
+          "defLine": 154,
+          "properties": {}
+        }
+      ]
+    },
+    "DifficultyTimeline@components/DifficultyTimeline.tsx:33": {
+      "element": {
+        "file": "components/DifficultyTimeline.tsx",
+        "line": 33
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.container",
+          "file": "components/DifficultyTimeline.tsx",
+          "defLine": 146,
+          "properties": {
+            "flexDirection": {
+              "line": 147,
+              "col": 19,
+              "endCol": 24,
+              "raw": "'row'"
+            }
+          }
+        }
+      ]
+    },
+    "DifficultyTimeline@components/DifficultyTimeline.tsx:35": {
+      "element": {
+        "file": "components/DifficultyTimeline.tsx",
+        "line": 35
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.yAxis",
+          "file": "components/DifficultyTimeline.tsx",
+          "defLine": 159,
+          "properties": {
+            "width": {
+              "line": 160,
+              "col": 11,
+              "endCol": 13,
+              "raw": "24"
+            },
+            "height": {
+              "line": 161,
+              "col": 12,
+              "endCol": 15,
+              "raw": "120"
+            },
+            "justifyContent": {
+              "line": 162,
+              "col": 20,
+              "endCol": 35,
+              "raw": "'space-between'"
+            },
+            "alignItems": {
+              "line": 163,
+              "col": 16,
+              "endCol": 26,
+              "raw": "'flex-end'"
+            }
+          }
+        }
+      ]
+    },
+    "DifficultyTimeline@components/DifficultyTimeline.tsx:37": {
+      "element": {
+        "file": "components/DifficultyTimeline.tsx",
+        "line": 37
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.yLabel",
+          "file": "components/DifficultyTimeline.tsx",
+          "defLine": 166,
+          "properties": {
+            "fontWeight": {
+              "line": 170,
+              "col": 16,
+              "endCol": 21,
+              "raw": "'500'"
+            }
+          }
+        }
+      ]
+    },
+    "DifficultyTimeline@components/DifficultyTimeline.tsx:44": {
+      "element": {
+        "file": "components/DifficultyTimeline.tsx",
+        "line": 44
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.chartArea",
+          "file": "components/DifficultyTimeline.tsx",
+          "defLine": 172,
+          "properties": {
+            "flex": {
+              "line": 173,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            },
+            "height": {
+              "line": 174,
+              "col": 12,
+              "endCol": 15,
+              "raw": "120"
+            },
+            "position": {
+              "line": 175,
+              "col": 14,
+              "endCol": 24,
+              "raw": "'relative'"
+            },
+            "borderLeftWidth": {
+              "line": 177,
+              "col": 21,
+              "endCol": 22,
+              "raw": "1"
+            },
+            "borderBottomWidth": {
+              "line": 178,
+              "col": 23,
+              "endCol": 24,
+              "raw": "1"
+            },
+            "borderColor": {
+              "line": 179,
+              "col": 17,
+              "endCol": 41,
+              "raw": "'rgba(0, 245, 255, 0.1)'"
+            }
+          }
+        }
+      ]
+    },
+    "DifficultyTimeline@components/DifficultyTimeline.tsx:49": {
+      "element": {
+        "file": "components/DifficultyTimeline.tsx",
+        "line": 49
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.gridLine",
+          "file": "components/DifficultyTimeline.tsx",
+          "defLine": 181,
+          "properties": {
+            "position": {
+              "line": 182,
+              "col": 14,
+              "endCol": 24,
+              "raw": "'absolute'"
+            },
+            "left": {
+              "line": 183,
+              "col": 10,
+              "endCol": 11,
+              "raw": "0"
+            },
+            "right": {
+              "line": 184,
+              "col": 11,
+              "endCol": 12,
+              "raw": "0"
+            },
+            "height": {
+              "line": 185,
+              "col": 12,
+              "endCol": 13,
+              "raw": "1"
+            },
+            "backgroundColor": {
+              "line": 186,
+              "col": 21,
+              "endCol": 46,
+              "raw": "'rgba(0, 245, 255, 0.05)'"
+            }
+          }
+        }
+      ]
+    },
+    "DifficultyTimeline@components/DifficultyTimeline.tsx:66": {
+      "element": {
+        "file": "components/DifficultyTimeline.tsx",
+        "line": 66
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.lineSegment",
+          "file": "components/DifficultyTimeline.tsx",
+          "defLine": 196,
+          "properties": {
+            "position": {
+              "line": 197,
+              "col": 14,
+              "endCol": 24,
+              "raw": "'absolute'"
+            },
+            "overflow": {
+              "line": 198,
+              "col": 14,
+              "endCol": 22,
+              "raw": "'hidden'"
+            },
+            "borderRadius": {
+              "line": 199,
+              "col": 18,
+              "endCol": 19,
+              "raw": "1"
+            }
+          }
+        }
+      ]
+    },
+    "DifficultyTimeline@components/DifficultyTimeline.tsx:79": {
+      "element": {
+        "file": "components/DifficultyTimeline.tsx",
+        "line": 79
+      },
+      "styles": [
+        {
+          "origin": "dynamic",
+          "resolvable": false
+        }
+      ]
+    },
+    "DifficultyTimeline@components/DifficultyTimeline.tsx:91": {
+      "element": {
+        "file": "components/DifficultyTimeline.tsx",
+        "line": 91
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.dot",
+          "file": "components/DifficultyTimeline.tsx",
+          "defLine": 201,
+          "properties": {
+            "position": {
+              "line": 202,
+              "col": 14,
+              "endCol": 24,
+              "raw": "'absolute'"
+            },
+            "width": {
+              "line": 203,
+              "col": 11,
+              "endCol": 12,
+              "raw": "6"
+            },
+            "height": {
+              "line": 204,
+              "col": 12,
+              "endCol": 13,
+              "raw": "6"
+            },
+            "borderRadius": {
+              "line": 205,
+              "col": 18,
+              "endCol": 19,
+              "raw": "3"
+            },
+            "shadowOpacity": {
+              "line": 207,
+              "col": 19,
+              "endCol": 22,
+              "raw": "0.6"
+            },
+            "shadowRadius": {
+              "line": 208,
+              "col": 18,
+              "endCol": 19,
+              "raw": "3"
+            },
+            "elevation": {
+              "line": 209,
+              "col": 15,
+              "endCol": 16,
+              "raw": "2"
+            }
+          }
+        }
+      ]
+    },
+    "DifficultyTimeline@components/DifficultyTimeline.tsx:107": {
+      "element": {
+        "file": "components/DifficultyTimeline.tsx",
+        "line": 107
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.lineContainer",
+          "file": "components/DifficultyTimeline.tsx",
+          "defLine": 188,
+          "properties": {}
+        }
+      ]
+    },
+    "DifficultyTimeline@components/DifficultyTimeline.tsx:112": {
+      "element": {
+        "file": "components/DifficultyTimeline.tsx",
+        "line": 112
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.simpleLine",
+          "file": "components/DifficultyTimeline.tsx",
+          "defLine": 191,
+          "properties": {
+            "position": {
+              "line": 192,
+              "col": 14,
+              "endCol": 24,
+              "raw": "'absolute'"
+            },
+            "backgroundColor": {
+              "line": 193,
+              "col": 21,
+              "endCol": 45,
+              "raw": "'rgba(0, 245, 255, 0.2)'"
+            },
+            "borderRadius": {
+              "line": 194,
+              "col": 18,
+              "endCol": 19,
+              "raw": "1"
+            }
+          }
+        }
+      ]
+    },
+    "DifficultyTimeline@components/DifficultyTimeline.tsx:131": {
+      "element": {
+        "file": "components/DifficultyTimeline.tsx",
+        "line": 131
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.legend",
+          "file": "components/DifficultyTimeline.tsx",
+          "defLine": 211,
+          "properties": {
+            "position": {
+              "line": 212,
+              "col": 14,
+              "endCol": 24,
+              "raw": "'absolute'"
+            },
+            "bottom": {
+              "line": 213,
+              "col": 12,
+              "endCol": 15,
+              "raw": "-24"
+            },
+            "left": {
+              "line": 214,
+              "col": 10,
+              "endCol": 12,
+              "raw": "32"
+            },
+            "flexDirection": {
+              "line": 215,
+              "col": 19,
+              "endCol": 24,
+              "raw": "'row'"
+            }
+          }
+        }
+      ]
+    },
+    "DifficultyTimeline@components/DifficultyTimeline.tsx:132": {
+      "element": {
+        "file": "components/DifficultyTimeline.tsx",
+        "line": 132
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.legendItem",
+          "file": "components/DifficultyTimeline.tsx",
+          "defLine": 218,
+          "properties": {
+            "flexDirection": {
+              "line": 219,
+              "col": 19,
+              "endCol": 24,
+              "raw": "'row'"
+            },
+            "alignItems": {
+              "line": 220,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "DifficultyTimeline@components/DifficultyTimeline.tsx:133": {
+      "element": {
+        "file": "components/DifficultyTimeline.tsx",
+        "line": 133
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.legendDot",
+          "file": "components/DifficultyTimeline.tsx",
+          "defLine": 223,
+          "properties": {
+            "width": {
+              "line": 224,
+              "col": 11,
+              "endCol": 12,
+              "raw": "8"
+            },
+            "height": {
+              "line": 225,
+              "col": 12,
+              "endCol": 13,
+              "raw": "8"
+            },
+            "borderRadius": {
+              "line": 226,
+              "col": 18,
+              "endCol": 19,
+              "raw": "4"
+            }
+          }
+        }
+      ]
+    },
+    "DifficultyTimeline@components/DifficultyTimeline.tsx:134": {
+      "element": {
+        "file": "components/DifficultyTimeline.tsx",
+        "line": 134
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.legendText",
+          "file": "components/DifficultyTimeline.tsx",
+          "defLine": 228,
+          "properties": {}
+        }
+      ]
+    },
+    "DifficultyTimeline@components/DifficultyTimeline.tsx:136": {
+      "element": {
+        "file": "components/DifficultyTimeline.tsx",
+        "line": 136
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.legendItem",
+          "file": "components/DifficultyTimeline.tsx",
+          "defLine": 218,
+          "properties": {
+            "flexDirection": {
+              "line": 219,
+              "col": 19,
+              "endCol": 24,
+              "raw": "'row'"
+            },
+            "alignItems": {
+              "line": 220,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "DifficultyTimeline@components/DifficultyTimeline.tsx:137": {
+      "element": {
+        "file": "components/DifficultyTimeline.tsx",
+        "line": 137
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.legendDot",
+          "file": "components/DifficultyTimeline.tsx",
+          "defLine": 223,
+          "properties": {
+            "width": {
+              "line": 224,
+              "col": 11,
+              "endCol": 12,
+              "raw": "8"
+            },
+            "height": {
+              "line": 225,
+              "col": 12,
+              "endCol": 13,
+              "raw": "8"
+            },
+            "borderRadius": {
+              "line": 226,
+              "col": 18,
+              "endCol": 19,
+              "raw": "4"
+            }
+          }
+        }
+      ]
+    },
+    "DifficultyTimeline@components/DifficultyTimeline.tsx:138": {
+      "element": {
+        "file": "components/DifficultyTimeline.tsx",
+        "line": 138
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.legendText",
+          "file": "components/DifficultyTimeline.tsx",
+          "defLine": 228,
+          "properties": {}
+        }
+      ]
+    },
+    "KeypadButton@components/NumericKeypad.tsx:57": {
       "element": {
         "file": "components/NumericKeypad.tsx",
-        "line": 50
+        "line": 57
       },
       "styles": [
         {
@@ -4615,16 +5304,16 @@
           "origin": "stylesheet",
           "ref": "styles.keyWrapper",
           "file": "components/NumericKeypad.tsx",
-          "defLine": 187,
+          "defLine": 244,
           "properties": {
             "flex": {
-              "line": 188,
+              "line": 245,
               "col": 10,
               "endCol": 11,
               "raw": "1"
             },
             "height": {
-              "line": 189,
+              "line": 246,
               "col": 12,
               "endCol": 14,
               "raw": "52"
@@ -4637,32 +5326,32 @@
         }
       ]
     },
-    "KeypadButton@components/NumericKeypad.tsx:57": {
+    "KeypadButton@components/NumericKeypad.tsx:64": {
       "element": {
         "file": "components/NumericKeypad.tsx",
-        "line": 57
+        "line": 64
       },
       "styles": [
         {
           "origin": "stylesheet",
           "ref": "styles.keySubmitGradient",
           "file": "components/NumericKeypad.tsx",
-          "defLine": 191,
+          "defLine": 248,
           "properties": {
             "flex": {
-              "line": 192,
+              "line": 249,
               "col": 10,
               "endCol": 11,
               "raw": "1"
             },
             "alignItems": {
-              "line": 194,
+              "line": 251,
               "col": 16,
               "endCol": 24,
               "raw": "'center'"
             },
             "justifyContent": {
-              "line": 195,
+              "line": 252,
               "col": 20,
               "endCol": 28,
               "raw": "'center'"
@@ -4671,26 +5360,26 @@
         }
       ]
     },
-    "KeypadButton@components/NumericKeypad.tsx:63": {
+    "KeypadButton@components/NumericKeypad.tsx:70": {
       "element": {
         "file": "components/NumericKeypad.tsx",
-        "line": 63
+        "line": 70
       },
       "styles": [
         {
           "origin": "stylesheet",
           "ref": "styles.keyTextSubmit",
           "file": "components/NumericKeypad.tsx",
-          "defLine": 210,
+          "defLine": 274,
           "properties": {
             "fontWeight": {
-              "line": 213,
+              "line": 277,
               "col": 16,
               "endCol": 21,
               "raw": "'600'"
             },
             "textTransform": {
-              "line": 215,
+              "line": 279,
               "col": 19,
               "endCol": 30,
               "raw": "'uppercase'"
@@ -4703,12 +5392,16 @@
         }
       ]
     },
-    "KeypadButton@components/NumericKeypad.tsx:81": {
+    "KeypadButton@components/NumericKeypad.tsx:93": {
       "element": {
         "file": "components/NumericKeypad.tsx",
-        "line": 81
+        "line": 93
       },
       "styles": [
+        {
+          "origin": "dynamic",
+          "resolvable": false
+        },
         {
           "origin": "dynamic",
           "resolvable": false
@@ -4719,20 +5412,20 @@
         }
       ]
     },
-    "KeypadButton@components/NumericKeypad.tsx:89": {
+    "KeypadButton@components/NumericKeypad.tsx:101": {
       "element": {
         "file": "components/NumericKeypad.tsx",
-        "line": 89
+        "line": 101
       },
       "styles": [
         {
           "origin": "stylesheet",
           "ref": "styles.keyText",
           "file": "components/NumericKeypad.tsx",
-          "defLine": 200,
+          "defLine": 257,
           "properties": {
             "fontWeight": {
-              "line": 202,
+              "line": 259,
               "col": 16,
               "endCol": 21,
               "raw": "'400'"
@@ -4742,35 +5435,43 @@
         {
           "origin": "dynamic",
           "resolvable": false
+        },
+        {
+          "origin": "dynamic",
+          "resolvable": false
+        },
+        {
+          "origin": "dynamic",
+          "resolvable": false
         }
       ]
     },
-    "NumericKeypad@components/NumericKeypad.tsx:108": {
+    "NumericKeypad@components/NumericKeypad.tsx:130": {
       "element": {
         "file": "components/NumericKeypad.tsx",
-        "line": 108
+        "line": 130
       },
       "styles": [
         {
           "origin": "stylesheet",
           "ref": "styles.container",
           "file": "components/NumericKeypad.tsx",
-          "defLine": 153,
+          "defLine": 199,
           "properties": {
             "borderTopWidth": {
-              "line": 160,
+              "line": 206,
               "col": 20,
               "endCol": 21,
               "raw": "1"
             },
             "borderLeftWidth": {
-              "line": 161,
+              "line": 207,
               "col": 21,
               "endCol": 22,
               "raw": "1"
             },
             "borderRightWidth": {
-              "line": 162,
+              "line": 208,
               "col": 22,
               "endCol": 23,
               "raw": "1"
@@ -4779,41 +5480,41 @@
         }
       ]
     },
-    "NumericKeypad@components/NumericKeypad.tsx:109": {
+    "NumericKeypad@components/NumericKeypad.tsx:131": {
       "element": {
         "file": "components/NumericKeypad.tsx",
-        "line": 109
+        "line": 131
       },
       "styles": [
         {
           "origin": "stylesheet",
           "ref": "styles.keypadGrid",
           "file": "components/NumericKeypad.tsx",
-          "defLine": 165,
+          "defLine": 211,
           "properties": {}
         }
       ]
     },
-    "NumericKeypad@components/NumericKeypad.tsx:111": {
+    "NumericKeypad@components/NumericKeypad.tsx:133": {
       "element": {
         "file": "components/NumericKeypad.tsx",
-        "line": 111
+        "line": 133
       },
       "styles": [
         {
           "origin": "stylesheet",
           "ref": "styles.row",
           "file": "components/NumericKeypad.tsx",
-          "defLine": 168,
+          "defLine": 214,
           "properties": {
             "flexDirection": {
-              "line": 169,
+              "line": 215,
               "col": 19,
               "endCol": 24,
               "raw": "'row'"
             },
             "justifyContent": {
-              "line": 171,
+              "line": 217,
               "col": 20,
               "endCol": 35,
               "raw": "'space-between'"
@@ -4822,26 +5523,26 @@
         }
       ]
     },
-    "NumericKeypad@components/NumericKeypad.tsx:118": {
+    "NumericKeypad@components/NumericKeypad.tsx:140": {
       "element": {
         "file": "components/NumericKeypad.tsx",
-        "line": 118
+        "line": 140
       },
       "styles": [
         {
           "origin": "stylesheet",
           "ref": "styles.row",
           "file": "components/NumericKeypad.tsx",
-          "defLine": 168,
+          "defLine": 214,
           "properties": {
             "flexDirection": {
-              "line": 169,
+              "line": 215,
               "col": 19,
               "endCol": 24,
               "raw": "'row'"
             },
             "justifyContent": {
-              "line": 171,
+              "line": 217,
               "col": 20,
               "endCol": 35,
               "raw": "'space-between'"
@@ -4850,26 +5551,26 @@
         }
       ]
     },
-    "NumericKeypad@components/NumericKeypad.tsx:125": {
+    "NumericKeypad@components/NumericKeypad.tsx:147": {
       "element": {
         "file": "components/NumericKeypad.tsx",
-        "line": 125
+        "line": 147
       },
       "styles": [
         {
           "origin": "stylesheet",
           "ref": "styles.row",
           "file": "components/NumericKeypad.tsx",
-          "defLine": 168,
+          "defLine": 214,
           "properties": {
             "flexDirection": {
-              "line": 169,
+              "line": 215,
               "col": 19,
               "endCol": 24,
               "raw": "'row'"
             },
             "justifyContent": {
-              "line": 171,
+              "line": 217,
               "col": 20,
               "endCol": 35,
               "raw": "'space-between'"
@@ -4878,29 +5579,113 @@
         }
       ]
     },
-    "NumericKeypad@components/NumericKeypad.tsx:132": {
+    "NumericKeypad@components/NumericKeypad.tsx:154": {
       "element": {
         "file": "components/NumericKeypad.tsx",
-        "line": 132
+        "line": 154
       },
       "styles": [
         {
           "origin": "stylesheet",
           "ref": "styles.row",
           "file": "components/NumericKeypad.tsx",
-          "defLine": 168,
+          "defLine": 214,
           "properties": {
             "flexDirection": {
-              "line": 169,
+              "line": 215,
               "col": 19,
               "endCol": 24,
               "raw": "'row'"
             },
             "justifyContent": {
-              "line": 171,
+              "line": 217,
               "col": 20,
               "endCol": 35,
               "raw": "'space-between'"
+            }
+          }
+        }
+      ]
+    },
+    "NumericKeypad@components/NumericKeypad.tsx:182": {
+      "element": {
+        "file": "components/NumericKeypad.tsx",
+        "line": 182
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.row",
+          "file": "components/NumericKeypad.tsx",
+          "defLine": 214,
+          "properties": {
+            "flexDirection": {
+              "line": 215,
+              "col": 19,
+              "endCol": 24,
+              "raw": "'row'"
+            },
+            "justifyContent": {
+              "line": 217,
+              "col": 20,
+              "endCol": 35,
+              "raw": "'space-between'"
+            }
+          }
+        }
+      ]
+    },
+    "NumericKeypad@components/NumericKeypad.tsx:189": {
+      "element": {
+        "file": "components/NumericKeypad.tsx",
+        "line": 189
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.emptyKey",
+          "file": "components/NumericKeypad.tsx",
+          "defLine": 284,
+          "properties": {
+            "flex": {
+              "line": 285,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            },
+            "height": {
+              "line": 286,
+              "col": 12,
+              "endCol": 14,
+              "raw": "52"
+            }
+          }
+        }
+      ]
+    },
+    "NumericKeypad@components/NumericKeypad.tsx:190": {
+      "element": {
+        "file": "components/NumericKeypad.tsx",
+        "line": 190
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.emptyKey",
+          "file": "components/NumericKeypad.tsx",
+          "defLine": 284,
+          "properties": {
+            "flex": {
+              "line": 285,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            },
+            "height": {
+              "line": 286,
+              "col": 12,
+              "endCol": 14,
+              "raw": "52"
             }
           }
         }
