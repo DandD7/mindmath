@@ -20,7 +20,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#0D1B2A"
+        "backgroundColor": "#0A0E17"
       },
       "edgeToEdgeEnabled": true,
       "package": "com.mindmath",
@@ -39,7 +39,7 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#0D1B2A"
+          "backgroundColor": "#0A0E17"
         }
       ]
     ],

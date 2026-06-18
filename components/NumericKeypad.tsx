@@ -2,7 +2,8 @@ import React from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
-import { Colors, Spacing, BorderRadius, FontSizes, Shadows } from '../constants/theme';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Colors, Spacing, BorderRadius, FontSizes, Fonts } from '../constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 
 type NumericKeypadProps = {
@@ -44,29 +45,35 @@ function KeypadButton({
     scale.value = withSpring(1, { damping: 15, stiffness: 300 });
   };
 
+  if (variant === 'submit') {
+    return (
+      <AnimatedPressable
+        onPress={onPress}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        disabled={disabled}
+        style={[animatedStyle, styles.keyWrapper, disabled && styles.keyDisabled]}
+      >
+        <LinearGradient
+          colors={disabled ? ['#1a2233', '#1a2233'] : ['#00F5FF', '#8B5CF6']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.keySubmitGradient}
+        >
+          <Text style={[styles.keyTextSubmit, disabled && styles.keyTextDisabled]}>
+            {value}
+          </Text>
+        </LinearGradient>
+      </AnimatedPressable>
+    );
+  }
+
   const getButtonStyle = () => {
-    if (disabled) {
-      return [styles.key, styles.keyDisabled];
-    }
     switch (variant) {
       case 'action':
         return [styles.key, styles.keyAction];
-      case 'submit':
-        return [styles.key, styles.keySubmit];
       default:
         return [styles.key];
-    }
-  };
-
-  const getTextStyle = () => {
-    if (disabled) {
-      return [styles.keyText, styles.keyTextDisabled];
-    }
-    switch (variant) {
-      case 'submit':
-        return [styles.keyText, styles.keyTextSubmit];
-      default:
-        return [styles.keyText];
     }
   };
 
@@ -78,7 +85,11 @@ function KeypadButton({
       disabled={disabled}
       style={[animatedStyle, getButtonStyle()]}
     >
-      {icon || <Text style={getTextStyle()}>{value}</Text>}
+      {icon || (
+        <Text style={[styles.keyText, variant === 'action' && styles.keyTextAction]}>
+          {value}
+        </Text>
+      )}
     </AnimatedPressable>
   );
 }
@@ -123,7 +134,7 @@ export default function NumericKeypad({
             value="⌫"
             onPress={onBackspace}
             variant="action"
-            icon={<Ionicons name="backspace-outline" size={22} color={Colors.text} />}
+            icon={<Ionicons name="backspace-outline" size={22} color={Colors.primary} />}
           />
           <KeypadButton value="0" onPress={() => handleNumberPress('0')} />
           <KeypadButton
@@ -140,13 +151,16 @@ export default function NumericKeypad({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.card,
+    backgroundColor: Colors.glass,
     borderTopLeftRadius: BorderRadius.lg,
     borderTopRightRadius: BorderRadius.lg,
     paddingTop: Spacing.md,
     paddingBottom: Spacing.sm,
     paddingHorizontal: Spacing.md,
-    ...Shadows.large,
+    borderTopWidth: 1,
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    borderColor: Colors.glassBorder,
   },
   keypadGrid: {
     gap: Spacing.sm,
@@ -158,33 +172,45 @@ const styles = StyleSheet.create({
   },
   key: {
     flex: 1,
-    height: 50,
-    backgroundColor: Colors.background,
+    height: 52,
+    backgroundColor: 'rgba(20, 27, 45, 0.8)',
     borderRadius: BorderRadius.sm,
     alignItems: 'center',
     justifyContent: 'center',
-    ...Shadows.small,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 245, 255, 0.08)',
   },
   keyAction: {
-    backgroundColor: Colors.card,
-    borderWidth: 1,
-    borderColor: Colors.border,
+    backgroundColor: 'rgba(139, 92, 246, 0.08)',
+    borderColor: 'rgba(139, 92, 246, 0.2)',
   },
-  keySubmit: {
-    backgroundColor: Colors.primary,
+  keyWrapper: {
+    flex: 1,
+    height: 52,
+  },
+  keySubmitGradient: {
+    flex: 1,
+    borderRadius: BorderRadius.sm,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   keyDisabled: {
-    backgroundColor: Colors.border,
-    opacity: 0.5,
+    opacity: 0.4,
   },
   keyText: {
     fontSize: FontSizes.xl,
     fontWeight: '600',
     color: Colors.text,
+    fontFamily: Fonts.mono,
+  },
+  keyTextAction: {
+    color: Colors.primary,
   },
   keyTextSubmit: {
-    color: '#FFFFFF',
+    color: Colors.background,
     fontSize: FontSizes.md,
+    fontWeight: '700',
+    letterSpacing: 0.5,
   },
   keyTextDisabled: {
     color: Colors.textLight,

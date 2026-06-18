@@ -2,6 +2,7 @@ import React from 'react';
 import { Pressable, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Colors, Spacing, BorderRadius, FontSizes, Shadows } from '../constants/theme';
 
 type AnimatedButtonProps = {
@@ -38,33 +39,60 @@ export default function AnimatedButton({
     scale.value = withSpring(1, { damping: 15, stiffness: 300 });
   };
 
-  const getButtonStyle = (): ViewStyle => {
-    const baseStyle = styles.button;
+  const renderContent = () => {
+    const textColor =
+      variant === 'primary'
+        ? Colors.background
+        : variant === 'secondary'
+        ? Colors.text
+        : Colors.primary;
 
-    switch (variant) {
-      case 'primary':
-        return { ...baseStyle, backgroundColor: Colors.primary };
-      case 'secondary':
-        return { ...baseStyle, backgroundColor: Colors.card, borderWidth: 1, borderColor: Colors.border };
-      case 'outline':
-        return { ...baseStyle, backgroundColor: 'transparent', borderWidth: 2, borderColor: Colors.primary };
-      default:
-        return baseStyle;
-    }
+    return (
+      <Text style={[styles.buttonText, { color: textColor }, textStyle, disabled && styles.disabledText]}>
+        {title}
+      </Text>
+    );
   };
 
-  const getTextStyle = (): TextStyle => {
-    const baseStyle = styles.buttonText;
+  if (variant === 'primary') {
+    return (
+      <AnimatedPressable
+        onPress={onPress}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        disabled={disabled}
+        style={[animatedStyle, style, disabled && styles.disabled]}
+      >
+        <LinearGradient
+          colors={['#00F5FF', '#8B5CF6']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.gradientButton}
+        >
+          {renderContent()}
+        </LinearGradient>
+      </AnimatedPressable>
+    );
+  }
 
+  const getButtonStyle = (): ViewStyle => {
     switch (variant) {
-      case 'primary':
-        return { ...baseStyle, color: '#FFFFFF' };
       case 'secondary':
-        return { ...baseStyle, color: Colors.text };
+        return {
+          ...styles.button,
+          backgroundColor: Colors.glass,
+          borderWidth: 1,
+          borderColor: Colors.glassBorder,
+        };
       case 'outline':
-        return { ...baseStyle, color: Colors.primary };
+        return {
+          ...styles.button,
+          backgroundColor: 'transparent',
+          borderWidth: 1.5,
+          borderColor: Colors.primary,
+        };
       default:
-        return baseStyle;
+        return styles.button;
     }
   };
 
@@ -76,7 +104,7 @@ export default function AnimatedButton({
       disabled={disabled}
       style={[animatedStyle, getButtonStyle(), style, disabled && styles.disabled]}
     >
-      <Text style={[getTextStyle(), textStyle, disabled && styles.disabledText]}>{title}</Text>
+      {renderContent()}
     </AnimatedPressable>
   );
 }
@@ -89,14 +117,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: 56,
-    ...Shadows.medium,
+  },
+  gradientButton: {
+    paddingVertical: Spacing.md,
+    paddingHorizontal: Spacing.xl,
+    borderRadius: BorderRadius.md,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 56,
+    ...Shadows.glow,
   },
   buttonText: {
     fontSize: FontSizes.lg,
-    fontWeight: '600',
+    fontWeight: '700',
+    letterSpacing: 0.5,
   },
   disabled: {
-    opacity: 0.5,
+    opacity: 0.4,
   },
   disabledText: {
     opacity: 0.7,

@@ -5,7 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { FadeInRight, FadeOutLeft } from 'react-native-reanimated';
 import { Swipeable } from 'react-native-gesture-handler';
-import { Colors, Spacing, FontSizes, BorderRadius, Shadows } from '../constants/theme';
+import { Colors, Spacing, FontSizes, BorderRadius, Fonts } from '../constants/theme';
 import { getTestHistory, deleteTestSession } from '../utils/storage';
 import type { TestSession } from '../types/game';
 import { useFocusEffect } from '@react-navigation/native';
@@ -106,38 +106,39 @@ export default function HistoryScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar style="dark" />
-
-      {/* Header */}
-      <View style={styles.header}>
-        <Pressable onPress={() => router.back()} style={styles.backButton}>
-          <Text style={styles.backButtonText}>← Back</Text>
-        </Pressable>
-        <Text style={styles.title}>History</Text>
-        <View style={styles.placeholder} />
-      </View>
-
-      {/* History List */}
-      {loading ? (
-        <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>Loading...</Text>
+    <View style={styles.container}>
+      <StatusBar style="light" />
+      <SafeAreaView style={styles.safeArea}>
+        {/* Header */}
+        <View style={styles.header}>
+          <Pressable onPress={() => router.back()} style={styles.backButton}>
+            <Text style={styles.backButtonText}>← Back</Text>
+          </Pressable>
+          <Text style={styles.title}>History</Text>
+          <View style={styles.placeholder} />
         </View>
-      ) : history.length === 0 ? (
-        <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>No test history yet</Text>
-          <Text style={styles.emptySubtext}>Complete a test to see your results here</Text>
-        </View>
-      ) : (
-        <FlatList
-          data={history}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.listContent}
-          showsVerticalScrollIndicator={false}
-        />
-      )}
-    </SafeAreaView>
+
+        {/* History List */}
+        {loading ? (
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyText}>Loading...</Text>
+          </View>
+        ) : history.length === 0 ? (
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyText}>No test history yet</Text>
+            <Text style={styles.emptySubtext}>Complete a test to see your results here</Text>
+          </View>
+        ) : (
+          <FlatList
+            data={history}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={styles.listContent}
+            showsVerticalScrollIndicator={false}
+          />
+        )}
+      </SafeAreaView>
+    </View>
   );
 }
 
@@ -145,6 +146,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,
+  },
+  safeArea: {
+    flex: 1,
   },
   header: {
     flexDirection: 'row',
@@ -175,10 +179,11 @@ const styles = StyleSheet.create({
     padding: Spacing.lg,
   },
   historyItem: {
-    backgroundColor: Colors.card,
+    backgroundColor: Colors.glass,
     borderRadius: BorderRadius.md,
     marginBottom: Spacing.md,
-    ...Shadows.small,
+    borderWidth: 1,
+    borderColor: Colors.glassBorder,
   },
   historyItemContent: {
     flexDirection: 'row',
@@ -209,8 +214,9 @@ const styles = StyleSheet.create({
   },
   historyScore: {
     fontSize: FontSizes.xxl,
-    fontWeight: 'bold',
+    fontWeight: '800',
     color: Colors.primary,
+    fontFamily: Fonts.mono,
   },
   deleteButton: {
     backgroundColor: Colors.incorrect,
@@ -234,7 +240,7 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: FontSizes.xl,
     fontWeight: '600',
-    color: Colors.text,
+    color: Colors.textSecondary,
     marginBottom: Spacing.sm,
   },
   emptySubtext: {

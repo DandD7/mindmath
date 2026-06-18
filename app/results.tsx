@@ -3,9 +3,10 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import AnimatedButton from '../components/AnimatedButton';
-import { Colors, Spacing, FontSizes, BorderRadius, Shadows } from '../constants/theme';
+import { Colors, Spacing, FontSizes, BorderRadius, Shadows, Fonts } from '../constants/theme';
 import { getTestSessionById } from '../utils/storage';
 import type { TestSession } from '../types/game';
 import { ROUNDS } from '../types/game';
@@ -27,11 +28,11 @@ export default function ResultsScreen() {
 
   if (!session) {
     return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.loadingContainer}>
+      <View style={styles.container}>
+        <SafeAreaView style={styles.loadingContainer}>
           <Text style={styles.loadingText}>Loading results...</Text>
-        </View>
-      </SafeAreaView>
+        </SafeAreaView>
+      </View>
     );
   }
 
@@ -41,84 +42,91 @@ export default function ResultsScreen() {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar style="dark" />
-      <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
-        <Animated.View entering={FadeInDown.duration(400).delay(100)} style={styles.card}>
-          <Text style={styles.title}>Test Complete! 🎉</Text>
+    <View style={styles.container}>
+      <StatusBar style="light" />
+      <SafeAreaView style={styles.safeArea}>
+        <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
+          <Animated.View entering={FadeInDown.duration(400).delay(100)} style={styles.card}>
+            <Text style={styles.title}>Test Complete!</Text>
 
-          {/* Total Score */}
-          <View style={styles.scoreContainer}>
-            <Text style={styles.scoreLabel}>Total Weighted Score</Text>
-            <Text style={styles.scoreValue}>{session.totalWeightedScore}</Text>
-          </View>
-
-          {/* Round Breakdown */}
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Round Breakdown</Text>
-            <View style={styles.roundsList}>
-              {ROUNDS.map((round, index) => {
-                const roundResult = session.roundResults.find(
-                  (r) => r.operation === round.operation
-                );
-                return (
-                  <Animated.View
-                    key={round.id}
-                    entering={FadeInDown.duration(400).delay(200 + index * 100)}
-                    style={styles.roundItem}
-                  >
-                    <Text style={styles.roundName}>{round.name}</Text>
-                    <Text style={styles.roundScore}>
-                      {roundResult?.correctAnswers || 0} correct
-                    </Text>
-                  </Animated.View>
-                );
-              })}
+            {/* Total Score */}
+            <View style={styles.scoreContainer}>
+              <Text style={styles.scoreLabel}>Total Weighted Score</Text>
+              <Text style={styles.scoreValue}>{session.totalWeightedScore}</Text>
             </View>
-          </View>
 
-          {/* Difficulty Profile */}
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Difficulty Profile</Text>
-            <View style={styles.chartContainer}>
-              {[1, 2, 3, 4].map((level, index) => {
-                const count = session.difficultyProfile[level] || 0;
-                const percentage = (count / maxDifficultyCount) * 100;
-
-                return (
-                  <Animated.View
-                    key={level}
-                    entering={FadeInDown.duration(400).delay(400 + index * 100)}
-                    style={styles.chartRow}
-                  >
-                    <Text style={styles.chartLabel}>Level {level}</Text>
-                    <View style={styles.barContainer}>
-                      <View style={[styles.bar, { width: `${percentage}%` }]} />
-                    </View>
-                    <Text style={styles.chartValue}>{count}</Text>
-                  </Animated.View>
-                );
-              })}
+            {/* Round Breakdown */}
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Round Breakdown</Text>
+              <View style={styles.roundsList}>
+                {ROUNDS.map((round, index) => {
+                  const roundResult = session.roundResults.find(
+                    (r) => r.operation === round.operation
+                  );
+                  return (
+                    <Animated.View
+                      key={round.id}
+                      entering={FadeInDown.duration(400).delay(200 + index * 100)}
+                      style={styles.roundItem}
+                    >
+                      <Text style={styles.roundName}>{round.name}</Text>
+                      <Text style={styles.roundScore}>
+                        {roundResult?.correctAnswers || 0} correct
+                      </Text>
+                    </Animated.View>
+                  );
+                })}
+              </View>
             </View>
-          </View>
-        </Animated.View>
 
-        {/* Buttons */}
-        <Animated.View entering={FadeInDown.duration(400).delay(800)} style={styles.buttonContainer}>
-          <AnimatedButton
-            title="Play Again"
-            onPress={() => router.replace('/game')}
-            style={styles.button}
-          />
-          <AnimatedButton
-            title="Return Home"
-            onPress={() => router.replace('/')}
-            variant="secondary"
-            style={styles.button}
-          />
-        </Animated.View>
-      </ScrollView>
-    </SafeAreaView>
+            {/* Difficulty Profile */}
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Difficulty Profile</Text>
+              <View style={styles.chartContainer}>
+                {[1, 2, 3, 4].map((level, index) => {
+                  const count = session.difficultyProfile[level] || 0;
+                  const percentage = (count / maxDifficultyCount) * 100;
+
+                  return (
+                    <Animated.View
+                      key={level}
+                      entering={FadeInDown.duration(400).delay(400 + index * 100)}
+                      style={styles.chartRow}
+                    >
+                      <Text style={styles.chartLabel}>Lv.{level}</Text>
+                      <View style={styles.barContainer}>
+                        <LinearGradient
+                          colors={['#00F5FF', '#8B5CF6']}
+                          start={{ x: 0, y: 0 }}
+                          end={{ x: 1, y: 0 }}
+                          style={[styles.bar, { width: `${Math.max(percentage, 2)}%` }]}
+                        />
+                      </View>
+                      <Text style={styles.chartValue}>{count}</Text>
+                    </Animated.View>
+                  );
+                })}
+              </View>
+            </View>
+          </Animated.View>
+
+          {/* Buttons */}
+          <Animated.View entering={FadeInDown.duration(400).delay(800)} style={styles.buttonContainer}>
+            <AnimatedButton
+              title="Play Again"
+              onPress={() => router.replace('/game')}
+              style={styles.button}
+            />
+            <AnimatedButton
+              title="Return Home"
+              onPress={() => router.replace('/')}
+              variant="secondary"
+              style={styles.button}
+            />
+          </Animated.View>
+        </ScrollView>
+      </SafeAreaView>
+    </View>
   );
 }
 
@@ -126,6 +134,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,
+  },
+  safeArea: {
+    flex: 1,
   },
   scrollView: {
     flex: 1,
@@ -140,19 +151,20 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: FontSizes.lg,
-    color: Colors.textLight,
+    color: Colors.textSecondary,
   },
   card: {
-    backgroundColor: Colors.card,
+    backgroundColor: Colors.glass,
     borderRadius: BorderRadius.lg,
     padding: Spacing.xl,
     marginBottom: Spacing.lg,
-    ...Shadows.medium,
+    borderWidth: 1,
+    borderColor: Colors.glassBorder,
   },
   title: {
     fontSize: FontSizes.xxxl,
-    fontWeight: 'bold',
-    color: Colors.primary,
+    fontWeight: '800',
+    color: Colors.text,
     textAlign: 'center',
     marginBottom: Spacing.xl,
   },
@@ -165,13 +177,15 @@ const styles = StyleSheet.create({
   },
   scoreLabel: {
     fontSize: FontSizes.md,
-    color: Colors.textLight,
+    color: Colors.textSecondary,
     marginBottom: Spacing.sm,
   },
   scoreValue: {
     fontSize: FontSizes.xxxl * 1.5,
-    fontWeight: 'bold',
+    fontWeight: '800',
     color: Colors.primary,
+    fontFamily: Fonts.mono,
+    ...Shadows.glow,
   },
   section: {
     marginBottom: Spacing.xl,
@@ -191,18 +205,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: Spacing.md,
     paddingHorizontal: Spacing.md,
-    backgroundColor: Colors.background,
+    backgroundColor: 'rgba(0, 245, 255, 0.04)',
     borderRadius: BorderRadius.sm,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 245, 255, 0.06)',
   },
   roundName: {
     fontSize: FontSizes.md,
-    color: Colors.text,
+    color: Colors.textSecondary,
     fontWeight: '500',
   },
   roundScore: {
     fontSize: FontSizes.md,
     color: Colors.primary,
-    fontWeight: '600',
+    fontWeight: '700',
+    fontFamily: Fonts.mono,
   },
   chartContainer: {
     gap: Spacing.md,
@@ -213,28 +230,30 @@ const styles = StyleSheet.create({
     gap: Spacing.md,
   },
   chartLabel: {
-    fontSize: FontSizes.md,
-    color: Colors.text,
-    width: 60,
+    fontSize: FontSizes.sm,
+    color: Colors.textSecondary,
+    width: 36,
+    fontFamily: Fonts.mono,
+    fontWeight: '600',
   },
   barContainer: {
     flex: 1,
-    height: 32,
-    backgroundColor: Colors.background,
+    height: 28,
+    backgroundColor: 'rgba(0, 245, 255, 0.05)',
     borderRadius: BorderRadius.sm,
     overflow: 'hidden',
   },
   bar: {
     height: '100%',
-    backgroundColor: Colors.primary,
     borderRadius: BorderRadius.sm,
   },
   chartValue: {
     fontSize: FontSizes.md,
-    color: Colors.text,
-    fontWeight: '600',
-    width: 40,
+    color: Colors.primary,
+    fontWeight: '700',
+    width: 36,
     textAlign: 'right',
+    fontFamily: Fonts.mono,
   },
   buttonContainer: {
     gap: Spacing.md,

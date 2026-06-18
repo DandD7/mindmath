@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { LinearGradient } from 'expo-linear-gradient';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -12,7 +13,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import NumericKeypad from '../components/NumericKeypad';
-import { Colors, Spacing, FontSizes, BorderRadius, Shadows } from '../constants/theme';
+import { Colors, Spacing, FontSizes, BorderRadius, Shadows, Fonts } from '../constants/theme';
 import { ROUNDS } from '../types/game';
 import type { GameState, RoundResult } from '../types/game';
 import { generateQuestion, checkAnswer, getNextDifficulty, calculateWeightedScore } from '../utils/gameLogic';
@@ -54,40 +55,34 @@ export default function GameScreen() {
   const currentRound = ROUNDS[gameState.currentRound];
 
   const handleRoundEnd = useCallback(() => {
-    // Prevent multiple calls during transition
     if (isTransitioning) return;
 
     setIsTransitioning(true);
     setIsGameActive(false);
 
-    // Save round result with actual correct answers from this round
     const roundResult: RoundResult = {
       operation: currentRound.operation,
       correctAnswers: gameState.currentRoundCorrectAnswers,
-      totalAnswers: 0, // Not tracking total attempts
+      totalAnswers: 0,
       difficultyLevels: {},
     };
 
     const updatedRoundResults = [...gameState.roundResults, roundResult];
 
     if (gameState.currentRound < ROUNDS.length - 1) {
-      // Show transition to next round
       setShowTransition(true);
-      // Clear input field when round ends
       setUserAnswer('');
 
       setTimeout(() => {
         const nextRound = gameState.currentRound + 1;
         const nextOperation = ROUNDS[nextRound].operation;
 
-        // Generate question ONCE before updating state
         const newQuestion = generateQuestion(
           nextOperation,
           gameState.currentDifficulty[nextOperation],
           nextOperation === 'mixed' ? gameState.currentDifficulty : undefined
         );
 
-        // Update all state in a single batch
         setShowTransition(false);
         setGameState({
           ...gameState,
@@ -96,16 +91,14 @@ export default function GameScreen() {
           timeRemaining: 60,
           roundStartTime: Date.now(),
           roundResults: updatedRoundResults,
-          currentRoundCorrectAnswers: 0, // Reset for next round
-          consecutiveCorrect: 0, // Reset consecutive counter for new round
+          currentRoundCorrectAnswers: 0,
+          consecutiveCorrect: 0,
         });
         setIsGameActive(true);
         setIsTransitioning(false);
-        // Clear input field again at start of new round
         setUserAnswer('');
       }, 2500);
     } else {
-      // Game finished - save final round result and navigate to results
       const finalGameState = {
         ...gameState,
         roundResults: updatedRoundResults,
@@ -129,17 +122,14 @@ export default function GameScreen() {
     }
   }, [gameState, currentRound, router, isTransitioning]);
 
-  // Update the ref whenever handleRoundEnd changes
   useEffect(() => {
     handleRoundEndRef.current = handleRoundEnd;
   }, [handleRoundEnd]);
 
-  // Timer effect - stable, doesn't recreate on every render
   useEffect(() => {
     const timer = setInterval(() => {
       setGameState((prev) => {
         if (prev.timeRemaining <= 1) {
-          // Round ended - call via ref to avoid dependency issues
           handleRoundEndRef.current?.();
           return prev;
         }
@@ -148,7 +138,7 @@ export default function GameScreen() {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []); // Empty dependency array - timer is stable
+  }, []);
 
 
   const handleSubmit = () => {
@@ -158,33 +148,24 @@ export default function GameScreen() {
     const currentDiff = gameState.currentQuestion.difficulty;
 
     if (isCorrect) {
-      // Correct answer feedback
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       inputFlash.value = withSequence(
         withTiming(1, { duration: 150 }),
         withTiming(0, { duration: 150 })
       );
 
-      // Increment consecutive correct counter
       const newConsecutiveCorrect = gameState.consecutiveCorrect + 1;
-
-      // Update difficulty based on consecutive correct answers (requires 3 for increase)
       const newDifficulty = getNextDifficulty(currentDiff, true, newConsecutiveCorrect);
-
-      // Reset consecutive counter if difficulty increased
       const resetConsecutive = newDifficulty > currentDiff ? 0 : newConsecutiveCorrect;
 
-      // Update total correct by difficulty
       const updatedDifficultyProfile = { ...gameState.totalCorrectByDifficulty };
       updatedDifficultyProfile[currentDiff] = (updatedDifficultyProfile[currentDiff] || 0) + 1;
 
-      // Generate next question with fade animation
       questionOpacity.value = withSequence(
         withTiming(0, { duration: 100 }),
         withTiming(1, { duration: 200 })
       );
 
-      // Update difficulty for the current round's operation type
       const updatedDifficulties = { ...gameState.currentDifficulty };
       updatedDifficulties[currentRound.operation] = newDifficulty;
 
@@ -202,7 +183,6 @@ export default function GameScreen() {
         totalCorrectByDifficulty: updatedDifficultyProfile,
       });
     } else {
-      // Incorrect answer feedback
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       inputShake.value = withSequence(
         withTiming(-10, { duration: 50 }),
@@ -212,23 +192,19 @@ export default function GameScreen() {
         withTiming(0, { duration: 50 })
       );
 
-      // Reset consecutive correct counter on wrong answer
-      // Decrease difficulty by one level
       const newDifficulty = getNextDifficulty(currentDiff, false, 0);
 
-      // Generate new question with decreased difficulty and fade animation
       questionOpacity.value = withSequence(
         withTiming(0, { duration: 100 }),
         withTiming(1, { duration: 200 })
       );
 
-      // Update difficulty for the current round's operation type
       const updatedDifficulties = { ...gameState.currentDifficulty };
       updatedDifficulties[currentRound.operation] = newDifficulty;
 
       setGameState({
         ...gameState,
-        consecutiveCorrect: 0, // Reset on wrong answer
+        consecutiveCorrect: 0,
         currentDifficulty: updatedDifficulties,
         currentQuestion: generateQuestion(
           currentRound.operation,
@@ -243,12 +219,10 @@ export default function GameScreen() {
 
   const handleNumberPress = (number: string) => {
     if (!isGameActive || isTransitioning) return;
-    // Prevent leading zeros (but allow single zero)
     if (userAnswer === '0' || (userAnswer === '' && number === '0')) {
       setUserAnswer('0');
       return;
     }
-    // Limit answer length to prevent overflow
     if (userAnswer.length >= 10) return;
     setUserAnswer(prev => prev + number);
   };
@@ -260,7 +234,13 @@ export default function GameScreen() {
 
   const inputAnimatedStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: inputShake.value }],
-    backgroundColor: inputFlash.value === 1 ? Colors.correct : Colors.card,
+  }));
+
+  const inputFlashStyle = useAnimatedStyle(() => ({
+    borderColor: inputFlash.value === 1 ? Colors.correct : Colors.glassBorder,
+    shadowColor: inputFlash.value === 1 ? Colors.correct : 'transparent',
+    shadowOpacity: inputFlash.value === 1 ? 0.6 : 0,
+    shadowRadius: inputFlash.value === 1 ? 12 : 0,
   }));
 
   const questionAnimatedStyle = useAnimatedStyle(() => ({
@@ -268,13 +248,15 @@ export default function GameScreen() {
   }));
 
   const progressPercentage = (gameState.timeRemaining / 60) * 100;
+  const timerColor = gameState.timeRemaining <= 10 ? Colors.incorrect : Colors.primary;
 
   if (showTransition) {
     return (
       <View style={styles.transitionContainer}>
-        <StatusBar style="dark" />
+        <StatusBar style="light" />
         <Animated.View entering={FadeIn.duration(300)} style={styles.transitionContent}>
-          <Text style={styles.transitionTitle}>Great work! 🎉</Text>
+          <Text style={styles.transitionEmoji}>🎉</Text>
+          <Text style={styles.transitionTitle}>Great work!</Text>
           <Text style={styles.transitionSubtitle}>
             Next up: {ROUNDS[gameState.currentRound + 1]?.name}
           </Text>
@@ -284,49 +266,64 @@ export default function GameScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar style="dark" />
-      <View style={styles.content}>
-        {/* Header */}
-        <View style={styles.header}>
-          <View style={styles.headerInfo}>
-            <Text style={styles.roundTitle}>Round {currentRound.id}: {currentRound.name}</Text>
-            <Text style={styles.score}>Score: {gameState.score}</Text>
+    <View style={styles.container}>
+      <StatusBar style="light" />
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.content}>
+          {/* Header */}
+          <View style={styles.header}>
+            <View style={styles.headerInfo}>
+              <Text style={styles.roundTitle}>
+                R{currentRound.id}: {currentRound.name}
+              </Text>
+              <View style={styles.scoreBadge}>
+                <Text style={styles.scoreText}>{gameState.score}</Text>
+              </View>
+            </View>
+
+            {/* Timer Progress Bar */}
+            <View style={styles.timerContainer}>
+              <LinearGradient
+                colors={gameState.timeRemaining <= 10 ? ['#FF4E6A', '#FF4E6A'] : ['#00F5FF', '#8B5CF6']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={[styles.timerBar, { width: `${progressPercentage}%` }]}
+              />
+            </View>
+            <Text style={[styles.timerText, { color: timerColor }]}>
+              {gameState.timeRemaining}s
+            </Text>
           </View>
 
-          {/* Timer Progress Bar */}
-          <View style={styles.timerContainer}>
-            <View style={[styles.timerBar, { width: `${progressPercentage}%` }]} />
-          </View>
-          <Text style={styles.timerText}>{gameState.timeRemaining}s</Text>
-        </View>
-
-        {/* Question Area */}
-        <Animated.View style={[styles.questionCard, questionAnimatedStyle]}>
-          <Text style={styles.questionText}>{gameState.currentQuestion.question} = ?</Text>
-        </Animated.View>
-
-        {/* Spacer to push input area down */}
-        <View style={{ flex: 1 }} />
-
-        {/* Answer Display - positioned above keypad */}
-        <View style={styles.answerContainer}>
-          <Animated.View style={[styles.answerDisplay, inputAnimatedStyle]}>
-            <Text style={styles.answerText}>
-              {userAnswer || ' '}
+          {/* Question Area */}
+          <Animated.View style={[styles.questionCard, questionAnimatedStyle]}>
+            <Text style={styles.questionText}>
+              {gameState.currentQuestion.question} = ?
             </Text>
           </Animated.View>
-        </View>
-      </View>
 
-      {/* Custom Numeric Keypad - fixed at bottom */}
-      <NumericKeypad
-        onNumberPress={handleNumberPress}
-        onBackspace={handleBackspace}
-        onSubmit={handleSubmit}
-        submitDisabled={!userAnswer.trim() || !isGameActive || isTransitioning}
-      />
-    </SafeAreaView>
+          {/* Spacer */}
+          <View style={{ flex: 1 }} />
+
+          {/* Answer Display */}
+          <View style={styles.answerContainer}>
+            <Animated.View style={[styles.answerDisplay, inputAnimatedStyle, inputFlashStyle]}>
+              <Text style={styles.answerText}>
+                {userAnswer || ' '}
+              </Text>
+            </Animated.View>
+          </View>
+        </View>
+
+        {/* Custom Numeric Keypad */}
+        <NumericKeypad
+          onNumberPress={handleNumberPress}
+          onBackspace={handleBackspace}
+          onSubmit={handleSubmit}
+          submitDisabled={!userAnswer.trim() || !isGameActive || isTransitioning}
+        />
+      </SafeAreaView>
+    </View>
   );
 }
 
@@ -334,6 +331,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,
+  },
+  safeArea: {
+    flex: 1,
   },
   content: {
     flex: 1,
@@ -351,33 +351,43 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.md,
   },
   roundTitle: {
-    fontSize: FontSizes.xl,
-    fontWeight: '600',
-    color: Colors.text,
-  },
-  score: {
     fontSize: FontSizes.lg,
     fontWeight: '600',
+    color: Colors.textSecondary,
+  },
+  scoreBadge: {
+    backgroundColor: Colors.glass,
+    borderRadius: BorderRadius.full,
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.xs,
+    borderWidth: 1,
+    borderColor: Colors.glassBorder,
+  },
+  scoreText: {
+    fontSize: FontSizes.lg,
+    fontWeight: '700',
     color: Colors.primary,
+    fontFamily: Fonts.mono,
   },
   timerContainer: {
-    height: 8,
-    backgroundColor: Colors.border,
-    borderRadius: BorderRadius.sm,
+    height: 4,
+    backgroundColor: 'rgba(0, 245, 255, 0.08)',
+    borderRadius: BorderRadius.full,
     overflow: 'hidden',
     marginBottom: Spacing.sm,
   },
   timerBar: {
     height: '100%',
-    backgroundColor: Colors.primary,
+    borderRadius: BorderRadius.full,
   },
   timerText: {
-    fontSize: FontSizes.md,
-    color: Colors.textLight,
+    fontSize: FontSizes.sm,
+    fontFamily: Fonts.mono,
+    fontWeight: '600',
     textAlign: 'center',
   },
   questionCard: {
-    backgroundColor: Colors.card,
+    backgroundColor: Colors.glass,
     borderRadius: BorderRadius.lg,
     paddingVertical: Spacing.xl,
     paddingHorizontal: Spacing.lg,
@@ -385,6 +395,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     minHeight: 140,
     marginBottom: Spacing.lg,
+    borderWidth: 1,
+    borderColor: Colors.glassBorder,
     ...Shadows.medium,
   },
   questionText: {
@@ -392,25 +404,28 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: Colors.text,
     textAlign: 'center',
+    fontFamily: Fonts.mono,
   },
   answerContainer: {
     paddingBottom: Spacing.md,
   },
   answerDisplay: {
-    backgroundColor: Colors.card,
+    backgroundColor: Colors.glass,
     borderRadius: BorderRadius.md,
     paddingVertical: Spacing.md,
     paddingHorizontal: Spacing.lg,
     minHeight: 70,
     alignItems: 'center',
     justifyContent: 'center',
-    ...Shadows.small,
+    borderWidth: 1,
+    borderColor: Colors.glassBorder,
   },
   answerText: {
     fontSize: 40,
     fontWeight: '700',
-    color: Colors.text,
-    letterSpacing: 2,
+    color: Colors.primary,
+    letterSpacing: 4,
+    fontFamily: Fonts.mono,
   },
   transitionContainer: {
     flex: 1,
@@ -422,15 +437,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: Spacing.lg,
   },
+  transitionEmoji: {
+    fontSize: 64,
+    marginBottom: Spacing.md,
+  },
   transitionTitle: {
     fontSize: FontSizes.xxxl,
     fontWeight: 'bold',
-    color: Colors.primary,
+    color: Colors.text,
     marginBottom: Spacing.md,
   },
   transitionSubtitle: {
     fontSize: FontSizes.xl,
-    color: Colors.textLight,
+    color: Colors.textSecondary,
     textAlign: 'center',
   },
 });
