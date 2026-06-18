@@ -26,6 +26,15 @@ import type { GameState, DifficultyTimelineEntry, OperationType } from '../types
 import { generateQuestion, checkAnswer, calculateWeightedScore, getAnswerHint, operationRequiresDecimal, operationProducesIntegers } from '../utils/gameLogic';
 import { saveTestSession } from '../utils/storage';
 
+// Fixed sequence for 5-minute Full Challenge (1 minute each)
+const CHALLENGE_SEQUENCE: { operation: OperationType; label: string }[] = [
+  { operation: 'addition', label: 'Addition' },
+  { operation: 'subtraction', label: 'Subtraction' },
+  { operation: 'multiplication', label: 'Multiplication' },
+  { operation: 'percentage', label: 'Percentages' },
+  { operation: 'mixed', label: 'Mixed' },
+];
+
 export default function GameScreen() {
   const router = useRouter();
   const params = useLocalSearchParams<{ mode: string }>();
@@ -38,9 +47,24 @@ export default function GameScreen() {
 
   // Get the selected game mode
   const selectedMode = isFullChallenge
-    ? { id: FULL_CHALLENGE_MODE_ID, name: 'Full Challenge', operation: 'mixed' as OperationType, icon: '⚡', color: '#FFC837', gradientColors: ['#FFC837', '#FF8008'] as [string, string], description: '5-Minute Professional Assessment' }
+    ? { id: FULL_CHALLENGE_MODE_ID, name: 'Full Challenge', operation: 'mixed' as OperationType, icon: '⚡', color: '#FFC837', gradientColors: ['#FFC837', '#FF8008'] as [string, string], description: 'Full Mindmath Challenge' }
     : GAME_MODES.find(m => m.id === params.mode) || GAME_MODES[0];
   const operation: OperationType = selectedMode.operation;
+
+  // Helper: get current operation based on elapsed time for full challenge
+  const getChallengeOperation = (timeRemaining: number): OperationType => {
+    if (!isFullChallenge) return operation;
+    const elapsed = gameDuration - timeRemaining;
+    const blockIndex = Math.min(Math.floor(elapsed / 60), CHALLENGE_SEQUENCE.length - 1);
+    return CHALLENGE_SEQUENCE[blockIndex].operation;
+  };
+
+  const getChallengeLabel = (timeRemaining: number): string => {
+    if (!isFullChallenge) return selectedMode.name;
+    const elapsed = gameDuration - timeRemaining;
+    const blockIndex = Math.min(Math.floor(elapsed / 60), CHALLENGE_SEQUENCE.length - 1);
+    return CHALLENGE_SEQUENCE[blockIndex].label;
+  };
 
   // Countdown state
   const [showCountdown, setShowCountdown] = useState(true);
@@ -59,9 +83,15 @@ export default function GameScreen() {
   const finalSprintCorrectRef = useRef(0);
   const finalSprintTotalRef = useRef(0);
 
+  // Track the previous challenge block to detect operation changes
+  const prevBlockRef = useRef<OperationType>(isFullChallenge ? CHALLENGE_SEQUENCE[0].operation : operation);
+
+  // For the full challenge, start with the first operation in the sequence
+  const initialOperation: OperationType = isFullChallenge ? CHALLENGE_SEQUENCE[0].operation : operation;
+
   const [gameState, setGameState] = useState<GameState>({
     currentRound: 0,
-    currentQuestion: generateQuestion(operation, 1, operation === 'mixed' ? {
+    currentQuestion: generateQuestion(initialOperation, 1, initialOperation === 'mixed' ? {
       addition: 1, subtraction: 1, multiplication: 1, percentage: 1, mixed: 1,
     } : undefined),
     score: 0,
@@ -101,8 +131,13 @@ export default function GameScreen() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Get current active operation (changes per minute in full challenge)
+  const currentActiveOperation = getChallengeOperation(gameState.timeRemaining);
+  const currentActiveLabel = getChallengeLabel(gameState.timeRemaining);
+
   // Determine if decimal should be hidden for this mode
-  const hideDecimalForMode = !isFullChallenge && operationProducesIntegers(operation);
+  // In full challenge, all operations produce integers (percentage uses round half up)
+  const hideDecimalForMode = !isFullChallenge ? operationProducesIntegers(operation) : operationProducesIntegers(currentActiveOperation);
 
   // Only show decimal highlight when answer actually requires it
   const answerRequiresDecimalInput = operationRequiresDecimal(
@@ -222,6 +257,29 @@ export default function GameScreen() {
     return () => clearInterval(timer);
   }, [isGameActive, isPaused, showCountdown]);
 
+  // Detect operation block change in full challenge and generate new question
+  useEffect(() => {
+    if (!isFullChallenge || !isGameActive || showCountdown) return;
+    const currentOp = getChallengeOperation(gameState.timeRemaining);
+    if (currentOp !== prevBlockRef.current) {
+      prevBlockRef.current = currentOp;
+      // Generate new question for the new operation block
+      const diff = gameState.currentDifficulty[currentOp] || 1;
+      const newQuestion = generateQuestion(
+        currentOp,
+        diff,
+        currentOp === 'mixed' ? gameState.currentDifficulty : undefined
+      );
+      setGameState(prev => ({
+        ...prev,
+        currentQuestion: newQuestion,
+        consecutiveCorrect: 0, // reset streak on block change
+      }));
+      setUserAnswer('');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gameState.timeRemaining]);
+
   const triggerGlitchEffect = () => {
     setShowGlitch(true);
     glitchOpacity.value = withSequence(
@@ -295,6 +353,9 @@ export default function GameScreen() {
     const currentDiff = gameState.currentQuestion.difficulty;
     const questionIndex = gameState.totalQuestionsAttempted;
 
+    // Use the current active operation for generating the next question
+    const activeOp = currentActiveOperation;
+
     // Track final sprint stats
     if (isFinalSprint) {
       finalSprintTotalRef.current += 1;
@@ -349,7 +410,7 @@ export default function GameScreen() {
       );
 
       const updatedDifficulties = { ...gameState.currentDifficulty };
-      updatedDifficulties[operation] = newDifficulty;
+      updatedDifficulties[activeOp] = newDifficulty;
 
       setGameState({
         ...gameState,
@@ -359,9 +420,9 @@ export default function GameScreen() {
         currentDifficulty: updatedDifficulties,
         difficultyLevel: newDifficulty,
         currentQuestion: generateQuestion(
-          operation,
+          activeOp,
           newDifficulty,
-          operation === 'mixed' ? updatedDifficulties : undefined
+          activeOp === 'mixed' ? updatedDifficulties : undefined
         ),
         totalCorrectByDifficulty: updatedDifficultyProfile,
         difficultyTimeline: [...gameState.difficultyTimeline, timelineEntry],
@@ -392,7 +453,7 @@ export default function GameScreen() {
       );
 
       const updatedDifficulties = { ...gameState.currentDifficulty };
-      updatedDifficulties[operation] = newDifficulty;
+      updatedDifficulties[activeOp] = newDifficulty;
 
       setGameState({
         ...gameState,
@@ -401,9 +462,9 @@ export default function GameScreen() {
         currentDifficulty: updatedDifficulties,
         difficultyLevel: newDifficulty,
         currentQuestion: generateQuestion(
-          operation,
+          activeOp,
           newDifficulty,
-          operation === 'mixed' ? updatedDifficulties : undefined
+          activeOp === 'mixed' ? updatedDifficulties : undefined
         ),
         difficultyTimeline: [...gameState.difficultyTimeline, timelineEntry],
         totalQuestionsAttempted: questionIndex + 1,
@@ -534,7 +595,7 @@ export default function GameScreen() {
             <View style={styles.headerTop}>
               <View style={styles.headerLeft}>
                 <Text style={[styles.modeLabel, { color: selectedMode.color }]}>
-                  {selectedMode.icon} {selectedMode.name.toUpperCase()}
+                  {selectedMode.icon} {isFullChallenge ? currentActiveLabel.toUpperCase() : selectedMode.name.toUpperCase()}
                 </Text>
                 <View style={styles.headerMeta}>
                   <Text style={styles.difficultyLabel}>

@@ -100,9 +100,6 @@ function HeroCard({ onPress }: { onPress: () => void }) {
             <Text style={styles.heroIcon}>⚡</Text>
             <Text style={styles.heroTitle}>FULL MINDMATH</Text>
             <Text style={styles.heroTitleSecondary}>CHALLENGE</Text>
-            <Text style={styles.heroDescription}>
-              5-Minute Professional Assessment
-            </Text>
             <Text style={styles.heroSubDescription}>
               Mixed operations • Faster scaling • Final Sprint mode
             </Text>
