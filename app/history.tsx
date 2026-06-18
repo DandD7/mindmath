@@ -76,8 +76,10 @@ export default function HistoryScreen() {
       minute: '2-digit',
     });
 
-    const modeName = item.gameMode ? getOperationDisplayName(item.gameMode) : 'Mixed';
-    const modeColor = GAME_MODES.find(m => m.operation === item.gameMode)?.color || Colors.primary;
+    const isFullChallenge = item.duration === 300;
+    const modeName = isFullChallenge ? 'Full Challenge' : (item.gameMode ? getOperationDisplayName(item.gameMode) : 'Mixed');
+    const modeColor = isFullChallenge ? '#FFC837' : (GAME_MODES.find(m => m.operation === item.gameMode)?.color || Colors.primary);
+    const timeLabel = isFullChallenge ? '5m' : '1m';
 
     return (
       <Swipeable
@@ -99,7 +101,13 @@ export default function HistoryScreen() {
             <View style={styles.historyItemLeft}>
               <Text style={styles.historyDate}>{formattedDate}</Text>
               <Text style={styles.historyTime}>{formattedTime}</Text>
-              <Text style={[styles.historyMode, { color: modeColor }]}>{modeName}</Text>
+              <View style={styles.historyModeRow}>
+                <Text style={[styles.historyMode, { color: modeColor }]}>{modeName}</Text>
+                <View style={styles.historyTimeBadge}>
+                  <Text style={styles.historyTimeBadgeIcon}>⏱</Text>
+                  <Text style={styles.historyTimeBadgeText}>{timeLabel}</Text>
+                </View>
+              </View>
             </View>
             <View style={styles.historyItemRight}>
               <Text style={styles.historyScoreLabel}>Score</Text>
@@ -213,11 +221,36 @@ const styles = StyleSheet.create({
     fontSize: FontSizes.md,
     color: Colors.textLight,
   },
+  historyModeRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.sm,
+    marginTop: Spacing.xs,
+  },
   historyMode: {
     fontSize: FontSizes.xs,
     fontWeight: '600',
     letterSpacing: LetterSpacing.wider,
-    marginTop: Spacing.xs,
+  },
+  historyTimeBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 245, 255, 0.06)',
+    paddingHorizontal: 6,
+    paddingVertical: 1,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 245, 255, 0.12)',
+    gap: 2,
+  },
+  historyTimeBadgeIcon: {
+    fontSize: 9,
+  },
+  historyTimeBadgeText: {
+    fontSize: 9,
+    fontWeight: '700',
+    color: Colors.primary,
+    letterSpacing: LetterSpacing.wide,
   },
   historyItemRight: {
     alignItems: 'flex-end',

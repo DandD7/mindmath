@@ -12,6 +12,8 @@ import Animated, {
   FadeIn,
   ZoomIn,
   Easing,
+  withRepeat,
+  interpolateColor,
 } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import NumericKeypad from '../components/NumericKeypad';
@@ -19,7 +21,7 @@ import ProgressRing from '../components/ProgressRing';
 import ParticleBurst from '../components/ParticleBurst';
 import DifficultyIndicator from '../components/DifficultyIndicator';
 import { Colors, Spacing, FontSizes, BorderRadius, Shadows, Fonts, LetterSpacing } from '../constants/theme';
-import { GAME_MODES } from '../types/game';
+import { GAME_MODES, FULL_CHALLENGE_MODE_ID } from '../types/game';
 import type { GameState, DifficultyTimelineEntry, OperationType } from '../types/game';
 import { generateQuestion, checkAnswer, calculateWeightedScore, getAnswerHint, operationRequiresDecimal, operationProducesIntegers } from '../utils/gameLogic';
 import { saveTestSession } from '../utils/storage';
@@ -29,8 +31,15 @@ export default function GameScreen() {
   const params = useLocalSearchParams<{ mode: string }>();
   const handleGameEndRef = useRef<(() => void) | null>(null);
 
+  // Determine if this is a 5-minute challenge or 1-minute training
+  const isFullChallenge = params.mode === FULL_CHALLENGE_MODE_ID;
+  const gameDuration = isFullChallenge ? 300 : 60; // 5 min or 1 min
+  const FINAL_SPRINT_THRESHOLD = 30; // last 30 seconds
+
   // Get the selected game mode
-  const selectedMode = GAME_MODES.find(m => m.id === params.mode) || GAME_MODES[0];
+  const selectedMode = isFullChallenge
+    ? { id: FULL_CHALLENGE_MODE_ID, name: 'Full Challenge', operation: 'mixed' as OperationType, icon: '⚡', color: '#FFC837', gradientColors: ['#FFC837', '#FF8008'] as [string, string], description: '5-Minute Professional Assessment' }
+    : GAME_MODES.find(m => m.id === params.mode) || GAME_MODES[0];
   const operation: OperationType = selectedMode.operation;
 
   // Countdown state
@@ -41,6 +50,15 @@ export default function GameScreen() {
   const [difficultyDidIncrease, setDifficultyDidIncrease] = useState(false);
   const difficultyIncreaseCounter = useRef(0);
 
+  // Glitch effect state
+  const [showGlitch, setShowGlitch] = useState(false);
+  const glitchOpacity = useSharedValue(0);
+  const glitchOffset = useSharedValue(0);
+
+  // Final sprint tracking
+  const finalSprintCorrectRef = useRef(0);
+  const finalSprintTotalRef = useRef(0);
+
   const [gameState, setGameState] = useState<GameState>({
     currentRound: 0,
     currentQuestion: generateQuestion(operation, 1, operation === 'mixed' ? {
@@ -48,7 +66,7 @@ export default function GameScreen() {
     } : undefined),
     score: 0,
     roundStartTime: Date.now(),
-    timeRemaining: 60,
+    timeRemaining: gameDuration,
     currentDifficulty: {
       addition: 1,
       subtraction: 1,
@@ -75,9 +93,16 @@ export default function GameScreen() {
   const inputShake = useSharedValue(0);
   const inputFlash = useSharedValue(0);
   const questionOpacity = useSharedValue(1);
+  const bgOffset = useSharedValue(0);
+
+  // Background movement for transition effect
+  useEffect(() => {
+    bgOffset.value = withTiming(20, { duration: 800, easing: Easing.out(Easing.cubic) });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Determine if decimal should be hidden for this mode
-  const hideDecimalForMode = operationProducesIntegers(operation);
+  const hideDecimalForMode = !isFullChallenge && operationProducesIntegers(operation);
 
   // Only show decimal highlight when answer actually requires it
   const answerRequiresDecimalInput = operationRequiresDecimal(
@@ -85,6 +110,47 @@ export default function GameScreen() {
     gameState.currentQuestion.answer
   );
   const answerHint = getAnswerHint(gameState.currentQuestion.answer);
+
+  // Is final sprint active?
+  const isFinalSprint = isFullChallenge && gameState.timeRemaining <= FINAL_SPRINT_THRESHOLD;
+
+  // Final sprint pulse animation
+  const sprintPulse = useSharedValue(0);
+  useEffect(() => {
+    if (isFinalSprint) {
+      sprintPulse.value = withRepeat(
+        withSequence(
+          withTiming(1, { duration: 500, easing: Easing.inOut(Easing.ease) }),
+          withTiming(0, { duration: 500, easing: Easing.inOut(Easing.ease) })
+        ),
+        -1,
+        false
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFinalSprint]);
+
+  const sprintBorderStyle = useAnimatedStyle(() => {
+    if (!isFinalSprint) return {};
+    return {
+      borderColor: interpolateColor(
+        sprintPulse.value,
+        [0, 1],
+        ['rgba(255, 200, 55, 0.2)', 'rgba(255, 128, 8, 0.6)']
+      ),
+    };
+  });
+
+  // Background animated style for speed simulation
+  const bgAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: -bgOffset.value }],
+  }));
+
+  // Glitch style
+  const glitchStyle = useAnimatedStyle(() => ({
+    opacity: glitchOpacity.value,
+    transform: [{ translateX: glitchOffset.value }],
+  }));
 
   // Countdown effect with zoom-in animation
   useEffect(() => {
@@ -121,6 +187,9 @@ export default function GameScreen() {
       difficultyTimeline: gameState.difficultyTimeline,
       totalQuestions: gameState.totalQuestionsAttempted,
       gameMode: operation,
+      duration: gameDuration,
+      finalSprintCorrect: finalSprintCorrectRef.current,
+      finalSprintTotal: finalSprintTotalRef.current,
     };
 
     saveTestSession(session).then(() => {
@@ -129,7 +198,7 @@ export default function GameScreen() {
         params: { sessionId: session.id },
       });
     });
-  }, [gameState, operation, router]);
+  }, [gameState, operation, router, gameDuration]);
 
   useEffect(() => {
     handleGameEndRef.current = handleGameEnd;
@@ -152,6 +221,37 @@ export default function GameScreen() {
 
     return () => clearInterval(timer);
   }, [isGameActive, isPaused, showCountdown]);
+
+  const triggerGlitchEffect = () => {
+    setShowGlitch(true);
+    glitchOpacity.value = withSequence(
+      withTiming(0.8, { duration: 50 }),
+      withTiming(0, { duration: 50 }),
+      withTiming(0.6, { duration: 30 }),
+      withTiming(0, { duration: 80 }),
+      withTiming(0.3, { duration: 40 }),
+      withTiming(0, { duration: 100 })
+    );
+    glitchOffset.value = withSequence(
+      withTiming(5, { duration: 30 }),
+      withTiming(-8, { duration: 40 }),
+      withTiming(3, { duration: 30 }),
+      withTiming(-4, { duration: 50 }),
+      withTiming(0, { duration: 60 })
+    );
+    setTimeout(() => setShowGlitch(false), 400);
+  };
+
+  const triggerDisruptedVibration = () => {
+    // Disturbed vibration pattern
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+    setTimeout(() => {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+    }, 100);
+    setTimeout(() => {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    }, 200);
+  };
 
   const handlePause = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -195,6 +295,14 @@ export default function GameScreen() {
     const currentDiff = gameState.currentQuestion.difficulty;
     const questionIndex = gameState.totalQuestionsAttempted;
 
+    // Track final sprint stats
+    if (isFinalSprint) {
+      finalSprintTotalRef.current += 1;
+      if (isCorrect) {
+        finalSprintCorrectRef.current += 1;
+      }
+    }
+
     // Record timeline entry
     const timelineEntry: DifficultyTimelineEntry = {
       questionIndex,
@@ -215,14 +323,14 @@ export default function GameScreen() {
 
       const newConsecutiveCorrect = gameState.consecutiveCorrect + 1;
 
-      // DDA 2.0: Increase difficulty after streak of 3 correct answers
+      // DDA: Scale faster in 5-min mode (every 2 instead of 3)
+      const streakThreshold = isFullChallenge ? 2 : 3;
       let newDifficulty = currentDiff;
       let resetConsecutive = newConsecutiveCorrect;
-      if (newConsecutiveCorrect >= 3) {
+      if (newConsecutiveCorrect >= streakThreshold) {
         newDifficulty = Math.min(currentDiff + 1, 4);
-        resetConsecutive = 0; // Reset streak counter after leveling up
+        resetConsecutive = 0;
 
-        // Signal difficulty increase for visual feedback
         if (newDifficulty > currentDiff) {
           difficultyIncreaseCounter.current += 1;
           setDifficultyDidIncrease(true);
@@ -231,7 +339,9 @@ export default function GameScreen() {
       }
 
       const updatedDifficultyProfile = { ...gameState.totalCorrectByDifficulty };
-      updatedDifficultyProfile[currentDiff] = (updatedDifficultyProfile[currentDiff] || 0) + 1;
+      // Score doubling in Final Sprint
+      const scoreIncrement = isFinalSprint ? 2 : 1;
+      updatedDifficultyProfile[currentDiff] = (updatedDifficultyProfile[currentDiff] || 0) + scoreIncrement;
 
       questionOpacity.value = withSequence(
         withTiming(0, { duration: 100 }),
@@ -243,7 +353,7 @@ export default function GameScreen() {
 
       setGameState({
         ...gameState,
-        score: gameState.score + 1,
+        score: gameState.score + scoreIncrement,
         currentRoundCorrectAnswers: gameState.currentRoundCorrectAnswers + 1,
         consecutiveCorrect: resetConsecutive,
         currentDifficulty: updatedDifficulties,
@@ -258,7 +368,10 @@ export default function GameScreen() {
         totalQuestionsAttempted: questionIndex + 1,
       });
     } else {
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      // Wrong answer: glitch + disturbed vibration
+      triggerDisruptedVibration();
+      triggerGlitchEffect();
+
       inputShake.value = withSequence(
         withTiming(-10, { duration: 50 }),
         withTiming(10, { duration: 50 }),
@@ -267,7 +380,10 @@ export default function GameScreen() {
         withTiming(0, { duration: 50 })
       );
 
-      // DDA 2.0: Immediately decrease difficulty by 1 on incorrect answer
+      // In Final Sprint, errors are more penalizing (lose 1 point)
+      const scorePenalty = isFinalSprint ? 1 : 0;
+
+      // DDA: Decrease difficulty
       const newDifficulty = Math.max(currentDiff - 1, 1);
 
       questionOpacity.value = withSequence(
@@ -280,6 +396,7 @@ export default function GameScreen() {
 
       setGameState({
         ...gameState,
+        score: Math.max(0, gameState.score - scorePenalty),
         consecutiveCorrect: 0,
         currentDifficulty: updatedDifficulties,
         difficultyLevel: newDifficulty,
@@ -340,13 +457,28 @@ export default function GameScreen() {
     opacity: questionOpacity.value,
   }));
 
-  const progressPercentage = gameState.timeRemaining / 60;
+  const progressPercentage = gameState.timeRemaining / gameDuration;
+
+  // Format time display
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const timeLabel = isFullChallenge ? '5m' : '1m';
 
   // Countdown screen with zoom-in animation
   if (showCountdown) {
     return (
       <View style={styles.countdownContainer}>
         <StatusBar style="light" />
+        <Animated.View style={[StyleSheet.absoluteFill, bgAnimatedStyle]}>
+          <LinearGradient
+            colors={[Colors.background, '#0a0f1a', '#0d1225', Colors.background]}
+            style={StyleSheet.absoluteFill}
+          />
+        </Animated.View>
         <View style={styles.countdownContent}>
           <Animated.View entering={FadeIn.duration(300)}>
             <Text style={[styles.countdownMode, { color: selectedMode.color }]}>
@@ -371,7 +503,12 @@ export default function GameScreen() {
             </Animated.View>
           )}
 
-          <Text style={styles.countdownSubtext}>60 SECONDS</Text>
+          <View style={styles.countdownTimeRow}>
+            <Text style={styles.countdownClockIcon}>⏱</Text>
+            <Text style={styles.countdownSubtext}>
+              {isFullChallenge ? '5 MINUTES' : '60 SECONDS'}
+            </Text>
+          </View>
         </View>
       </View>
     );
@@ -380,6 +517,16 @@ export default function GameScreen() {
   return (
     <View style={styles.container}>
       <StatusBar style="light" />
+
+      {/* Glitch overlay */}
+      {showGlitch && (
+        <Animated.View style={[styles.glitchOverlay, glitchStyle]}>
+          <View style={styles.glitchLine1} />
+          <View style={styles.glitchLine2} />
+          <View style={styles.glitchLine3} />
+        </Animated.View>
+      )}
+
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.content}>
           {/* Header with controls */}
@@ -389,9 +536,15 @@ export default function GameScreen() {
                 <Text style={[styles.modeLabel, { color: selectedMode.color }]}>
                   {selectedMode.icon} {selectedMode.name.toUpperCase()}
                 </Text>
-                <Text style={styles.difficultyLabel}>
-                  LEVEL {gameState.difficultyLevel}
-                </Text>
+                <View style={styles.headerMeta}>
+                  <Text style={styles.difficultyLabel}>
+                    LEVEL {gameState.difficultyLevel}
+                  </Text>
+                  <View style={styles.timeLabelBadge}>
+                    <Text style={styles.timeLabelIcon}>⏱</Text>
+                    <Text style={styles.timeLabelText}>{timeLabel}</Text>
+                  </View>
+                </View>
               </View>
               <View style={styles.headerControls}>
                 <Pressable
@@ -421,6 +574,20 @@ export default function GameScreen() {
               maxLevel={4}
               didIncrease={difficultyDidIncrease}
             />
+
+            {/* Final Sprint Banner */}
+            {isFinalSprint && (
+              <Animated.View style={[styles.finalSprintBanner, sprintBorderStyle]}>
+                <LinearGradient
+                  colors={['rgba(255, 200, 55, 0.08)', 'rgba(255, 128, 8, 0.05)']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                  style={styles.finalSprintGradient}
+                >
+                  <Text style={styles.finalSprintText}>⚡ FINAL SPRINT — 2× POINTS</Text>
+                </LinearGradient>
+              </Animated.View>
+            )}
           </View>
 
           {/* Progress Ring Timer + Score */}
@@ -430,11 +597,16 @@ export default function GameScreen() {
               size={120}
               strokeWidth={5}
               timeRemaining={gameState.timeRemaining}
-              totalTime={60}
+              totalTime={gameDuration}
             />
             <View style={styles.scoreBadge}>
               <Text style={styles.scoreLabel}>SCORE</Text>
-              <Text style={styles.scoreText}>{gameState.score}</Text>
+              <Text style={[styles.scoreText, isFinalSprint && { color: '#FFC837' }]}>
+                {gameState.score}
+              </Text>
+              {isFinalSprint && (
+                <Text style={styles.sprintMultiplier}>2×</Text>
+              )}
             </View>
           </View>
 
@@ -497,7 +669,7 @@ export default function GameScreen() {
             </View>
             <Text style={styles.overlayTitle}>PAUSED</Text>
             <Text style={styles.overlaySubtitle}>
-              {selectedMode.name} &middot; {gameState.timeRemaining}s remaining
+              {selectedMode.name} &middot; {formatTime(gameState.timeRemaining)} remaining
             </Text>
 
             <Pressable
@@ -587,6 +759,12 @@ const styles = StyleSheet.create({
   headerLeft: {
     flex: 1,
   },
+  headerMeta: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.sm,
+    marginTop: 2,
+  },
   modeLabel: {
     fontSize: FontSizes.sm,
     fontWeight: '700',
@@ -598,6 +776,26 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: Colors.textLight,
     letterSpacing: LetterSpacing.wider,
+  },
+  timeLabelBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 245, 255, 0.06)',
+    paddingHorizontal: Spacing.sm,
+    paddingVertical: 2,
+    borderRadius: BorderRadius.sm,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 245, 255, 0.12)',
+    gap: 3,
+  },
+  timeLabelIcon: {
+    fontSize: 10,
+  },
+  timeLabelText: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: Colors.primary,
+    letterSpacing: LetterSpacing.wide,
   },
   headerControls: {
     flexDirection: 'row',
@@ -631,6 +829,25 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: Colors.incorrect,
     fontWeight: '700',
+  },
+  // Final Sprint Banner
+  finalSprintBanner: {
+    marginTop: Spacing.sm,
+    borderRadius: BorderRadius.sm,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 200, 55, 0.3)',
+    overflow: 'hidden',
+  },
+  finalSprintGradient: {
+    paddingVertical: Spacing.xs + 2,
+    paddingHorizontal: Spacing.md,
+    alignItems: 'center',
+  },
+  finalSprintText: {
+    fontSize: FontSizes.xs,
+    fontWeight: '700',
+    color: '#FFC837',
+    letterSpacing: LetterSpacing.wider,
   },
   // Timer section with ring
   timerSection: {
@@ -667,6 +884,13 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     fontFamily: Fonts.mono,
     letterSpacing: LetterSpacing.wide,
+  },
+  sprintMultiplier: {
+    fontSize: FontSizes.xs,
+    fontWeight: '700',
+    color: '#FFC837',
+    letterSpacing: LetterSpacing.wide,
+    marginTop: 2,
   },
   // Question
   questionWrapper: {
@@ -728,6 +952,36 @@ const styles = StyleSheet.create({
     letterSpacing: LetterSpacing.widest,
     fontFamily: Fonts.mono,
   },
+  // Glitch Overlay
+  glitchOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    zIndex: 100,
+    pointerEvents: 'none',
+  },
+  glitchLine1: {
+    position: 'absolute',
+    top: '20%',
+    left: 0,
+    right: 0,
+    height: 3,
+    backgroundColor: 'rgba(255, 78, 106, 0.6)',
+  },
+  glitchLine2: {
+    position: 'absolute',
+    top: '45%',
+    left: 0,
+    right: 0,
+    height: 2,
+    backgroundColor: 'rgba(0, 245, 255, 0.5)',
+  },
+  glitchLine3: {
+    position: 'absolute',
+    top: '70%',
+    left: 0,
+    right: 0,
+    height: 4,
+    backgroundColor: 'rgba(139, 92, 246, 0.4)',
+  },
   // Countdown
   countdownContainer: {
     flex: 1,
@@ -768,12 +1022,20 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 20,
   },
+  countdownTimeRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.sm,
+    marginTop: Spacing.xl,
+  },
+  countdownClockIcon: {
+    fontSize: 16,
+  },
   countdownSubtext: {
     fontSize: FontSizes.sm,
     fontWeight: '500',
     color: Colors.textLight,
     letterSpacing: LetterSpacing.wider,
-    marginTop: Spacing.xl,
   },
   // Overlay styles
   overlayContainer: {

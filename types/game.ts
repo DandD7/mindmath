@@ -47,6 +47,9 @@ export type TestSession = {
   difficultyTimeline?: DifficultyTimelineEntry[]; // tracks difficulty progression per question
   totalQuestions?: number; // total questions attempted
   gameMode?: OperationType; // which mode was played
+  duration?: number; // session duration in seconds (60 or 300)
+  finalSprintCorrect?: number; // correct answers during final sprint
+  finalSprintTotal?: number; // total questions during final sprint
 };
 
 export type GameState = {
@@ -108,6 +111,11 @@ export const GAME_MODES: GameMode[] = [
     description: 'All operations combined',
   },
 ];
+
+// The full 5-minute challenge mode ID
+export const FULL_CHALLENGE_MODE_ID = 'full_challenge';
+// Training modes (1 min) are all other modes in GAME_MODES
+export const TRAINING_MODES = GAME_MODES.filter(m => m.id !== 'full_challenge');
 
 export const ROUNDS: RoundType[] = [
   { id: 1, name: 'Addition', operation: 'addition', duration: 60 },

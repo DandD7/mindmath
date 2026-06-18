@@ -8,11 +8,14 @@ import Animated, {
   FadeInDown,
   FadeInUp,
   SlideInRight,
+  SlideInLeft,
   useSharedValue,
   useAnimatedStyle,
   withRepeat,
   withTiming,
   withSequence,
+  withDelay,
+  withSpring,
   Easing,
 } from 'react-native-reanimated';
 import AnimatedButton from '../components/AnimatedButton';
@@ -22,7 +25,109 @@ import { Colors, Spacing, FontSizes, BorderRadius, Shadows, Fonts, LetterSpacing
 import { getTestSessionById, getTestHistory } from '../utils/storage';
 import { getOperationDisplayName } from '../utils/gameLogic';
 import type { TestSession } from '../types/game';
-import { GAME_MODES } from '../types/game';
+import { GAME_MODES, FULL_CHALLENGE_MODE_ID } from '../types/game';
+
+// Compute mental grade based on weighted score and accuracy
+function computeMentalGrade(weightedScore: number, accuracy: number, duration: number): { grade: string; color: string } {
+  // Normalize based on duration (5min vs 1min)
+  const normalizedScore = duration === 300 ? weightedScore / 3 : weightedScore;
+
+  if (normalizedScore >= 80 && accuracy >= 95) return { grade: 'S', color: '#FFC837' };
+  if (normalizedScore >= 60 && accuracy >= 90) return { grade: 'A+', color: '#00F5A0' };
+  if (normalizedScore >= 45 && accuracy >= 85) return { grade: 'A', color: '#00F5FF' };
+  if (normalizedScore >= 35 && accuracy >= 75) return { grade: 'B+', color: '#8B5CF6' };
+  if (normalizedScore >= 25 && accuracy >= 65) return { grade: 'B', color: '#3B82F6' };
+  if (normalizedScore >= 15 && accuracy >= 50) return { grade: 'C+', color: '#10B981' };
+  if (normalizedScore >= 10) return { grade: 'C', color: Colors.textSecondary };
+  return { grade: 'D', color: Colors.textLight };
+}
+
+// Generate insights based on performance
+function generateInsights(
+  session: TestSession,
+  accuracy: number,
+  maxDifficulty: number,
+  totalCorrect: number,
+  duration: number
+): { text: string; icon: string }[] {
+  const insights: { text: string; icon: string }[] = [];
+  const questionsPerMin = totalCorrect / (duration / 60);
+
+  if (accuracy >= 90) {
+    insights.push({ text: 'Exceptional accuracy — top tier performance', icon: '🎯' });
+  } else if (accuracy >= 75) {
+    insights.push({ text: 'Above average calculation precision', icon: '✓' });
+  }
+
+  if (questionsPerMin >= 15) {
+    insights.push({ text: `Calculation speed: ${questionsPerMin.toFixed(1)}/min — Lightning fast`, icon: '⚡' });
+  } else if (questionsPerMin >= 10) {
+    insights.push({ text: `Calculation speed: ${questionsPerMin.toFixed(1)}/min — Above average`, icon: '🔥' });
+  } else {
+    insights.push({ text: `Calculation speed: ${questionsPerMin.toFixed(1)}/min`, icon: '📊' });
+  }
+
+  if (maxDifficulty >= 4) {
+    insights.push({ text: 'Reached maximum difficulty — Expert level', icon: '🏆' });
+  } else if (maxDifficulty >= 3) {
+    insights.push({ text: 'Reached advanced difficulty tier', icon: '📈' });
+  }
+
+  if (session.finalSprintCorrect && session.finalSprintTotal) {
+    const sprintAcc = Math.round((session.finalSprintCorrect / session.finalSprintTotal) * 100);
+    insights.push({ text: `Final Sprint accuracy: ${sprintAcc}% under pressure`, icon: '🎪' });
+  }
+
+  return insights;
+}
+
+function MentalGradeReveal({ grade, color }: { grade: string; color: string }) {
+  const scale = useSharedValue(0);
+  const glowIntensity = useSharedValue(0);
+
+  useEffect(() => {
+    scale.value = withDelay(
+      600,
+      withSpring(1, { damping: 8, stiffness: 100 })
+    );
+    glowIntensity.value = withDelay(
+      1000,
+      withRepeat(
+        withSequence(
+          withTiming(1, { duration: 1500, easing: Easing.inOut(Easing.ease) }),
+          withTiming(0.4, { duration: 1500, easing: Easing.inOut(Easing.ease) })
+        ),
+        -1,
+        false
+      )
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+    opacity: scale.value,
+  }));
+
+  const glowStyle = useAnimatedStyle(() => ({
+    shadowOpacity: 0.3 + glowIntensity.value * 0.5,
+    shadowRadius: 16 + glowIntensity.value * 12,
+  }));
+
+  return (
+    <Animated.View style={[styles.gradeContainer, animatedStyle, glowStyle, { shadowColor: color }]}>
+      <View style={[styles.gradeCircle, { borderColor: color + '60' }]}>
+        <LinearGradient
+          colors={[color + '15', color + '08']}
+          style={styles.gradeCircleInner}
+        >
+          <Text style={[styles.gradeText, { color }]}>{grade}</Text>
+        </LinearGradient>
+      </View>
+      <Text style={styles.gradeLabel}>MENTAL GRADE</Text>
+    </Animated.View>
+  );
+}
 
 function NewBestBadge() {
   const glowPulse = useSharedValue(0.5);
@@ -58,6 +163,27 @@ function NewBestBadge() {
   );
 }
 
+function StatInsightCard({
+  text,
+  icon,
+  index,
+}: {
+  text: string;
+  icon: string;
+  index: number;
+}) {
+  return (
+    <Animated.View
+      entering={SlideInLeft.duration(500).delay(800 + index * 200).springify().damping(14)}
+    >
+      <View style={styles.insightCard}>
+        <Text style={styles.insightIcon}>{icon}</Text>
+        <Text style={styles.insightText}>{text}</Text>
+      </View>
+    </Animated.View>
+  );
+}
+
 function StatCard({
   label,
   value,
@@ -73,7 +199,7 @@ function StatCard({
 }) {
   return (
     <Animated.View
-      entering={SlideInRight.duration(500).delay(300 + index * 120).springify().damping(15)}
+      entering={SlideInRight.duration(500).delay(400 + index * 150).springify().damping(15)}
     >
       <GlassCard glowColor={glowColor} intensity="medium" style={styles.statCard}>
         <Text style={styles.statLabel}>{label}</Text>
@@ -97,10 +223,8 @@ export default function ResultsScreen() {
         const loadedSession = await getTestSessionById(params.sessionId);
         setSession(loadedSession);
 
-        // Check if this is a new best score
         if (loadedSession) {
           const history = await getTestHistory();
-          // Compare only against sessions of the same mode
           const sameModeHistory = history.filter(
             (s) => s.id !== params.sessionId && s.gameMode === loadedSession.gameMode
           );
@@ -111,7 +235,6 @@ export default function ResultsScreen() {
               setIsNewBest(true);
             }
           } else {
-            // First ever session for this mode is always a "new best"
             setIsNewBest(true);
           }
         }
@@ -141,14 +264,30 @@ export default function ResultsScreen() {
     1
   );
 
+  const duration = session.duration || 60;
+  const isFullChallenge = duration === 300;
+  const timeLabel = isFullChallenge ? '5m' : '1m';
+
   // Get the mode-specific display name
   const modeName = session.gameMode
     ? getOperationDisplayName(session.gameMode)
     : 'Math';
-  const modeColor = GAME_MODES.find(m => m.operation === session.gameMode)?.color || Colors.primary;
+  const modeColor = isFullChallenge
+    ? '#FFC837'
+    : GAME_MODES.find(m => m.operation === session.gameMode)?.color || Colors.primary;
 
   // Calculate accuracy percentage
   const accuracyPercent = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
+
+  // Mental grade
+  const { grade, color: gradeColor } = computeMentalGrade(
+    session.totalWeightedScore,
+    accuracyPercent,
+    duration
+  );
+
+  // Insights
+  const insights = generateInsights(session, accuracyPercent, maxDifficultyReached, totalCorrect, duration);
 
   return (
     <View style={styles.container}>
@@ -164,15 +303,27 @@ export default function ResultsScreen() {
             entering={FadeInDown.duration(600).delay(100)}
             style={styles.headerSection}
           >
-            <Text style={styles.title}>SESSION COMPLETE</Text>
-            <Text style={[styles.modeTitle, { color: modeColor }]}>
-              {modeName.toUpperCase()} MODE
-            </Text>
+            <View style={styles.headerTitleRow}>
+              <Text style={styles.title}>PERFORMANCE</Text>
+              <Text style={styles.titleSecondary}>ANALYTICS</Text>
+            </View>
+            <View style={styles.headerMetaRow}>
+              <Text style={[styles.modeTitle, { color: modeColor }]}>
+                {isFullChallenge ? 'FULL CHALLENGE' : `${modeName.toUpperCase()} MODE`}
+              </Text>
+              <View style={styles.headerTimeBadge}>
+                <Text style={styles.headerTimeIcon}>⏱</Text>
+                <Text style={styles.headerTimeText}>{timeLabel}</Text>
+              </View>
+            </View>
             {isNewBest && <NewBestBadge />}
           </Animated.View>
 
+          {/* Mental Grade */}
+          <MentalGradeReveal grade={grade} color={gradeColor} />
+
           {/* Main Score Card */}
-          <Animated.View entering={FadeInUp.duration(700).delay(200).springify().damping(12)}>
+          <Animated.View entering={FadeInUp.duration(700).delay(300).springify().damping(12)}>
             <GlassCard
               glowColor={isNewBest ? '#00F5A0' : modeColor}
               intensity={isNewBest ? 'high' : 'medium'}
@@ -199,7 +350,7 @@ export default function ResultsScreen() {
           {/* Stats Grid */}
           <View style={styles.statsGrid}>
             <StatCard
-              label={`${modeName.toUpperCase()} ACCURACY`}
+              label="ACCURACY"
               value={`${accuracyPercent}%`}
               subtitle={`${totalCorrect} of ${totalQuestions} correct`}
               index={0}
@@ -208,25 +359,50 @@ export default function ResultsScreen() {
             <StatCard
               label="MAX DIFFICULTY"
               value={`Level ${maxDifficultyReached}`}
+              subtitle={maxDifficultyReached === 4 ? 'Maximum reached!' : undefined}
               index={1}
               glowColor={Colors.accent}
             />
             <StatCard
               label="QUESTIONS SOLVED"
               value={totalCorrect}
-              subtitle={`in 60 seconds`}
+              subtitle={`in ${isFullChallenge ? '5 minutes' : '60 seconds'}`}
               index={2}
               glowColor={modeColor}
             />
+            {session.finalSprintCorrect !== undefined && session.finalSprintTotal !== undefined && session.finalSprintTotal > 0 && (
+              <StatCard
+                label="FINAL SPRINT"
+                value={`${session.finalSprintCorrect}/${session.finalSprintTotal}`}
+                subtitle="Last 30s — 2× points"
+                index={3}
+                glowColor="#FFC837"
+              />
+            )}
           </View>
+
+          {/* Stat Insights */}
+          {insights.length > 0 && (
+            <Animated.View entering={FadeInDown.duration(500).delay(600)} style={styles.insightsSection}>
+              <Text style={styles.sectionTitle}>STAT INSIGHTS</Text>
+              {insights.map((insight, index) => (
+                <StatInsightCard
+                  key={index}
+                  text={insight.text}
+                  icon={insight.icon}
+                  index={index}
+                />
+              ))}
+            </Animated.View>
+          )}
 
           {/* Difficulty Timeline Chart */}
           {session.difficultyTimeline && session.difficultyTimeline.length > 0 && (
-            <Animated.View entering={FadeInDown.duration(500).delay(650)}>
+            <Animated.View entering={FadeInDown.duration(500).delay(1000)}>
               <GlassCard style={styles.breakdownCard}>
-                <Text style={styles.sectionTitle}>DIFFICULTY TIMELINE</Text>
+                <Text style={styles.sectionTitle}>DIFFICULTY OSCILLATION</Text>
                 <Text style={styles.sectionSubtitle}>
-                  How your difficulty progressed during the session
+                  Level progression during the session
                 </Text>
                 <DifficultyTimeline timeline={session.difficultyTimeline} />
                 <View style={styles.timelineLegendSpacer} />
@@ -235,7 +411,7 @@ export default function ResultsScreen() {
           )}
 
           {/* Difficulty Profile */}
-          <Animated.View entering={FadeInDown.duration(500).delay(900)}>
+          <Animated.View entering={FadeInDown.duration(500).delay(1200)}>
             <GlassCard style={styles.breakdownCard}>
               <Text style={styles.sectionTitle}>DIFFICULTY PROFILE</Text>
               <View style={styles.chartContainer}>
@@ -246,7 +422,7 @@ export default function ResultsScreen() {
                   return (
                     <Animated.View
                       key={level}
-                      entering={SlideInRight.duration(400).delay(1000 + index * 100)}
+                      entering={SlideInRight.duration(400).delay(1300 + index * 100)}
                       style={styles.chartRow}
                     >
                       <Text style={styles.chartLabel}>Lv.{level}</Text>
@@ -277,14 +453,14 @@ export default function ResultsScreen() {
 
           {/* Buttons */}
           <Animated.View
-            entering={FadeInDown.duration(400).delay(1200)}
+            entering={FadeInDown.duration(400).delay(1500)}
             style={styles.buttonContainer}
           >
             <AnimatedButton
               title="Play Again"
               onPress={() => router.replace({
                 pathname: '/game',
-                params: { mode: session.gameMode || 'addition' },
+                params: { mode: isFullChallenge ? FULL_CHALLENGE_MODE_ID : (session.gameMode || 'addition') },
               })}
               style={styles.button}
             />
@@ -329,22 +505,91 @@ const styles = StyleSheet.create({
   // Header
   headerSection: {
     alignItems: 'center',
-    marginBottom: Spacing.xl,
+    marginBottom: Spacing.lg,
     paddingTop: Spacing.md,
+  },
+  headerTitleRow: {
+    alignItems: 'center',
   },
   title: {
     fontSize: FontSizes.xl,
-    fontWeight: '300',
+    fontWeight: '200',
     color: Colors.text,
     textAlign: 'center',
     letterSpacing: LetterSpacing.widest,
     textTransform: 'uppercase',
   },
+  titleSecondary: {
+    fontSize: FontSizes.xl,
+    fontWeight: '600',
+    color: Colors.primary,
+    textAlign: 'center',
+    letterSpacing: LetterSpacing.widest,
+    marginTop: -2,
+  },
+  headerMetaRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.sm,
+    marginTop: Spacing.sm,
+  },
   modeTitle: {
     fontSize: FontSizes.sm,
     fontWeight: '700',
     letterSpacing: LetterSpacing.wider,
-    marginTop: Spacing.sm,
+  },
+  headerTimeBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 245, 255, 0.06)',
+    paddingHorizontal: Spacing.sm,
+    paddingVertical: 2,
+    borderRadius: BorderRadius.sm,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 245, 255, 0.12)',
+    gap: 3,
+  },
+  headerTimeIcon: {
+    fontSize: 10,
+  },
+  headerTimeText: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: Colors.primary,
+    letterSpacing: LetterSpacing.wide,
+  },
+  // Mental Grade
+  gradeContainer: {
+    alignItems: 'center',
+    marginBottom: Spacing.xl,
+    shadowOffset: { width: 0, height: 0 },
+    elevation: 8,
+  },
+  gradeCircle: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    borderWidth: 2,
+    overflow: 'hidden',
+    marginBottom: Spacing.sm,
+  },
+  gradeCircleInner: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 60,
+  },
+  gradeText: {
+    fontSize: 52,
+    fontWeight: '700',
+    fontFamily: Fonts.mono,
+    letterSpacing: LetterSpacing.wide,
+  },
+  gradeLabel: {
+    fontSize: FontSizes.xs,
+    fontWeight: '600',
+    color: Colors.textLight,
+    letterSpacing: LetterSpacing.widest,
   },
   // New Best Badge
   newBestBadge: {
@@ -425,6 +670,31 @@ const styles = StyleSheet.create({
     color: Colors.textLight,
     letterSpacing: LetterSpacing.wide,
     marginTop: 2,
+  },
+  // Insights
+  insightsSection: {
+    marginBottom: Spacing.lg,
+  },
+  insightCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(20, 27, 45, 0.7)',
+    borderRadius: BorderRadius.md,
+    paddingVertical: Spacing.md,
+    paddingHorizontal: Spacing.lg,
+    marginBottom: Spacing.sm,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 245, 255, 0.08)',
+    gap: Spacing.md,
+  },
+  insightIcon: {
+    fontSize: 20,
+  },
+  insightText: {
+    flex: 1,
+    fontSize: FontSizes.sm,
+    color: Colors.textSecondary,
+    letterSpacing: LetterSpacing.wide,
   },
   // Breakdown
   breakdownCard: {
