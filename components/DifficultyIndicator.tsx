@@ -50,9 +50,11 @@ export default function DifficultyIndicator({
     }
   }, [didIncrease, glowIntensity]);
 
-  const barAnimatedStyle = useAnimatedStyle(() => ({
-    width: `${barWidth.value * 100}%` as unknown as number,
-  }));
+  const barAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      flex: barWidth.value,
+    };
+  });
 
   const glowAnimatedStyle = useAnimatedStyle(() => ({
     opacity: glowIntensity.value,
@@ -96,6 +98,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 245, 255, 0.06)',
     borderRadius: BorderRadius.full,
     overflow: 'hidden',
+    flexDirection: 'row',
   },
   barWrapper: {
     height: '100%',

@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Colors, Spacing, FontSizes, Fonts, LetterSpacing } from '../constants/theme';
 import type { DifficultyTimelineEntry } from '../types/game';
 
@@ -54,32 +53,22 @@ export default function DifficultyTimeline({ timeline }: DifficultyTimelineProps
         })}
 
         {/* Line segments connecting points */}
-        {points.map((point, index) => {
+        {points.length > 1 && points.map((point, index) => {
           if (index === 0) return null;
           const prevPoint = points[index - 1];
-          const dx = point.x - prevPoint.x;
-          const dy = point.y - prevPoint.y;
-
           return (
             <View
-              key={`line-${index}`}
+              key={`seg-${index}`}
               style={[
-                styles.lineSegment,
+                styles.simpleLine,
                 {
                   left: `${prevPoint.x}%`,
                   top: Math.min(prevPoint.y, point.y),
-                  width: `${dx}%`,
-                  height: Math.abs(dy) + 2,
+                  width: `${point.x - prevPoint.x}%`,
+                  height: Math.max(Math.abs(point.y - prevPoint.y), 2),
                 },
               ]}
-            >
-              <LinearGradient
-                colors={['rgba(0, 245, 255, 0.4)', 'rgba(139, 92, 246, 0.4)']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-                style={StyleSheet.absoluteFill}
-              />
-            </View>
+            />
           );
         })}
 
@@ -98,30 +87,6 @@ export default function DifficultyTimeline({ timeline }: DifficultyTimelineProps
             ]}
           />
         ))}
-
-        {/* Simplified line path using absolute positioned segments */}
-        {points.length > 1 && (
-          <View style={styles.lineContainer}>
-            {points.map((point, index) => {
-              if (index === 0) return null;
-              const prevPoint = points[index - 1];
-              return (
-                <View
-                  key={`seg-${index}`}
-                  style={[
-                    styles.simpleLine,
-                    {
-                      left: `${prevPoint.x}%`,
-                      top: Math.min(prevPoint.y, point.y),
-                      width: `${point.x - prevPoint.x}%`,
-                      height: Math.max(Math.abs(point.y - prevPoint.y), 1),
-                    },
-                  ]}
-                />
-              );
-            })}
-          </View>
-        )}
       </View>
 
       {/* Legend */}
@@ -182,17 +147,9 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: 'rgba(0, 245, 255, 0.05)',
   },
-  lineContainer: {
-    ...StyleSheet.absoluteFillObject,
-  },
   simpleLine: {
     position: 'absolute',
-    backgroundColor: 'rgba(0, 245, 255, 0.2)',
-    borderRadius: 1,
-  },
-  lineSegment: {
-    position: 'absolute',
-    overflow: 'hidden',
+    backgroundColor: 'rgba(0, 245, 255, 0.25)',
     borderRadius: 1,
   },
   dot: {

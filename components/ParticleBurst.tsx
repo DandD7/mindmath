@@ -54,13 +54,13 @@ function SingleParticle({
 
     scale.value = withDelay(
       particle.delay,
-      withTiming(1, { duration: 100, easing: Easing.out(Easing.quad) })
+      withTiming(1, { duration: 80, easing: Easing.out(Easing.quad) })
     );
 
     translateX.value = withDelay(
       particle.delay,
       withTiming(targetX, {
-        duration: 500,
+        duration: 400,
         easing: Easing.out(Easing.cubic),
       })
     );
@@ -68,14 +68,14 @@ function SingleParticle({
     translateY.value = withDelay(
       particle.delay,
       withTiming(targetY, {
-        duration: 500,
+        duration: 400,
         easing: Easing.out(Easing.cubic),
       })
     );
 
     opacity.value = withDelay(
-      particle.delay + 200,
-      withTiming(0, { duration: 300 }, (finished) => {
+      particle.delay + 150,
+      withTiming(0, { duration: 250 }, (finished) => {
         if (finished) {
           runOnJS(onComplete)();
         }
@@ -116,36 +116,54 @@ export default function ParticleBurst({
   trigger,
   originX,
   originY,
-  particleCount = 12,
+  particleCount = 8,
 }: ParticleBurstProps) {
   const [particles, setParticles] = useState<Particle[]>([]);
   const completedCountRef = React.useRef(0);
+  const cleanupTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (trigger <= 0) return;
 
+    // Cap particle count for performance
+    const count = Math.min(particleCount, 10);
     const newParticles: Particle[] = [];
-    for (let i = 0; i < particleCount; i++) {
-      const angleSpread = 360 / particleCount;
+    for (let i = 0; i < count; i++) {
+      const angleSpread = 360 / count;
       const randomOffset = (Math.random() - 0.5) * (angleSpread * 0.6);
       newParticles.push({
         id: Date.now() + i,
         angle: i * angleSpread + randomOffset,
-        distance: 40 + Math.random() * 60,
-        size: 3 + Math.random() * 5,
-        delay: Math.random() * 80,
+        distance: 30 + Math.random() * 40,
+        size: 3 + Math.random() * 4,
+        delay: Math.random() * 50,
         color: PARTICLE_COLORS[i % PARTICLE_COLORS.length],
       });
     }
     setParticles(newParticles);
     completedCountRef.current = 0;
+
+    // Safety cleanup - force remove particles after animation duration
+    if (cleanupTimerRef.current) {
+      clearTimeout(cleanupTimerRef.current);
+    }
+    cleanupTimerRef.current = setTimeout(() => setParticles([]), 700);
+
+    return () => {
+      if (cleanupTimerRef.current) {
+        clearTimeout(cleanupTimerRef.current);
+      }
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [trigger]);
 
   const handleParticleComplete = () => {
     completedCountRef.current += 1;
     if (completedCountRef.current >= particles.length) {
-      setTimeout(() => setParticles([]), 50);
+      if (cleanupTimerRef.current) {
+        clearTimeout(cleanupTimerRef.current);
+      }
+      setParticles([]);
     }
   };
 

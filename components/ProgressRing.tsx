@@ -115,11 +115,14 @@ export default function ProgressRing({
           style={[
             styles.timerValue,
             { color: isUrgent ? Colors.incorrect : Colors.primary },
+            totalTime > 60 && styles.timerValueSmall,
           ]}
         >
-          {timeRemaining}
+          {totalTime > 60
+            ? `${Math.floor(timeRemaining / 60)}:${(timeRemaining % 60).toString().padStart(2, '0')}`
+            : timeRemaining}
         </Text>
-        <Text style={styles.timerUnit}>SEC</Text>
+        <Text style={styles.timerUnit}>{totalTime > 60 ? 'MIN' : 'SEC'}</Text>
       </View>
     </View>
   );
@@ -148,6 +151,9 @@ const styles = StyleSheet.create({
     fontWeight: '200',
     fontFamily: Fonts.mono,
     letterSpacing: LetterSpacing.wide,
+  },
+  timerValueSmall: {
+    fontSize: 24,
   },
   timerUnit: {
     fontSize: 10,

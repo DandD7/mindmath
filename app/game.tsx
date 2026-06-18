@@ -280,24 +280,29 @@ export default function GameScreen() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameState.timeRemaining]);
 
+  const glitchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   const triggerGlitchEffect = () => {
+    if (glitchTimerRef.current) {
+      clearTimeout(glitchTimerRef.current);
+    }
     setShowGlitch(true);
     glitchOpacity.value = withSequence(
-      withTiming(0.8, { duration: 50 }),
-      withTiming(0, { duration: 50 }),
-      withTiming(0.6, { duration: 30 }),
-      withTiming(0, { duration: 80 }),
-      withTiming(0.3, { duration: 40 }),
-      withTiming(0, { duration: 100 })
+      withTiming(0.7, { duration: 40 }),
+      withTiming(0, { duration: 40 }),
+      withTiming(0.5, { duration: 30 }),
+      withTiming(0, { duration: 60 }),
+      withTiming(0.3, { duration: 30 }),
+      withTiming(0, { duration: 80 })
     );
     glitchOffset.value = withSequence(
-      withTiming(5, { duration: 30 }),
-      withTiming(-8, { duration: 40 }),
-      withTiming(3, { duration: 30 }),
-      withTiming(-4, { duration: 50 }),
-      withTiming(0, { duration: 60 })
+      withTiming(4, { duration: 25 }),
+      withTiming(-6, { duration: 35 }),
+      withTiming(3, { duration: 25 }),
+      withTiming(-3, { duration: 40 }),
+      withTiming(0, { duration: 50 })
     );
-    setTimeout(() => setShowGlitch(false), 400);
+    glitchTimerRef.current = setTimeout(() => setShowGlitch(false), 320);
   };
 
   const triggerDisruptedVibration = () => {
@@ -681,7 +686,7 @@ export default function GameScreen() {
             {/* Particle burst on correct answer */}
             <ParticleBurst
               trigger={particleTrigger}
-              particleCount={14}
+              particleCount={8}
             />
           </View>
 

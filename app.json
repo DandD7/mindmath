@@ -11,7 +11,7 @@
     "ios": {
       "supportsTablet": true,
       "icon": "./assets/images/ios-icon.png",
-      "bundleIdentifier": "com.mindmath",
+      "bundleIdentifier": "com.mindmath.app",
       "buildNumber": "2",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
@@ -23,7 +23,7 @@
         "backgroundColor": "#0A0E17"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.mindmath",
+      "package": "com.mindmath.app",
       "versionCode": 2
     },
     "web": {
