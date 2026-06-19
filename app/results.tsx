@@ -7,16 +7,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Animated, {
   FadeInDown,
   FadeInUp,
-  SlideInRight,
-  SlideInLeft,
-  useSharedValue,
-  useAnimatedStyle,
-  withRepeat,
-  withTiming,
-  withSequence,
-  withDelay,
-  withSpring,
-  Easing,
 } from 'react-native-reanimated';
 import AnimatedButton from '../components/AnimatedButton';
 import GlassCard from '../components/GlassCard';
@@ -82,40 +72,8 @@ function generateInsights(
 }
 
 function MentalGradeReveal({ grade, color }: { grade: string; color: string }) {
-  const scale = useSharedValue(0);
-  const glowIntensity = useSharedValue(0);
-
-  useEffect(() => {
-    scale.value = withDelay(
-      600,
-      withSpring(1, { damping: 8, stiffness: 100 })
-    );
-    glowIntensity.value = withDelay(
-      1000,
-      withRepeat(
-        withSequence(
-          withTiming(1, { duration: 1500, easing: Easing.inOut(Easing.ease) }),
-          withTiming(0.4, { duration: 1500, easing: Easing.inOut(Easing.ease) })
-        ),
-        -1,
-        false
-      )
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
-    opacity: scale.value,
-  }));
-
-  const glowStyle = useAnimatedStyle(() => ({
-    shadowOpacity: 0.3 + glowIntensity.value * 0.5,
-    shadowRadius: 16 + glowIntensity.value * 12,
-  }));
-
   return (
-    <Animated.View style={[styles.gradeContainer, animatedStyle, glowStyle, { shadowColor: color }]}>
+    <Animated.View entering={FadeInDown.duration(500).delay(300)} style={[styles.gradeContainer, { shadowColor: color, shadowOpacity: 0.3, shadowRadius: 16 }]}>
       <View style={[styles.gradeCircle, { borderColor: color + '60' }]}>
         <LinearGradient
           colors={[color + '15', color + '08']}
@@ -130,27 +88,8 @@ function MentalGradeReveal({ grade, color }: { grade: string; color: string }) {
 }
 
 function NewBestBadge() {
-  const glowPulse = useSharedValue(0.5);
-
-  useEffect(() => {
-    glowPulse.value = withRepeat(
-      withSequence(
-        withTiming(1, { duration: 1200, easing: Easing.inOut(Easing.ease) }),
-        withTiming(0.5, { duration: 1200, easing: Easing.inOut(Easing.ease) })
-      ),
-      -1,
-      false
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const animatedGlow = useAnimatedStyle(() => ({
-    shadowOpacity: glowPulse.value,
-    opacity: 0.7 + glowPulse.value * 0.3,
-  }));
-
   return (
-    <Animated.View style={[styles.newBestBadge, animatedGlow]}>
+    <View style={styles.newBestBadge}>
       <LinearGradient
         colors={['#00F5FF', '#8B5CF6', '#00F5A0']}
         start={{ x: 0, y: 0 }}
@@ -159,28 +98,23 @@ function NewBestBadge() {
       >
         <Text style={styles.newBestText}>NEW BEST</Text>
       </LinearGradient>
-    </Animated.View>
+    </View>
   );
 }
 
 function StatInsightCard({
   text,
   icon,
-  index,
 }: {
   text: string;
   icon: string;
   index: number;
 }) {
   return (
-    <Animated.View
-      entering={SlideInLeft.duration(500).delay(800 + index * 200).springify().damping(14)}
-    >
-      <View style={styles.insightCard}>
-        <Text style={styles.insightIcon}>{icon}</Text>
-        <Text style={styles.insightText}>{text}</Text>
-      </View>
-    </Animated.View>
+    <View style={styles.insightCard}>
+      <Text style={styles.insightIcon}>{icon}</Text>
+      <Text style={styles.insightText}>{text}</Text>
+    </View>
   );
 }
 
@@ -188,7 +122,6 @@ function StatCard({
   label,
   value,
   subtitle,
-  index,
   glowColor = Colors.primary,
 }: {
   label: string;
@@ -198,15 +131,11 @@ function StatCard({
   glowColor?: string;
 }) {
   return (
-    <Animated.View
-      entering={SlideInRight.duration(500).delay(400 + index * 150).springify().damping(15)}
-    >
-      <GlassCard glowColor={glowColor} intensity="medium" style={styles.statCard}>
-        <Text style={styles.statLabel}>{label}</Text>
-        <Text style={[styles.statValue, { color: glowColor }]}>{value}</Text>
-        {subtitle && <Text style={styles.statSubtitle}>{subtitle}</Text>}
-      </GlassCard>
-    </Animated.View>
+    <GlassCard glowColor={glowColor} intensity="medium" style={styles.statCard}>
+      <Text style={styles.statLabel}>{label}</Text>
+      <Text style={[styles.statValue, { color: glowColor }]}>{value}</Text>
+      {subtitle && <Text style={styles.statSubtitle}>{subtitle}</Text>}
+    </GlassCard>
   );
 }
 
@@ -299,10 +228,7 @@ export default function ResultsScreen() {
           showsVerticalScrollIndicator={false}
         >
           {/* Header */}
-          <Animated.View
-            entering={FadeInDown.duration(600).delay(100)}
-            style={styles.headerSection}
-          >
+          <View style={styles.headerSection}>
             <View style={styles.headerTitleRow}>
               <Text style={styles.title}>PERFORMANCE</Text>
               <Text style={styles.titleSecondary}>ANALYTICS</Text>
@@ -317,13 +243,13 @@ export default function ResultsScreen() {
               </View>
             </View>
             {isNewBest && <NewBestBadge />}
-          </Animated.View>
+          </View>
 
           {/* Mental Grade */}
           <MentalGradeReveal grade={grade} color={gradeColor} />
 
           {/* Main Score Card */}
-          <Animated.View entering={FadeInUp.duration(700).delay(300).springify().damping(12)}>
+          <Animated.View entering={FadeInUp.duration(500).delay(200)}>
             <GlassCard
               glowColor={isNewBest ? '#00F5A0' : modeColor}
               intensity={isNewBest ? 'high' : 'medium'}
@@ -383,7 +309,7 @@ export default function ResultsScreen() {
 
           {/* Stat Insights */}
           {insights.length > 0 && (
-            <Animated.View entering={FadeInDown.duration(500).delay(600)} style={styles.insightsSection}>
+            <View style={styles.insightsSection}>
               <Text style={styles.sectionTitle}>STAT INSIGHTS</Text>
               {insights.map((insight, index) => (
                 <StatInsightCard
@@ -393,69 +319,61 @@ export default function ResultsScreen() {
                   index={index}
                 />
               ))}
-            </Animated.View>
+            </View>
           )}
 
           {/* Difficulty Timeline Chart */}
           {session.difficultyTimeline && session.difficultyTimeline.length > 0 && (
-            <Animated.View entering={FadeInDown.duration(500).delay(1000)}>
-              <GlassCard style={styles.breakdownCard}>
-                <Text style={styles.sectionTitle}>DIFFICULTY OSCILLATION</Text>
-                <Text style={styles.sectionSubtitle}>
-                  Level progression during the session
-                </Text>
-                <DifficultyTimeline timeline={session.difficultyTimeline} />
-                <View style={styles.timelineLegendSpacer} />
-              </GlassCard>
-            </Animated.View>
+            <GlassCard style={styles.breakdownCard}>
+              <Text style={styles.sectionTitle}>DIFFICULTY OSCILLATION</Text>
+              <Text style={styles.sectionSubtitle}>
+                Level progression during the session
+              </Text>
+              <DifficultyTimeline timeline={session.difficultyTimeline} />
+              <View style={styles.timelineLegendSpacer} />
+            </GlassCard>
           )}
 
           {/* Difficulty Profile */}
-          <Animated.View entering={FadeInDown.duration(500).delay(1200)}>
-            <GlassCard style={styles.breakdownCard}>
-              <Text style={styles.sectionTitle}>DIFFICULTY PROFILE</Text>
-              <View style={styles.chartContainer}>
-                {[1, 2, 3, 4].map((level, index) => {
-                  const count = (session.difficultyProfile[level] as number) || 0;
-                  const percentage = (count / maxDifficultyCount) * 100;
+          <GlassCard style={styles.breakdownCard}>
+            <Text style={styles.sectionTitle}>DIFFICULTY PROFILE</Text>
+            <View style={styles.chartContainer}>
+              {[1, 2, 3, 4].map((level) => {
+                const count = (session.difficultyProfile[level] as number) || 0;
+                const percentage = (count / maxDifficultyCount) * 100;
 
-                  return (
-                    <Animated.View
-                      key={level}
-                      entering={SlideInRight.duration(400).delay(1300 + index * 100)}
-                      style={styles.chartRow}
-                    >
-                      <Text style={styles.chartLabel}>Lv.{level}</Text>
-                      <View style={styles.barContainer}>
-                        <LinearGradient
-                          colors={
-                            level === 4
-                              ? ['#8B5CF6', '#00F5FF']
-                              : level === 3
-                              ? ['#00F5FF', '#00F5A0']
-                              : ['#00F5FF', '#00D4FF']
-                          }
-                          start={{ x: 0, y: 0 }}
-                          end={{ x: 1, y: 0 }}
-                          style={[
-                            styles.bar,
-                            { width: `${Math.max(percentage, 3)}%` },
-                          ]}
-                        />
-                      </View>
-                      <Text style={styles.chartValue}>{count}</Text>
-                    </Animated.View>
-                  );
-                })}
-              </View>
-            </GlassCard>
-          </Animated.View>
+                return (
+                  <View
+                    key={level}
+                    style={styles.chartRow}
+                  >
+                    <Text style={styles.chartLabel}>Lv.{level}</Text>
+                    <View style={styles.barContainer}>
+                      <LinearGradient
+                        colors={
+                          level === 4
+                            ? ['#8B5CF6', '#00F5FF']
+                            : level === 3
+                            ? ['#00F5FF', '#00F5A0']
+                            : ['#00F5FF', '#00D4FF']
+                        }
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 0 }}
+                        style={[
+                          styles.bar,
+                          { width: `${Math.max(percentage, 3)}%` },
+                        ]}
+                      />
+                    </View>
+                    <Text style={styles.chartValue}>{count}</Text>
+                  </View>
+                );
+              })}
+            </View>
+          </GlassCard>
 
           {/* Buttons */}
-          <Animated.View
-            entering={FadeInDown.duration(400).delay(1500)}
-            style={styles.buttonContainer}
-          >
+          <View style={styles.buttonContainer}>
             <AnimatedButton
               title="Play Again"
               onPress={() => router.replace({
@@ -470,7 +388,7 @@ export default function ResultsScreen() {
               variant="secondary"
               style={styles.button}
             />
-          </Animated.View>
+          </View>
         </ScrollView>
       </SafeAreaView>
     </View>

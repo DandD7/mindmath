@@ -810,8 +810,8 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     paddingHorizontal: Spacing.lg,
-    paddingTop: Spacing.md,
-    paddingBottom: Spacing.md,
+    paddingTop: Spacing.sm,
+    paddingBottom: Spacing.xs,
   },
   header: {
     marginBottom: Spacing.sm,
@@ -921,7 +921,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: Spacing.xl,
-    paddingVertical: Spacing.md,
+    paddingVertical: Spacing.sm,
   },
   scoreBadge: {
     alignItems: 'center',
@@ -962,16 +962,16 @@ const styles = StyleSheet.create({
   questionWrapper: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: Spacing.md,
+    marginTop: Spacing.sm,
   },
   questionCard: {
     backgroundColor: Colors.glass,
     borderRadius: BorderRadius.lg,
-    paddingVertical: Spacing.xl,
+    paddingVertical: Spacing.lg,
     paddingHorizontal: Spacing.lg,
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: 120,
+    minHeight: 100,
     width: '100%',
     borderWidth: 1,
     borderColor: Colors.glassBorder,
@@ -988,7 +988,7 @@ const styles = StyleSheet.create({
   // Hint
   hintContainer: {
     alignItems: 'center',
-    marginBottom: Spacing.sm,
+    marginBottom: Spacing.xs,
   },
   hintText: {
     fontSize: FontSizes.xs,
@@ -998,14 +998,14 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
   answerContainer: {
-    paddingBottom: Spacing.md,
+    paddingBottom: Spacing.sm,
   },
   answerDisplay: {
     backgroundColor: Colors.glass,
     borderRadius: BorderRadius.md,
-    paddingVertical: Spacing.md,
+    paddingVertical: Spacing.sm + 2,
     paddingHorizontal: Spacing.lg,
-    minHeight: 70,
+    minHeight: 56,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,

@@ -28,8 +28,8 @@ function HeroCard({ onPress }: { onPress: () => void }) {
   useEffect(() => {
     pulse.value = withRepeat(
       withSequence(
-        withTiming(1, { duration: 1500, easing: Easing.inOut(Easing.ease) }),
-        withTiming(0, { duration: 1500, easing: Easing.inOut(Easing.ease) })
+        withTiming(1, { duration: 2000, easing: Easing.inOut(Easing.ease) }),
+        withTiming(0, { duration: 2000, easing: Easing.inOut(Easing.ease) })
       ),
       -1,
       false
@@ -38,14 +38,14 @@ function HeroCard({ onPress }: { onPress: () => void }) {
   }, []);
 
   const pulseStyle = useAnimatedStyle(() => ({
-    shadowOpacity: 0.3 + pulse.value * 0.4,
-    shadowRadius: 12 + pulse.value * 8,
+    shadowOpacity: 0.1 + pulse.value * 0.1,
+    shadowRadius: 6 + pulse.value * 4,
   }));
 
   const buttonPulseStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: 1 + pulse.value * 0.03 }],
-    shadowOpacity: 0.4 + pulse.value * 0.3,
-    shadowRadius: 10 + pulse.value * 6,
+    transform: [{ scale: 1 }],
+    shadowOpacity: 0.2 + pulse.value * 0.1,
+    shadowRadius: 4 + pulse.value * 3,
   }));
 
   const cardScale = useAnimatedStyle(() => ({
@@ -98,7 +98,7 @@ function HeroCard({ onPress }: { onPress: () => void }) {
           {/* Content */}
           <View style={styles.heroContent}>
             <Text style={styles.heroIcon}>⚡</Text>
-            <Text style={styles.heroTitle}>FULL MINDMATH</Text>
+            <Text style={styles.heroTitle}>MINDMATH</Text>
             <Text style={styles.heroTitleSecondary}>CHALLENGE</Text>
           </View>
 
@@ -315,10 +315,10 @@ const styles = StyleSheet.create({
     borderRadius: BorderRadius.xl,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: 'rgba(139, 92, 246, 0.3)',
+    borderColor: 'rgba(139, 92, 246, 0.2)',
     shadowColor: '#8B5CF6',
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 8,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 4,
     marginBottom: Spacing.xl,
   },
   heroCardGradient: {
@@ -378,8 +378,8 @@ const styles = StyleSheet.create({
   heroButtonWrapper: {
     borderRadius: BorderRadius.md,
     shadowColor: '#FFC837',
-    shadowOffset: { width: 0, height: 0 },
-    elevation: 6,
+    shadowOffset: { width: 0, height: 1 },
+    elevation: 3,
   },
   heroButton: {
     paddingVertical: Spacing.md + 2,
