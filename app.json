@@ -49,8 +49,7 @@
       ]
     ],
     "experiments": {
-      "typedRoutes": true,
-      "baseUrl": ""
+      "typedRoutes": true
     },
     "extra": {
       "router": {},
