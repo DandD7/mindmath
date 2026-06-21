@@ -1,0 +1,16 @@
+# Dev-only files not needed in EAS builds
+serve-expo.js
+inspector-overlay.js
+babel-plugin-source-metadata.js
+style-map.json
+
+# Examples and documentation
+examples/
+CLAUDE.md
+
+# Logs and caches
+.fastshot-logs/
+.expo/
+
+# Scripts not needed in builds
+scripts/
