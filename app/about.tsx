@@ -25,7 +25,7 @@ export default function AboutScreen() {
         <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
           <Animated.View entering={FadeInDown.duration(400).delay(100)} style={styles.card}>
             <Text style={styles.appTitle}>Mindmath</Text>
-            <Text style={styles.version}>Version 1.1.0</Text>
+            <Text style={styles.version}>Version 1.2.0</Text>
 
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>About the App</Text>
