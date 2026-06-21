@@ -144,7 +144,7 @@ export default function GameScreen() {
     gameState.currentQuestion.operation,
     gameState.currentQuestion.answer
   );
-  const answerHint = getAnswerHint(gameState.currentQuestion.answer);
+  const answerHint = getAnswerHint(gameState.currentQuestion.answer, gameState.currentQuestion.operation);
 
   // Is final sprint active?
   const isFinalSprint = isFullChallenge && gameState.timeRemaining <= FINAL_SPRINT_THRESHOLD;
@@ -634,15 +634,8 @@ export default function GameScreen() {
               </View>
             </View>
 
-            {/* Difficulty Indicator Bar */}
-            <DifficultyIndicator
-              level={gameState.difficultyLevel}
-              maxLevel={4}
-              didIncrease={difficultyDidIncrease}
-            />
-
-            {/* Final Sprint Banner */}
-            {isFinalSprint && (
+            {/* Difficulty Indicator Bar / Final Sprint Banner */}
+            {isFinalSprint ? (
               <Animated.View style={[styles.finalSprintBanner, sprintBorderStyle]}>
                 <LinearGradient
                   colors={['rgba(255, 200, 55, 0.08)', 'rgba(255, 128, 8, 0.05)']}
@@ -653,15 +646,21 @@ export default function GameScreen() {
                   <Text style={styles.finalSprintText}>⚡ FINAL SPRINT — 2× POINTS</Text>
                 </LinearGradient>
               </Animated.View>
+            ) : (
+              <DifficultyIndicator
+                level={gameState.difficultyLevel}
+                maxLevel={4}
+                didIncrease={difficultyDidIncrease}
+              />
             )}
           </View>
 
           {/* Progress Ring Timer + Score */}
-          <View style={styles.timerSection}>
+          <View style={[styles.timerSection, isFinalSprint && styles.timerSectionCompact]}>
             <ProgressRing
               progress={progressPercentage}
-              size={120}
-              strokeWidth={5}
+              size={isFinalSprint ? 90 : 120}
+              strokeWidth={isFinalSprint ? 4 : 5}
               timeRemaining={gameState.timeRemaining}
               totalTime={gameDuration}
             />
@@ -677,8 +676,8 @@ export default function GameScreen() {
           </View>
 
           {/* Question Area */}
-          <View style={styles.questionWrapper}>
-            <Animated.View style={[styles.questionCard, questionAnimatedStyle]}>
+          <View style={[styles.questionWrapper, isFinalSprint && styles.questionWrapperCompact]}>
+            <Animated.View style={[styles.questionCard, isFinalSprint && styles.questionCardCompact, questionAnimatedStyle]}>
               <Text style={styles.questionText}>
                 {gameState.currentQuestion.question} = ?
               </Text>
@@ -923,6 +922,10 @@ const styles = StyleSheet.create({
     gap: Spacing.xl,
     paddingVertical: Spacing.sm,
   },
+  timerSectionCompact: {
+    paddingVertical: Spacing.xs,
+    gap: Spacing.lg,
+  },
   scoreBadge: {
     alignItems: 'center',
     backgroundColor: 'rgba(0, 245, 255, 0.04)',
@@ -964,6 +967,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: Spacing.sm,
   },
+  questionWrapperCompact: {
+    marginTop: Spacing.xs,
+  },
   questionCard: {
     backgroundColor: Colors.glass,
     borderRadius: BorderRadius.lg,
@@ -976,6 +982,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.glassBorder,
     ...Shadows.medium,
+  },
+  questionCardCompact: {
+    paddingVertical: Spacing.md,
+    minHeight: 80,
   },
   questionText: {
     fontSize: FontSizes.xxxl,

@@ -196,8 +196,11 @@ export const checkAnswer = (userAnswer: string, correctAnswer: number): boolean 
  * Determines if the current question's answer requires a decimal.
  * Returns a hint string for the user.
  */
-export const getAnswerHint = (answer: number): string => {
+export const getAnswerHint = (answer: number, operation?: OperationType): string => {
   if (Number.isInteger(answer)) {
+    if (operation === 'percentage') {
+      return 'INTEGER (ROUND UP)';
+    }
     return 'ENTER INTEGER';
   }
   // Check how many decimal places

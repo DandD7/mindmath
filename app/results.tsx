@@ -5,7 +5,6 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, {
-  FadeInDown,
   FadeInUp,
 } from 'react-native-reanimated';
 import AnimatedButton from '../components/AnimatedButton';
@@ -17,75 +16,6 @@ import { getOperationDisplayName } from '../utils/gameLogic';
 import type { TestSession } from '../types/game';
 import { GAME_MODES, FULL_CHALLENGE_MODE_ID } from '../types/game';
 
-// Compute mental grade based on weighted score and accuracy
-function computeMentalGrade(weightedScore: number, accuracy: number, duration: number): { grade: string; color: string } {
-  // Normalize based on duration (5min vs 1min)
-  const normalizedScore = duration === 300 ? weightedScore / 3 : weightedScore;
-
-  if (normalizedScore >= 80 && accuracy >= 95) return { grade: 'S', color: '#FFC837' };
-  if (normalizedScore >= 60 && accuracy >= 90) return { grade: 'A+', color: '#00F5A0' };
-  if (normalizedScore >= 45 && accuracy >= 85) return { grade: 'A', color: '#00F5FF' };
-  if (normalizedScore >= 35 && accuracy >= 75) return { grade: 'B+', color: '#8B5CF6' };
-  if (normalizedScore >= 25 && accuracy >= 65) return { grade: 'B', color: '#3B82F6' };
-  if (normalizedScore >= 15 && accuracy >= 50) return { grade: 'C+', color: '#10B981' };
-  if (normalizedScore >= 10) return { grade: 'C', color: Colors.textSecondary };
-  return { grade: 'D', color: Colors.textLight };
-}
-
-// Generate insights based on performance
-function generateInsights(
-  session: TestSession,
-  accuracy: number,
-  maxDifficulty: number,
-  totalCorrect: number,
-  duration: number
-): { text: string; icon: string }[] {
-  const insights: { text: string; icon: string }[] = [];
-  const questionsPerMin = totalCorrect / (duration / 60);
-
-  if (accuracy >= 90) {
-    insights.push({ text: 'Exceptional accuracy — top tier performance', icon: '🎯' });
-  } else if (accuracy >= 75) {
-    insights.push({ text: 'Above average calculation precision', icon: '✓' });
-  }
-
-  if (questionsPerMin >= 15) {
-    insights.push({ text: `Calculation speed: ${questionsPerMin.toFixed(1)}/min — Lightning fast`, icon: '⚡' });
-  } else if (questionsPerMin >= 10) {
-    insights.push({ text: `Calculation speed: ${questionsPerMin.toFixed(1)}/min — Above average`, icon: '🔥' });
-  } else {
-    insights.push({ text: `Calculation speed: ${questionsPerMin.toFixed(1)}/min`, icon: '📊' });
-  }
-
-  if (maxDifficulty >= 4) {
-    insights.push({ text: 'Reached maximum difficulty — Expert level', icon: '🏆' });
-  } else if (maxDifficulty >= 3) {
-    insights.push({ text: 'Reached advanced difficulty tier', icon: '📈' });
-  }
-
-  if (session.finalSprintCorrect && session.finalSprintTotal) {
-    const sprintAcc = Math.round((session.finalSprintCorrect / session.finalSprintTotal) * 100);
-    insights.push({ text: `Final Sprint accuracy: ${sprintAcc}% under pressure`, icon: '🎪' });
-  }
-
-  return insights;
-}
-
-function MentalGradeReveal({ grade, color }: { grade: string; color: string }) {
-  return (
-    <Animated.View entering={FadeInDown.duration(500).delay(300)} style={[styles.gradeContainer, { shadowColor: color, shadowOpacity: 0.3, shadowRadius: 16 }]}>
-      <View style={[styles.gradeCircle, { borderColor: color + '60' }]}>
-        <LinearGradient
-          colors={[color + '15', color + '08']}
-          style={styles.gradeCircleInner}
-        >
-          <Text style={[styles.gradeText, { color }]}>{grade}</Text>
-        </LinearGradient>
-      </View>
-      <Text style={styles.gradeLabel}>MENTAL GRADE</Text>
-    </Animated.View>
-  );
-}
 
 function NewBestBadge() {
   return (
@@ -102,21 +32,6 @@ function NewBestBadge() {
   );
 }
 
-function StatInsightCard({
-  text,
-  icon,
-}: {
-  text: string;
-  icon: string;
-  index: number;
-}) {
-  return (
-    <View style={styles.insightCard}>
-      <Text style={styles.insightIcon}>{icon}</Text>
-      <Text style={styles.insightText}>{text}</Text>
-    </View>
-  );
-}
 
 function StatCard({
   label,
@@ -208,16 +123,6 @@ export default function ResultsScreen() {
   // Calculate accuracy percentage
   const accuracyPercent = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
 
-  // Mental grade
-  const { grade, color: gradeColor } = computeMentalGrade(
-    session.totalWeightedScore,
-    accuracyPercent,
-    duration
-  );
-
-  // Insights
-  const insights = generateInsights(session, accuracyPercent, maxDifficultyReached, totalCorrect, duration);
-
   return (
     <View style={styles.container}>
       <StatusBar style="light" />
@@ -244,9 +149,6 @@ export default function ResultsScreen() {
             </View>
             {isNewBest && <NewBestBadge />}
           </View>
-
-          {/* Mental Grade */}
-          <MentalGradeReveal grade={grade} color={gradeColor} />
 
           {/* Main Score Card */}
           <Animated.View entering={FadeInUp.duration(500).delay(200)}>
@@ -307,20 +209,6 @@ export default function ResultsScreen() {
             )}
           </View>
 
-          {/* Stat Insights */}
-          {insights.length > 0 && (
-            <View style={styles.insightsSection}>
-              <Text style={styles.sectionTitle}>STAT INSIGHTS</Text>
-              {insights.map((insight, index) => (
-                <StatInsightCard
-                  key={index}
-                  text={insight.text}
-                  icon={insight.icon}
-                  index={index}
-                />
-              ))}
-            </View>
-          )}
 
           {/* Difficulty Timeline Chart */}
           {session.difficultyTimeline && session.difficultyTimeline.length > 0 && (
@@ -476,39 +364,6 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     letterSpacing: LetterSpacing.wide,
   },
-  // Mental Grade
-  gradeContainer: {
-    alignItems: 'center',
-    marginBottom: Spacing.xl,
-    shadowOffset: { width: 0, height: 0 },
-    elevation: 8,
-  },
-  gradeCircle: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    borderWidth: 2,
-    overflow: 'hidden',
-    marginBottom: Spacing.sm,
-  },
-  gradeCircleInner: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 60,
-  },
-  gradeText: {
-    fontSize: 52,
-    fontWeight: '700',
-    fontFamily: Fonts.mono,
-    letterSpacing: LetterSpacing.wide,
-  },
-  gradeLabel: {
-    fontSize: FontSizes.xs,
-    fontWeight: '600',
-    color: Colors.textLight,
-    letterSpacing: LetterSpacing.widest,
-  },
   // New Best Badge
   newBestBadge: {
     marginTop: Spacing.md,
@@ -588,31 +443,6 @@ const styles = StyleSheet.create({
     color: Colors.textLight,
     letterSpacing: LetterSpacing.wide,
     marginTop: 2,
-  },
-  // Insights
-  insightsSection: {
-    marginBottom: Spacing.lg,
-  },
-  insightCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(20, 27, 45, 0.7)',
-    borderRadius: BorderRadius.md,
-    paddingVertical: Spacing.md,
-    paddingHorizontal: Spacing.lg,
-    marginBottom: Spacing.sm,
-    borderWidth: 1,
-    borderColor: 'rgba(0, 245, 255, 0.08)',
-    gap: Spacing.md,
-  },
-  insightIcon: {
-    fontSize: 20,
-  },
-  insightText: {
-    flex: 1,
-    fontSize: FontSizes.sm,
-    color: Colors.textSecondary,
-    letterSpacing: LetterSpacing.wide,
   },
   // Breakdown
   breakdownCard: {
