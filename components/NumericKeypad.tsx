@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from './LinearGradient';
 import { Colors, Spacing, BorderRadius, FontSizes, Fonts, LetterSpacing } from '../constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 

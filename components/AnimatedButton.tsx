@@ -2,7 +2,7 @@ import React from 'react';
 import { Pressable, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from './LinearGradient';
 import { Colors, Spacing, BorderRadius, FontSizes, Shadows, LetterSpacing } from '../constants/theme';
 
 type AnimatedButtonProps = {

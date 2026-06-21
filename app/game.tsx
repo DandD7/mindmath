@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Pressable, Modal } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from '../components/LinearGradient';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -586,7 +586,7 @@ export default function GameScreen() {
 
       {/* Glitch overlay */}
       {showGlitch && (
-        <Animated.View style={[styles.glitchOverlay, glitchStyle]}>
+        <Animated.View pointerEvents="none" style={[styles.glitchOverlay, glitchStyle]}>
           <View style={styles.glitchLine1} />
           <View style={styles.glitchLine2} />
           <View style={styles.glitchLine3} />
@@ -1032,7 +1032,6 @@ const styles = StyleSheet.create({
   glitchOverlay: {
     ...StyleSheet.absoluteFillObject,
     zIndex: 100,
-    pointerEvents: 'none',
   },
   glitchLine1: {
     position: 'absolute',

@@ -8,7 +8,7 @@ import Animated, {
   withRepeat,
   Easing,
 } from 'react-native-reanimated';
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from './LinearGradient';
 import { Colors, BorderRadius } from '../constants/theme';
 
 interface DifficultyIndicatorProps {
