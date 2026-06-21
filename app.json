@@ -49,8 +49,7 @@
       ]
     ],
     "experiments": {
-      "typedRoutes": true,
-      "baseUrl": ""
+      "typedRoutes": true
     },
     "extra": {
       "router": {},
@@ -58,6 +57,8 @@
         "projectId": "4bbfbbf1-7d0c-4550-abc8-6147d97d2038"
       }
     },
-    "owner": "dandd7"
+    "runtimeVersion": {
+      "policy": "appVersion"
+    }
   }
 }
