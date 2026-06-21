@@ -49,7 +49,8 @@
       ]
     ],
     "experiments": {
-      "typedRoutes": true
+      "typedRoutes": true,
+      "baseUrl": "/4bbfbbf1-7d0c-4550-abc8-6147d97d2038/dev-preview/"
     },
     "extra": {
       "router": {},
