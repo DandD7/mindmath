@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, ViewStyle, StyleProp } from 'react-native';
+import { View, StyleSheet, ViewStyle, StyleProp, Platform } from 'react-native';
 import Svg, {
   Defs,
   LinearGradient as SvgLinearGradient,
@@ -19,10 +19,9 @@ interface LinearGradientProps {
 let gradientCounter = 0;
 
 /**
- * A drop-in replacement for expo-linear-gradient's LinearGradient
- * that uses react-native-svg under the hood.
+ * A cross-platform LinearGradient implementation using react-native-svg.
  * This avoids the "Unimplemented component: ViewManagerAdapter_ExpoLinearGradient"
- * error that occurs with Expo Go + New Architecture.
+ * error that occurs with Expo Go + New Architecture (newArchEnabled: true).
  */
 export function LinearGradient({
   colors,
@@ -43,6 +42,28 @@ export function LinearGradient({
       : 0;
     return { color, offset };
   });
+
+  // On web, use CSS linear-gradient for better performance
+  if (Platform.OS === 'web') {
+    const angle = Math.atan2(end.y - start.y, end.x - start.x) * (180 / Math.PI) + 90;
+    const gradientStops = stops
+      .map((stop) => `${stop.color} ${(stop.offset * 100).toFixed(1)}%`)
+      .join(', ');
+    const backgroundImage = `linear-gradient(${angle}deg, ${gradientStops})`;
+
+    return (
+      <View
+        style={[
+          styles.container,
+          style,
+          // @ts-ignore - backgroundImage is valid on web
+          { backgroundImage },
+        ]}
+      >
+        {children}
+      </View>
+    );
+  }
 
   return (
     <View style={[styles.container, style]}>
